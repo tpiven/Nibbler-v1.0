@@ -13,16 +13,17 @@ public:
     void    init() override;
     void    handleEvent() override;
     void    render() override;
-    void    drawMap();
-    void    drawSnake();
+    void    drawMap() override;
+    void    drawSnake(void*, int) override;
 private:
     static SDL_lib *_inst;
     static SDL_Renderer * renderer;
     static SDL_Window *_window;
     static SDL_Event   *_event;
+    static SDL_Texture *_texture_map;
     SDL_Rect    _scrR;
     std::string _dir;
-    std::map<int, const SDL_Texture*> _snakeTexture;
+    std::map<int, SDL_Texture*> _snakeTexture;
     SDL_lib();
     ~SDL_lib();
     SDL_lib(const SDL_lib&) = delete;

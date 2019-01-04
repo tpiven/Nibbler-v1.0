@@ -36,7 +36,7 @@ private:
     int _pl;
     char _key;//w,a,s,d
     int _size_block;
-    t_scr _scr;//struct for render texture
+    t_scr _rect;//struct for render texture
     bool _play;//flag for finish game
     void    crash();
     void    grow();

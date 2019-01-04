@@ -12,8 +12,10 @@
 //};
 
 #pragma once
-#include <SDL2/SDL.h>
-#include <SDL2/SDL_image.h>
+//#include <SDL2/SDL.h>
+//#include <SDL2/SDL_image.h>
+#include "SDL.h"
+#include "SDL_image.h"
 #include <vector>
 #include <iostream>
 
@@ -24,5 +26,5 @@ public:
     virtual void    handleEvent() = 0; //ловим хуки от клавиш
     virtual void    render() = 0;//рисуем
     virtual void    drawMap() = 0;
-    virtual void    drawSnake() = 0;
+    virtual void    drawSnake(void*, int) = 0;
 };

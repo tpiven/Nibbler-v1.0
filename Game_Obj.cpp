@@ -29,16 +29,20 @@ Game_Obj* Game_Obj::getInstance() {
 }
 
 void Game_Obj::init() {
-    Logic logic(1);
-    std::cout << "wwork" << std::endl;
+    int cnt  = 0;
     std::vector<AView*> lib_ptr = {&SDL_lib::getInstance()};//, SFML_lib::getInstance, ALLEGRO_lib::
-    lib_ptr.front()->init();
+    lib_ptr[g_lib - 1]->init();//draw map, load picture
+    Logic logic(1);
+    lib_ptr[g_lib - 1]->render();
     while(logic.running()){
-        lib_ptr[g_lib - 1]->drawMap();
+        if (cnt > 0){
+            lib_ptr[g_lib - 1]->drawMap();
+        }
         logic.move();
         lib_ptr[g_lib - 1]->render();
         std::cout << "------" << std::endl;
-        //std::this_thread::sleep_for(std::chrono::seconds(1));
+        cnt++;
+        std::this_thread::sleep_for(std::chrono::seconds(2));
     }
 }
 

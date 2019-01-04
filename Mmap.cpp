@@ -11,8 +11,6 @@ Mmap& Mmap::getInstance() {
     return instance;
 }
 
-int Mmap::_y_start = 100;
-int Mmap::_x_start = 0;
 int Mmap::_mmap[67][90] = {
 {5,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,6},
 {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2},
@@ -88,8 +86,6 @@ void Mmap::setValueInMap(int val, const int y, const int x) { _mmap[y][x] = val;
 std::cout << "::" << _mmap[y][x] << std::endl; }
 
 int Mmap::getValueFromMap(const int y, const int x) const { return _mmap[y][x]; }
-
-std::pair<int, int> Mmap::getYXmap() const { return std::make_pair(_y_start, _x_start);}
 
 void Mmap::printMmap() const{
     for (int i = 0; i < 67; ++i) {

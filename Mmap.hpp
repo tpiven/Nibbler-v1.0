@@ -10,11 +10,8 @@ public:
     static Mmap & getInstance();
     void        setValueInMap(int val, const int y, const int x);
     int         getValueFromMap(const int y, const int x) const;
-    std::pair<int, int>  getYXmap() const;
     void    printMmap() const;
 private:
-    static int _x_start;//start x on screen
-    static int _y_start;//start y on screen
     Mmap();
     Mmap(const Mmap &) = delete;
     Mmap(Mmap &&) = delete;

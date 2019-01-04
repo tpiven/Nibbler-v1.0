@@ -7,11 +7,11 @@
 #include <iterator>
 #include <iostream>
 #include "Mmap.hpp"
-#include "SDL_lib.hpp" //
+#include "SDL_lib.hpp"
 
 Logic::Logic() noexcept {
     _size_block = g_weight / 90;
-    _scr.w = _scr.h = _size_block;
+    _rect.w = _rect.h = _size_block;
     _play = true;
 }
 
@@ -29,16 +29,34 @@ Logic::Logic(int nm_pl) noexcept : Logic(){
         x = (88 * g_weight / 90);//place on screen, x
         y = (10 * g_height / 67);//place on screen, y
     }
+    _rect.h = _rect.w = _size_block;
     for (int i = 0; i < 4; ++i) {
+        int j = 0;
+        if (i > 0 && i < 4){
+            j = (i > 0 && i < 3) ? 1 : 2;
+        }
         if (_key == 'd') {
-            int b = g_weight;
-            int a = x * 90 / g_weight;
-            _cors.push_back({y, x + (_size_block * i), y * 67 / g_height - 1, ((x * 90 / g_weight) - 1) + i});
+            _cors.push_back({y + HEIGHT_SCOREBOARD, x + (_size_block * i), y * 67 / g_height - 1, ((x * 90 / g_weight) - 1) + i});
             Mmap::getInstance().setValueInMap(-1, (y * 67 / g_height - 1), ((x * 90 / g_weight) - 1) + i);
         }
         else if (_key == 'a'){
-            _cors.push_back({y, x - (_size_block * i), y * 67 / g_height - 1, (x * 90 / g_weight - 1) - i});
+            _cors.push_back({y + HEIGHT_SCOREBOARD, x - (_size_block * i), y * 67 / g_height - 1, (x * 90 / g_weight - 1) - i});
             Mmap::getInstance().setValueInMap(-1, (y * 67 / g_height - 1), ((x * 90 / g_weight) - 1) - i);
+        }
+        _rect.y = _cors.back().y_dis + HEIGHT_SCOREBOARD;
+        _rect.x = _cors.back().x_dis;
+        switch (g_lib){
+            case 1:
+                SDL_lib::getInstance().drawSnake(&_rect, j);
+                break;
+            case 2:
+                //TODO call sfml.draw();
+                break;
+            case 3:
+                //TODO call allegro.draw();
+                break;
+            default:
+                break;
         }
     }
 }
@@ -59,6 +77,13 @@ void Logic::move() {
         return;
     }
     for(auto it = _cors.begin(), it_c = ++_cors.begin(); it != _cors.end(); it++){
+        int j = 0;
+        if (it == _cors.begin() && it_c != _cors.end()){
+            j = 1;
+        }
+        else if (it != _cors.begin() && it_c == _cors.end()){
+            j = 2;
+        }
         if (it == _cors.begin()){
             Mmap::getInstance().setValueInMap(0, it->y_arr, it->x_arr);
         }
@@ -73,9 +98,11 @@ void Logic::move() {
             }
             Mmap::getInstance().setValueInMap(-1, it->y_arr, it->x_arr);
         }
+        _rect.y = it->y_dis;
+        _rect.x = it->x_dis;
         switch (g_lib){
             case 1:
-                SDL_lib::getInstance().drawSnake();
+                SDL_lib::getInstance().drawSnake(&_rect, j);
                 break;
             case 2:
                 //TODO call sfml.draw();
