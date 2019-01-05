@@ -43,6 +43,7 @@ Logic::Logic(int nm_pl) noexcept : Logic(){
             _cors.push_back({y + HEIGHT_SCOREBOARD, x - (_size_block * i), y * 67 / g_height - 1, (x * 90 / g_weight - 1) - i});
             Mmap::getInstance().setValueInMap(-1, (y * 67 / g_height - 1), ((x * 90 / g_weight) - 1) - i);
         }
+        std::cout << "y_snake: " << _cors.back().y_arr << std::endl;
         _rect.y = _cors.back().y_dis + HEIGHT_SCOREBOARD;
         _rect.x = _cors.back().x_dis;
         switch (g_lib){
@@ -58,6 +59,30 @@ Logic::Logic(int nm_pl) noexcept : Logic(){
             default:
                 break;
         }
+    }
+}
+
+int Logic::getNumberSprite(int itr) {
+    if (!itr){
+        return 0;
+    }
+    else if (itr < _cors.size() - 1){
+        return 1;
+    }
+    return 2;
+}
+
+void Logic::setKey(int key) {
+    if (key >= 123 && key <= 126){
+        if (key == 126 || key == 125){
+            _key = (key == 126) ? 'w' : 's';
+        }
+        else if(key == 124 || key == 123){
+            _key = (key == 124) ? 'd' : 'a';
+        }
+    }
+    else{
+        _key = static_cast<char>(key);
     }
 }
 
@@ -93,6 +118,8 @@ void Logic::move() {
         }
         else if(it_c == _cors.end()){
             *it = head;
+            std::cout << "y_head_map: " << it->y_arr << " x_head_map: " << it->x_arr << std::endl;
+            std::cout << "val_from_map: " << Mmap::getInstance().getValueFromMap(it->y_arr, it->x_arr) << std::endl;
             if (Mmap::getInstance().getValueFromMap(it->y_arr, it->x_arr) == -2){
                 grow();
             }
@@ -100,6 +127,7 @@ void Logic::move() {
         }
         _rect.y = it->y_dis;
         _rect.x = it->x_dis;
+        std::cout << "y_snake: " << _cors.back().y_arr << std::endl;
         switch (g_lib){
             case 1:
                 SDL_lib::getInstance().drawSnake(&_rect, j);
@@ -114,7 +142,25 @@ void Logic::move() {
                 break;
         }
     }
+}
 
+void Logic::hook() {
+    int a = 0;
+    switch (g_lib){
+        case 1:
+            a = SDL_lib::getInstance().catchHook();
+            break;
+        case 2:
+            //TODO call sfml.draw();
+            break;
+        case 3:
+            //TODO call allegro.draw();
+            break;
+        default:
+            break;
+    }
+    if (a)
+        _key = a;
 }
 
 bool Logic::running() const { return _play;}

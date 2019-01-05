@@ -23,8 +23,11 @@ class AView {
 public:
     ~AView(){}
     virtual void    init() = 0;//инит окна и прочего
-    virtual void    handleEvent() = 0; //ловим хуки от клавиш
+    virtual int     catchHook() = 0; //ловим хуки от клавиш
     virtual void    render() = 0;//рисуем
     virtual void    drawMap() = 0;
     virtual void    drawSnake(void*, int) = 0;
+    virtual uint32_t     getTicks() = 0;
+    virtual void    delay(int) = 0;
+    virtual void    cleanWindow() = 0;
 };

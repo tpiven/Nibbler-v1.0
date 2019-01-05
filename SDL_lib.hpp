@@ -8,18 +8,20 @@
 
 class SDL_lib : public AView{
 public:
-    //static SDL_lib * getInstance();
     static SDL_lib & getInstance();
     void    init() override;
-    void    handleEvent() override;
+    int     catchHook() override;
     void    render() override;
     void    drawMap() override;
     void    drawSnake(void*, int) override;
+    uint32_t getTicks() override;
+    void    delay(int) override;
+    void    cleanWindow() override;
 private:
     static SDL_lib *_inst;
     static SDL_Renderer * renderer;
     static SDL_Window *_window;
-    static SDL_Event   *_event;
+    SDL_Event   _event;
     static SDL_Texture *_texture_map;
     SDL_Rect    _scrR;
     std::string _dir;

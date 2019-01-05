@@ -14,7 +14,6 @@ const char head_path[] = "/Picture/dirt_1.png";
 SDL_lib* SDL_lib::_inst = nullptr;
 SDL_Renderer* SDL_lib::renderer = nullptr;
 SDL_Window*     SDL_lib::_window = nullptr;
-SDL_Event*      SDL_lib::_event = nullptr;
 SDL_Texture*    SDL_lib::_texture_map = nullptr;
 
 SDL_lib::SDL_lib() {}
@@ -23,6 +22,7 @@ SDL_lib& SDL_lib::getInstance() {
     static SDL_lib instance;
     return instance;
 }
+
 void SDL_lib::init() {
     if (SDL_Init(SDL_INIT_EVERYTHING) != 0){
         std::cout << "Trouble with init SDL" << std::endl;
@@ -45,39 +45,79 @@ void SDL_lib::init() {
         std::cout << "Trouble wih render" << std::endl;
         return;
     }
-    SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
+    //SDL_SetRenderDrawColor(renderer, 80, 80, 253, 0);//BAG NOT WORKING
     char path[4096];
-    _dir = getwd(path);//get_current_dir_name();//macOs stupid
-    //char *cwd_buffer = malloc(sizeof(char) * MAX_PATH_NAME);
-    //std::string dir =
-    //std::cout << dir << std::endl;
+    _dir = getwd(path);
     size_t  n = _dir.rfind('/');
     _dir.resize(n);
     _texture_map = SDL_CreateTextureFromSurface(renderer, IMG_Load("/Users/kmykhail/Desktop/qw.png"));
-    drawMap();
     _snakeTexture[0] = SDL_CreateTextureFromSurface(renderer, IMG_Load((_dir + tail_path).c_str()));
     _snakeTexture[1] = SDL_CreateTextureFromSurface(renderer, IMG_Load((_dir + body_path).c_str()));
     _snakeTexture[2] = SDL_CreateTextureFromSurface(renderer, IMG_Load((_dir + head_path).c_str()));
 }
 
-void SDL_lib::handleEvent() {}
+int SDL_lib::catchHook(){
+    SDL_PollEvent(&_event);
+    if (_event.type == SDL_QUIT){
+        return -1;
+    }
+    if (_event.type == SDL_KEYDOWN){
+        switch (_event.key.keysym.sym){
+            case SDLK_ESCAPE:
+                return -1;
+            case SDLK_w:
+                return 'w';
+            case SDLK_s:
+                return 's';
+            case SDLK_d:
+                return 'd';
+            case SDLK_a:
+                return 'a';
+            case SDLK_SPACE:
+                return ' ';
+            case SDLK_UP:
+                return 126;
+            case SDLK_DOWN:
+                return 125;
+            case SDLK_LEFT:
+                return 123;
+            case SDLK_RIGHT:
+                return 124;
+            default:
+                return 0;
+        }
+    }
+    return 0;
+}
+
+uint32_t SDL_lib::getTicks() {
+    return SDL_GetTicks();
+}
+
+void SDL_lib::delay(int time) {
+//    std::this_thread::sleep_for(std::chrono::milliseconds(time));
+//    SDL_
+}
 
 void SDL_lib::render() {
     SDL_RenderPresent(renderer);
 }
-
 
 void SDL_lib::drawMap() {
     _scrR.y = HEIGHT_SCOREBOARD;
     _scrR.x = WEIGHT_SCOREBOARD;
     _scrR.w = g_weight;
     _scrR.h = g_height;
-
     SDL_RenderCopy(renderer, _texture_map, nullptr, &_scrR);
 }
 
 void SDL_lib::drawSnake(void* rect, int b_block) {//b_block - wich texture render: tail, body, head
     _scrR = *reinterpret_cast<SDL_Rect*>(rect);
-    std::cout << "Y: " << _scrR.y << " X: " << _scrR.x << " W: " <<  _scrR.w << " H: " << _scrR.h << std::endl;
     SDL_RenderCopy(renderer, _snakeTexture[b_block], nullptr, &_scrR);
+}
+
+void SDL_lib::cleanWindow() {
+    SDL_DestroyWindow(_window);
+    SDL_DestroyRenderer(renderer);
+    SDL_Quit();
 }

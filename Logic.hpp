@@ -29,7 +29,8 @@ public:
     ~Logic();
     void    move();
     bool    running() const;
-    void    setKey(const char key);
+    void    hook();
+    void    setKey(int key);
     char    getkey() const;
 private:
     lst _cors;
@@ -40,5 +41,6 @@ private:
     bool _play;//flag for finish game
     void    crash();
     void    grow();
+    int    getNumberSprite(int itr);
 };
 
