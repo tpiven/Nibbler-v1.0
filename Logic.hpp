@@ -5,20 +5,7 @@
 #include <map>
 #include <list>
 #include <tuple>
-
-typedef struct s_coor{
-    int y_dis;
-    int x_dis;
-    int y_arr;
-    int x_arr;
-}            t_coor;
-
-typedef struct s_scr{
-    int x;
-    int y;
-    int w;
-    int h;
-} t_scr;
+#include "header.h"
 
 using lst = std::list<t_coor>;
 
@@ -29,10 +16,10 @@ public:
     ~Logic();
     void    move();
     bool    running() const;
-    void    hook();
     void    setKey(int key);
-    char    getkey() const;
+    void    init(int);
 private:
+    void    updateKey(t_coor&);
     lst _cors;
     int _pl;
     char _key;//w,a,s,d

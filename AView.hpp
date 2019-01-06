@@ -11,11 +11,26 @@
 //    virtual void stop() = 0;//конец игры ???
 //};
 
+//#ifdef _WIN32 // note the underscore: without it, it's not msdn official!
+//    // Windows (x64 and x86)
+//#elif __unix__ // all unices, not all compilers
+//    // Unix
+//#elif __linux__
+//    // linux
+//#elif __APPLE__
+//    // Mac OS, not sure if this is covered by __posix__ and/or __unix__ though...
+//#endif
+
 #pragma once
-//#include <SDL2/SDL.h>
-//#include <SDL2/SDL_image.h>
+
+#ifdef __linux__
+#include <SDL2/SDL.h>
+#include <SDL2/SDL_image.h>
+#elif __APPLE__
 #include "SDL.h"
 #include "SDL_image.h"
+#endif
+
 #include <vector>
 #include <iostream>
 
@@ -27,6 +42,7 @@ public:
     virtual void    render() = 0;//рисуем
     virtual void    drawMap() = 0;
     virtual void    drawSnake(void*, int) = 0;
+    virtual void    drawFood(void*) = 0;
     virtual uint32_t     getTicks() = 0;
     virtual void    delay(int) = 0;
     virtual void    cleanWindow() = 0;

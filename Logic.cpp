@@ -15,21 +15,20 @@ Logic::Logic() noexcept {
     _play = true;
 }
 
-Logic::Logic(int nm_pl) noexcept : Logic(){
-    _pl = nm_pl;
+void Logic::init(int n_pl) {
+    _pl = n_pl;
     int x = 0;
     int y = 0;
     if (_pl == 1) {
         _key = 'd'; //TODO rand direction
-        x = (2 * g_weight / 90);//place on screen, x
-        y = (5 * g_height / 67);//place on screen, y
+        x = 2 * g_weight / 90;//place on screen, x
+        y = 5 * g_height / 67;//place on screen, y
     }
     else if (_pl > 1){
         _key = 'a';
-        x = (88 * g_weight / 90);//place on screen, x
-        y = (10 * g_height / 67);//place on screen, y
+        x = 88 * g_weight / 90;//place on screen, x
+        y = 10 * g_height / 67;//place on screen, y
     }
-    _rect.h = _rect.w = _size_block;
     for (int i = 0; i < 4; ++i) {
         int j = 0;
         if (i > 0 && i < 4){
@@ -43,7 +42,7 @@ Logic::Logic(int nm_pl) noexcept : Logic(){
             _cors.push_back({y + HEIGHT_SCOREBOARD, x - (_size_block * i), y * 67 / g_height - 1, (x * 90 / g_weight - 1) - i});
             Mmap::getInstance().setValueInMap(-1, (y * 67 / g_height - 1), ((x * 90 / g_weight) - 1) - i);
         }
-        std::cout << "y_snake: " << _cors.back().y_arr << std::endl;
+//        std::cout << "y_snake: " << _cors.back().y_arr << std::endl;
         _rect.y = _cors.back().y_dis + HEIGHT_SCOREBOARD;
         _rect.x = _cors.back().x_dis;
         switch (g_lib){
@@ -73,7 +72,7 @@ int Logic::getNumberSprite(int itr) {
 }
 
 void Logic::setKey(int key) {
-    if (key >= 123 && key <= 126){
+    if (key >= 123 && key <= 126 && _pl == 2){
         if (key == 126 || key == 125){
             _key = (key == 126) ? 'w' : 's';
         }
@@ -81,13 +80,20 @@ void Logic::setKey(int key) {
             _key = (key == 124) ? 'd' : 'a';
         }
     }
-    else{
-        _key = static_cast<char>(key);
+    else if (_pl == 1){
+        if ((key == 'w' && _key != 's') || (key == 's' && _key != 'w')) {
+            _key = static_cast<char>(key);
+        }
+        else if ((key == 'a' && _key != 'd') || (key == 'd' && _key != 'a')){
+            _key = static_cast<char>(key);
+        }
+        else if (key == ' '){
+            //TODO need implement pause
+        }
     }
 }
 
-void Logic::move() {
-    auto head = _cors.back();
+void Logic::updateKey(t_coor& head) {
     if (_key == 'a' || _key == 'd'){
         head.x_dis += (_key == 'd') ? _size_block : -_size_block;
         head.x_arr += (_key == 'd') ? 1 : -1;
@@ -96,6 +102,11 @@ void Logic::move() {
         head.y_dis += (_key == 's') ? _size_block : -_size_block;
         head.y_arr += (_key == 's') ? 1 : -1;
     }
+}
+
+void Logic::move() {
+    t_coor head = _cors.back();
+    updateKey(head);
     int ch = Mmap::getInstance().getValueFromMap(head.y_arr, head.x_arr);
     if (ch > 0 || ch == -1){
         crash();
@@ -118,8 +129,12 @@ void Logic::move() {
         }
         else if(it_c == _cors.end()){
             *it = head;
-            std::cout << "y_head_map: " << it->y_arr << " x_head_map: " << it->x_arr << std::endl;
-            std::cout << "val_from_map: " << Mmap::getInstance().getValueFromMap(it->y_arr, it->x_arr) << std::endl;
+            std::cout << "head_arr_y: " << it->y_arr << " head_arr_x: " << it->x_arr << std::endl;
+            std::cout << "head_sc_y: " << it->y_dis << " head_sc_x: " << it->x_dis << std::endl;
+            if (it->y_arr == 33){
+                std::cout << "find" << std::endl;
+                Mmap::getInstance().printMmap();
+            }
             if (Mmap::getInstance().getValueFromMap(it->y_arr, it->x_arr) == -2){
                 grow();
             }
@@ -127,7 +142,6 @@ void Logic::move() {
         }
         _rect.y = it->y_dis;
         _rect.x = it->x_dis;
-        std::cout << "y_snake: " << _cors.back().y_arr << std::endl;
         switch (g_lib){
             case 1:
                 SDL_lib::getInstance().drawSnake(&_rect, j);
@@ -142,25 +156,6 @@ void Logic::move() {
                 break;
         }
     }
-}
-
-void Logic::hook() {
-    int a = 0;
-    switch (g_lib){
-        case 1:
-            a = SDL_lib::getInstance().catchHook();
-            break;
-        case 2:
-            //TODO call sfml.draw();
-            break;
-        case 3:
-            //TODO call allegro.draw();
-            break;
-        default:
-            break;
-    }
-    if (a)
-        _key = a;
 }
 
 bool Logic::running() const { return _play;}

@@ -13,6 +13,7 @@
 #include "global.h"
 #include <ctime>
 #include <unistd.h>
+#include <mutex>
 
 Game_Obj::Game_Obj() {}
 
@@ -36,63 +37,67 @@ Game_Obj* Game_Obj::getInstance() {
     return _inst;
 }
 
-clock_t current_ticks, delta_ticks;
-clock_t fps = 0;
-//while(true)// your main loop. could also be the idle() function in glut or whatever
-//{
-//    current_ticks = clock();
-//
-//    render();
-//
-//    delta_ticks = clock() - current_ticks; //the time, in ms, that took to render the scene
-//    if(delta_ticks > 0)
-//        fps = CLOCKS_PER_SEC / delta_ticks;
-//    cout << fps << endl;
-//}
-
-
 void Game_Obj::init() {
+    _libs = {&SDL_lib::getInstance()};//, SFML_lib::getInstance, ALLEGRO_lib::
+    menu(_libs[g_lib - 1]);
+    _libs[g_lib - 1]->init();//draw map, load picture
+    _libs[g_lib - 1]->drawMap();
+    _logic.init(1);
+    _food.updateFood();
+    render(_libs[g_lib - 1]);//pre drawning before moving
+    main_loop();
+}
+
+void Game_Obj::main_loop() {
     int const FPS = 60;
-    int const frameDealy = 1000 / FPS;
+    int const frameDealy = 7000 / FPS;
     uint32_t  frameStart;
     int frameTime;
-
-
-    std::vector<AView*> lib_ptr = {&SDL_lib::getInstance()};//, SFML_lib::getInstance, ALLEGRO_lib::
-    menu(lib_ptr[g_lib - 1]);
-    lib_ptr[g_lib - 1]->init();//draw map, load picture
-    Logic logic(1);
-    render(lib_ptr[g_lib - 1]);
-    while(logic.running()){
-        //frameStart = SDL_GetTicks();
-
-        if (handleEvent(logic, lib_ptr[g_lib - 1]) == -1){
+    while(_logic.running()){
+        frameStart = _libs[g_lib - 1]->getTicks();
+        if (!action(_libs[g_lib - 1])){
             break;
         }
-        update(logic, lib_ptr[g_lib - 1]);
-        render(lib_ptr[g_lib - 1]);
-        std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+        frameTime = _libs[g_lib - 1]->getTicks() - frameStart;
+        if (frameDealy > frameTime){
+            _libs[g_lib - 1]->delay(frameDealy - frameTime);
+        }
     }
-    clean(lib_ptr[g_lib]);
+    clean(_libs[g_lib - 1]);
+}
+
+bool Game_Obj::action(AView *lib) {
+    if (handleEvent(lib) == -1){
+        return false;
+    }
+    update(lib);
+    render(lib);
+    if (handleEvent(lib) == -1){
+        return false;
+    }
+    return true;
 }
 
 void Game_Obj::clean(AView * lib) {
     lib->cleanWindow();
 }
 
-int Game_Obj::handleEvent(Logic& logic, AView* lib) {
+int Game_Obj::handleEvent(AView* lib) {
     int symb = lib->catchHook();
     if (symb == -1)
         return symb;
     if (symb != 0) {
-        logic.setKey(symb);
+        _logic.setKey(symb);
     }
     return symb;
 }
-void Game_Obj::update(Logic& logic, AView* lib) {
+
+void Game_Obj::update(AView* lib) {
     lib->drawMap();
-    logic.move();
+    _logic.move();
+    _food.updateFood();
 }
+
 void Game_Obj::render(AView* lib) {
     lib->render();
 }

@@ -17,13 +17,16 @@ public:
     uint32_t getTicks() override;
     void    delay(int) override;
     void    cleanWindow() override;
+    void    drawFood(void*) override;
 private:
     static SDL_lib *_inst;
     static SDL_Renderer * renderer;
     static SDL_Window *_window;
     SDL_Event   _event;
-    static SDL_Texture *_texture_map;
-    SDL_Rect    _scrR;
+    static SDL_Texture *_textureMap;
+    static SDL_Texture *_textureFood;
+    SDL_Rect    _scrR;//snake
+    SDL_Rect    _fcrR;//food
     std::string _dir;
     std::map<int, SDL_Texture*> _snakeTexture;
     SDL_lib();
