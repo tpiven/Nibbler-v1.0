@@ -6,6 +6,7 @@
 #include "global.h"
 #include "Mmap.hpp"
 #include "SDL_lib.hpp"
+#include <random>
 
 Food::Food() noexcept {
     _size_block = (g_weight / 90) / 2;
@@ -21,9 +22,13 @@ void Food::mandatoryFood() {
     if (Mmap::getInstance().getValueFromMap(_coors.y_arr, _coors.x_arr) != -2){//-2 on array is food
         int x = 0;
         int y = 0;
+        std::random_device rd;
+        std::mt19937 gen(rd());
         do{
-            x = rand() % 90;
-            y = rand() % 67;
+            std::uniform_int_distribution<> dis_x(0, 89);
+            std::uniform_int_distribution<> dis_y(0, 66);
+            x = dis_x(gen);
+            y = dis_y(gen);
         }while(Mmap::getInstance().getValueFromMap(y, x) != 0);
         Mmap::getInstance().setValueInMap(-2, y, x);
         Mmap::getInstance().printMmap();
