@@ -35,15 +35,15 @@ void Logic::init(int n_pl) {
             j = (i > 0 && i < 3) ? 1 : 2;
         }
         if (_key == 'd') {
-            _cors.push_back({y + HEIGHT_SCOREBOARD, x + (_size_block * i), y * 67 / g_height - 1, ((x * 90 / g_weight) - 1) + i});
-            Mmap::getInstance().setValueInMap(-1, (y * 67 / g_height - 1), ((x * 90 / g_weight) - 1) + i);
+            _cors.push_back({y + HEIGHT_SCOREBOARD, x + (_size_block * i), y * 67 / g_height, (x * 90 / g_weight) + i});
+            Mmap::getInstance().setValueInMap(-1, y * 67 / g_height, (x * 90 / g_weight) + i);
         }
         else if (_key == 'a'){
             _cors.push_back({y + HEIGHT_SCOREBOARD, x - (_size_block * i), y * 67 / g_height - 1, (x * 90 / g_weight - 1) - i});
             Mmap::getInstance().setValueInMap(-1, (y * 67 / g_height - 1), ((x * 90 / g_weight) - 1) - i);
         }
 //        std::cout << "y_snake: " << _cors.back().y_arr << std::endl;
-        _rect.y = _cors.back().y_dis + HEIGHT_SCOREBOARD;
+        _rect.y = _cors.back().y_dis;
         _rect.x = _cors.back().x_dis;
         switch (g_lib){
             case 1:
@@ -107,10 +107,14 @@ void Logic::updateKey(t_coor& head) {
 void Logic::move() {
     t_coor head = _cors.back();
     updateKey(head);
+    std::cout << "head_sc_y: " << head.y_dis << " head_sc_x: " << head.x_dis << std::endl;
     int ch = Mmap::getInstance().getValueFromMap(head.y_arr, head.x_arr);
     if (ch > 0 || ch == -1){
         crash();
         return;
+    }
+    else if (ch == -2){
+        grow();
     }
     for(auto it = _cors.begin(), it_c = ++_cors.begin(); it != _cors.end(); it++){
         int j = 0;
@@ -129,15 +133,10 @@ void Logic::move() {
         }
         else if(it_c == _cors.end()){
             *it = head;
-            std::cout << "head_arr_y: " << it->y_arr << " head_arr_x: " << it->x_arr << std::endl;
-            std::cout << "head_sc_y: " << it->y_dis << " head_sc_x: " << it->x_dis << std::endl;
-            if (it->y_arr == 33){
-                std::cout << "find" << std::endl;
-                Mmap::getInstance().printMmap();
-            }
-            if (Mmap::getInstance().getValueFromMap(it->y_arr, it->x_arr) == -2){
-                grow();
-            }
+//            std::cout << "head_arr_y: " << it->y_arr << " head_arr_x: " << it->x_arr << std::endl;
+//            if (Mmap::getInstance().getValueFromMap(it->y_arr, it->x_arr) == -2){
+//                grow();
+//            }
             Mmap::getInstance().setValueInMap(-1, it->y_arr, it->x_arr);
         }
         _rect.y = it->y_dis;

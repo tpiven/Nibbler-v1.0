@@ -49,7 +49,7 @@ void SDL_lib::init() {
         std::cout << "Trouble wih render" << std::endl;
         return;
     }
-    SDL_SetRenderDrawColor(renderer, 80, 80, 253, 0);//BAG NOT WORKING
+    SDL_SetRenderDrawColor(renderer, 0, 0, 0, 0);//BAG NOT WORKING
     char path[4096];
     _dir = getwd(path);
     size_t  n = _dir.rfind('/');
@@ -62,7 +62,6 @@ void SDL_lib::init() {
     _snakeTexture[2] = SDL_CreateTextureFromSurface(renderer, IMG_Load((_dir + head_path).c_str()));
     /************INIT TEXTURE FOR FOOD************/
     std::cout << "lilFood" << lilFood << std::endl;
-//    SDL_Texture *qw = SDL_CreateTextureFromSurface(renderer, IMG_Load((_dir + lilFood).c_str()));
     _textureFood = SDL_CreateTextureFromSurface(renderer, IMG_Load((_dir + lilFood).c_str()));
     if (!_textureFood){
         std::cout << "textuteFood not exist" << std::endl;
