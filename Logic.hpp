@@ -19,7 +19,7 @@ public:
     void    setKey(int key);
     void    init(int);
 private:
-    void    updateKey(t_coor&);
+    void    updateHead(t_coor&);
     lst _cors;
     int _pl;
     char _key;//w,a,s,d
