@@ -100,5 +100,5 @@ void Game_Obj::update(AView* lib) {
 
 void Game_Obj::render(AView* lib) {
     lib->render();
-    Mmap::getInstance().printMmap();
+//    Mmap::getInstance().printMmap();
 }
