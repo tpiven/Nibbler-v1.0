@@ -7,7 +7,8 @@
 #include <iterator>
 #include <iostream>
 #include "Mmap.hpp"
-#include "SDL_lib.hpp"
+//#include "SDL_lib.hpp"
+#include "SFML_lib.hpp"
 
 Logic::Logic() noexcept {
     _size_block = g_weight / 90;
@@ -46,8 +47,8 @@ void Logic::init(int n_pl) {
         _rect.x = _cors.back().x_dis;
         switch (g_lib){
             case 1:
-                SDL_lib::getInstance().drawSnake(&_rect, j);
-                break;
+                SFML_lib::getInstance().drawSnake(&_rect, j);
+                //break;
             case 2:
                 //TODO call sfml.draw();
                 break;
@@ -137,7 +138,7 @@ void Logic::move() {
         _rect.x = it->x_dis;
         switch (g_lib){
             case 1:
-                SDL_lib::getInstance().drawSnake(&_rect, j);
+                SFML_lib::getInstance().drawSnake(&_rect, j);
                 break;
             case 2:
                 //TODO call sfml.draw();

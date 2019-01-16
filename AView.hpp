@@ -33,6 +33,7 @@
 
 #include <vector>
 #include <iostream>
+#include <SFML/Graphics.hpp>
 
 class AView {
 public:

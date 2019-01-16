@@ -8,7 +8,8 @@
 #include <ctime>
 #include <thread>
 #include <chrono>
-#include "SDL_lib.hpp"
+//#include "SDL_lib.hpp"
+#include "SFML_lib.hpp"
 #include <vector>
 #include "global.h"
 #include <ctime>
@@ -38,8 +39,9 @@ Game_Obj* Game_Obj::getInstance() {
 }
 
 void Game_Obj::init() {
-    _libs = {&SDL_lib::getInstance()};//, SFML_lib::getInstance, ALLEGRO_lib::
+    _libs = {&SFML_lib::getInstance()};//, SFML_lib::getInstance, ALLEGRO_lib::
     menu(_libs[g_lib - 1]);
+
     _libs[g_lib - 1]->init();//draw map, load picture
     _libs[g_lib - 1]->drawMap();
     _logic.init(1);
@@ -56,7 +58,7 @@ void Game_Obj::main_loop() {
     while(_logic.running()){
         frameStart = _libs[g_lib - 1]->getTicks();
         if (!action(_libs[g_lib - 1])){
-            break;
+                break;
         }
         frameTime = _libs[g_lib - 1]->getTicks() - frameStart;
         if (frameDealy > frameTime){
