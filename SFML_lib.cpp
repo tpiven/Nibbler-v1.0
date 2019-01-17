@@ -38,40 +38,41 @@ void SFML_lib::init() {
 }
 
 int SFML_lib::catchHook(){
-    _window->pollEvent(_event);
-    if (_event.type == sf::Event::Closed){
-        std::cout << "EXIT" << std::endl;
-        return -1;
-    }
-    if (_event.type == sf::Event::KeyPressed){
-        switch (_event.key.code){
-            case sf::Keyboard::Escape:
-                std::cout << "EXIT" << std::endl;
-                return -1;
-            case sf::Keyboard::W:
-                std::cout << "w" << std::endl;
-                return 'w';
-            case sf::Keyboard::S:
-                std::cout << "s" << std::endl;
-                return 's';
-            case sf::Keyboard::D:
-                std::cout << "d" << std::endl;
-                return 'd';
-            case sf::Keyboard::A:
-                std::cout << "a" << std::endl;
-                return 'a';
-            case sf::Keyboard::Space:
-                return ' ';
-            case sf::Keyboard::Up:
-                return 126;
-            case sf::Keyboard::Down:
-                return 125;
-            case sf::Keyboard::Left:
-                return 123;
-            case sf::Keyboard::Right:
-                return 124;
-            default:
-                return 0;
+    while(_window->pollEvent(_event)) {
+        if (_event.type == sf::Event::Closed) {
+            std::cout << "EXIT" << std::endl;
+            return -1;
+        }
+        if (_event.type == sf::Event::KeyPressed) {
+            switch (_event.key.code) {
+                case sf::Keyboard::Escape:
+                    std::cout << "rtuut" << std::endl;
+                    return -1;
+                case sf::Keyboard::W:
+                    std::cout << "w" << std::endl;
+                    return 'w';
+                case sf::Keyboard::S:
+                    std::cout << "s" << std::endl;
+                    return 's';
+                case sf::Keyboard::D:
+                    std::cout << "d" << std::endl;
+                    return 'd';
+                case sf::Keyboard::A:
+                    std::cout << "a" << std::endl;
+                    return 'a';
+                case sf::Keyboard::Space:
+                    return ' ';
+                case sf::Keyboard::Up:
+                    return 126;
+                case sf::Keyboard::Down:
+                    return 125;
+                case sf::Keyboard::Left:
+                    return 123;
+                case sf::Keyboard::Right:
+                    return 124;
+                default:
+                    return 0;
+            }
         }
     }
     return 0;
@@ -95,7 +96,7 @@ void SFML_lib::render() {
 void SFML_lib::drawMap() {
     sf::Sprite map;
     map.setTexture(_textureMap);
-   // map.setPosition(WEIGHT_SCOREBOARD, HEIGHT_SCOREBOARD);
+    map.setPosition(WEIGHT_SCOREBOARD, HEIGHT_SCOREBOARD);
     auto size = map.getTexture()->getSize();
     map.setScale(float(g_weight)/size.x, float(g_weight)/size.y);
    _window->draw(map);
