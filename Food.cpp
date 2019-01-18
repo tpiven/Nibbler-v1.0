@@ -31,7 +31,7 @@ void Food::mandatoryFood() {
             y = dis_y(gen);
         }while(Mmap::getInstance().getValueFromMap(y, x) != 0);
         Mmap::getInstance().setValueInMap(-2, y, x);
-        Mmap::getInstance().printMmap();
+//        Mmap::getInstance().printMmap();
         _coors.y_arr = y;
         _coors.x_arr = x;
         _rectLil.y = _coors.y_dis = y * g_height / 67 + HEIGHT_SCOREBOARD;
