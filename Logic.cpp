@@ -12,7 +12,7 @@
 Logic::Logic() noexcept {
     _size_block = g_weight / 90;
     _rect.w = _rect.h = _size_block;
-    _play = true;
+    _playGame = true;
 }
 
 void Logic::init(int n_pl) {
@@ -151,10 +151,10 @@ void Logic::move() {
     }
 }
 
-bool Logic::running() const { return _play;}
+bool Logic::runningGame() const { return _playGame;}
 
 void Logic::crash() {
-    _play = false;
+    _playGame = false;
     //Mmap::getInstance().printMmap();
 }
 

@@ -15,17 +15,17 @@ public:
     explicit Logic(int players) noexcept;
     ~Logic();
     void    move();
-    bool    running() const;
+    bool    runningGame() const;
     void    setKey(int key);
     void    init(int);
 private:
-    void    updateHead(t_coor&);
     lst _cors;
     int _pl;
     char _key;//w,a,s,d
     int _size_block;
     t_scr _rect;//struct for render texture
-    bool _play;//flag for finish game
+    bool _playGame;//flag for finish game
+    void    updateHead(t_coor&);
     void    crash();
     void    grow();
     int    getNumberSprite(int itr);

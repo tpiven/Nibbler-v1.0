@@ -15,7 +15,7 @@
 //
 //    Game_sdl obj;
 //    obj.init("Snake", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 1440, 1072, 0);
-//    while(!obj.running()){
+//    while(!obj.runningGame()){
 //
 //        frameStart = SDL_GetTicks();
 //        obj_staff(obj);

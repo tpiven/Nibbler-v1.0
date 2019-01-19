@@ -6,6 +6,7 @@
 #include "AView.hpp"
 #include "Logic.hpp"
 #include "Food.hpp"
+#include "Menu.hpp"
 
 class Game_Obj {
 public:
@@ -16,12 +17,13 @@ public:
     void    render(AView*);
 private:
     static Game_Obj *_inst;
-    void    menu(AView*);
+    bool    menu(AView*);
     void    clean(AView*);
     bool    action(AView*);
     void    main_loop();
     std::vector<AView*> _libs;
     Logic   _logic;
+    Menu    _menu;
     Food    _food;
     Game_Obj();
     ~Game_Obj();

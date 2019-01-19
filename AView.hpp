@@ -40,6 +40,7 @@ public:
     virtual void    init() = 0;//инит окна и прочего
     virtual int     catchHook() = 0; //ловим хуки от клавиш
     virtual void    render() = 0;//рисуем
+    virtual void    drawMenu(void*, int) = 0;
     virtual void    drawMap() = 0;
     virtual void    drawSnake(void*, int) = 0;
     virtual void    drawFood(void*) = 0;

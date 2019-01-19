@@ -12,12 +12,17 @@ const char body_path[] = "/Picture/grass_bloc_mod.png";
 const char head_path[] = "/Picture/dirt_1.png";
 const char map_1[] = "/Picture/map_1.png";
 const char lilFood[] = "/Picture/solid.png";
+const char buttonPress1_path[] = "/Picture/button1.png";
+const char buttonUnPress1_path[] = "/Picture/button1_1.png";
+const char buttonPress2_path[] = "/Picture/button2.png";
+const char buttonUnPress2_path[] = "/Picture/button2_2.png";
+const char arrow_path[] = "/Picture/arrow_path";
 
-SDL_lib* SDL_lib::_inst = nullptr;
 SDL_Renderer* SDL_lib::renderer = nullptr;
 SDL_Window*     SDL_lib::_window = nullptr;
 SDL_Texture*    SDL_lib::_textureMap = nullptr;
 SDL_Texture*    SDL_lib::_textureFood = nullptr;
+SDL_Texture*    SDL_lib::_textureArrow = nullptr;
 
 SDL_lib::SDL_lib() {}
 SDL_lib::~SDL_lib() {}
@@ -36,8 +41,8 @@ void SDL_lib::init() {
             "Jörmungandr",
             SDL_WINDOWPOS_CENTERED,
             SDL_WINDOWPOS_CENTERED,
-            g_weight,
-            g_height,
+            g_weight,//640//1440
+            g_height,//480//1072
             SDL_WINDOW_SHOWN
             );
     if (!_window){
@@ -54,7 +59,14 @@ void SDL_lib::init() {
     _dir = getwd(path);
     size_t  n = _dir.rfind('/');
     _dir.resize(n);
-    /************INIT TEXTURE FOR MAP************/
+    /************INIT TEXTURE FOR BUTTON***********/
+    _buttonTexture[0] = SDL_CreateTextureFromSurface(renderer, IMG_Load((_dir + buttonPress1_path).c_str()));
+    _buttonTexture[1] = SDL_CreateTextureFromSurface(renderer, IMG_Load((_dir + buttonUnPress1_path).c_str()));
+    _buttonTexture[1] = SDL_CreateTextureFromSurface(renderer, IMG_Load((_dir + buttonPress2_path).c_str()));
+    _buttonTexture[1] = SDL_CreateTextureFromSurface(renderer, IMG_Load((_dir + buttonUnPress2_path).c_str()));
+    /************INIT TEXTURE FOR ARROW************/
+    _textureArrow = SDL_CreateTextureFromSurface(renderer, IMG_Load((_dir + ));
+    /************INIT TEXTURE FOR MAP**************/
     _textureMap = SDL_CreateTextureFromSurface(renderer, IMG_Load((_dir + map_1).c_str()));
     /************INIT TEXTURE FOR SNAKE************/
     _snakeTexture[0] = SDL_CreateTextureFromSurface(renderer, IMG_Load((_dir + tail_path).c_str()));
@@ -102,6 +114,8 @@ int SDL_lib::catchHook(){
                 return 123;
             case SDLK_RIGHT:
                 return 124;
+            case SDLK_RETURN:
+                return 36;//enter
             default:
                 return 0;
         }
@@ -121,8 +135,13 @@ void SDL_lib::render() {
     SDL_RenderPresent(renderer);
 }
 
-void SDL_lib::drawMap() {
+void SDL_lib::drawMenu(void* rect, int b_block) {
     SDL_RenderClear(renderer);
+    _scrR = *reinterpret_cast<SDL_Rect*>(rect);
+    SDL_RenderCopy(renderer, _buttonTexture[b_block], nullptr, &_scrR);
+}
+
+void SDL_lib::drawMap() {
     _scrR.y = HEIGHT_SCOREBOARD;
     _scrR.x = WEIGHT_SCOREBOARD;
     _scrR.w = g_weight;
