@@ -58,7 +58,7 @@ void Game_Obj::init() {
 
 void Game_Obj::main_loop() {
     int const FPS = 60;
-    int const frameDealy = 7000 / FPS;
+    int const frameDealy = 10000 / FPS;
     uint32_t  frameStart;
     int frameTime;
     while(_logic.runningGame()){
@@ -109,5 +109,5 @@ void Game_Obj::update(AView* lib) {
 
 void Game_Obj::render(AView* lib) {
     lib->render();
-    Mmap::getInstance().printMmap();
+//    Mmap::getInstance().printMmap();
 }
