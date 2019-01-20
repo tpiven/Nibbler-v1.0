@@ -53,7 +53,6 @@ void Menu::changebutton() {
         _rectA.y -=  _rectA.h + 10;
         _numButton = 1;
     }
-    std::cout << "_rectA.h: " << _rectA.h << " _rectA.w: " << _rectA.w << " _rectA.y: " << _rectA.y << " _rectA.x: " << _rectA.x << std::endl;
     switch (g_lib){
         case 1:
             SDL_lib::getInstance().drawMenu(&_rectA, &_rectB, 0);

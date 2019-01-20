@@ -59,7 +59,10 @@ Game_Obj* Game_Obj::getInstance() {
 void Game_Obj::init() {
     _libs = {&SDL_lib::getInstance(), &SFML_lib::getInstance()};//, SFML_lib::getInstance, ALLEGRO_lib::
     _libs[g_lib - 1]->init();//draw map, load picture
-    menu(_libs[g_lib - 1]);
+    if (!menu(_libs[g_lib - 1])){
+        clean(_libs[g_lib - 1]);
+        return;
+    }
     _libs[g_lib - 1]->drawMap();
     _logic.init(1);
     _food.updateFood();

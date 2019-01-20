@@ -16,4 +16,5 @@ typedef struct s_coor{
     int x_dis;
     int y_arr;
     int x_arr;
+    bool inPortal;
 }            t_coor;

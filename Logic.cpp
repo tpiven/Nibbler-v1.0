@@ -36,11 +36,11 @@ void Logic::init(int n_pl) {
             j = (i > 0 && i < 3) ? 1 : 2;
         }
         if (_key == 'd') {
-            _cors.push_back({y + HEIGHT_SCOREBOARD, x + (_size_block * i), y * 67 / g_height, (x * 90 / g_weight) + i});
+            _cors.push_back({y + HEIGHT_SCOREBOARD, x + (_size_block * i), y * 67 / g_height, (x * 90 / g_weight) + i, false});
             Mmap::getInstance().setValueInMap(-1, y * 67 / g_height, (x * 90 / g_weight) + i);
         }
         else if (_key == 'a'){
-            _cors.push_back({y + HEIGHT_SCOREBOARD, x - (_size_block * i), y * 67 / g_height - 1, (x * 90 / g_weight - 1) - i});
+            _cors.push_back({y + HEIGHT_SCOREBOARD, x - (_size_block * i), y * 67 / g_height - 1, (x * 90 / g_weight - 1) - i, false});
             Mmap::getInstance().setValueInMap(-1, (y * 67 / g_height - 1), ((x * 90 / g_weight) - 1) - i);
         }
         _rect.y = _cors.back().y_dis;
@@ -94,6 +94,11 @@ void Logic::setKey(int key) {
 }
 
 void Logic::updateHead(t_coor& head) {
+    if (head.inPortal){
+        //head.x_arr = 10;//?
+        //head.y_arr = 15;//?
+        return;
+    }
     if (_key == 'a' || _key == 'd'){
         head.x_dis += (_key == 'd') ? _size_block : -_size_block;
         head.x_arr += (_key == 'd') ? 1 : -1;
@@ -101,6 +106,9 @@ void Logic::updateHead(t_coor& head) {
     else if (_key == 'w' || _key == 's'){
         head.y_dis += (_key == 's') ? _size_block : -_size_block;
         head.y_arr += (_key == 's') ? 1 : -1;
+    }
+    if (!head.inPortal && Mmap::getInstance().getValueFromMap(head.y_arr, head.x_arr) == -5){
+        head.inPortal = true;
     }
 }
 
@@ -117,13 +125,15 @@ void Logic::move() {
     }
     for(auto it = _cors.begin(), it_c = ++_cors.begin(); it != _cors.end(); it++){
         int j = 0;
+
         if (it == _cors.begin() && it_c != _cors.end()){
             j = 1;
         }
         else if (it != _cors.begin() && it_c == _cors.end()){
             j = 2;
         }
-        if (it == _cors.begin()){
+
+        if (it == _cors.begin() && !it->inPortal){
             Mmap::getInstance().setValueInMap(0, it->y_arr, it->x_arr);
         }
         if (it_c != _cors.end()) {
@@ -132,7 +142,9 @@ void Logic::move() {
         }
         else if(it_c == _cors.end()){
             *it = head;
-            Mmap::getInstance().setValueInMap(-1, it->y_arr, it->x_arr);
+            if (!it_c->inPortal) {
+                Mmap::getInstance().setValueInMap(-1, it->y_arr, it->x_arr);
+            }
         }
         _rect.y = it->y_dis;
         _rect.x = it->x_dis;
