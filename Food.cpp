@@ -5,7 +5,7 @@
 #include "Food.hpp"
 #include "global.h"
 #include "Mmap.hpp"
-//#include "SDL_lib.hpp"
+#include "SDL_lib.hpp"
 #include "SFML_lib.hpp"
 #include <random>
 
@@ -38,20 +38,19 @@ void Food::mandatoryFood() {
         _rectLil.y = _coors.y_dis = y * g_height / 67 + HEIGHT_SCOREBOARD;
         _rectLil.x = _coors.x_dis = x * g_weight / 90;
     }
-    SFML_lib::getInstance().drawFood(&_rectLil);
-//    switch (g_lib){
-//        case 1:
-//            SFML_lib::getInstance().drawFood(&_rectLil);
-//           // break;
-//        case 2:
-//            //TODO call sfml.draw();
-//            //break;
-//        case 3:
-//            //TODO call allegro.draw();
-//            break;
-//        default:
-//            break;
-//    }
+       switch (g_lib){
+        case 1:
+            SDL_lib::getInstance().drawFood(&_rectLil);
+            break;
+        case 2:
+            SFML_lib::getInstance().drawFood(&_rectLil);
+               break;
+        case 3:
+            //TODO call allegro.draw();
+            break;
+        default:
+            break;
+    }
 }
 
 void Food::surpriseFood() {}

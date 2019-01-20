@@ -8,17 +8,19 @@
 #include "Mmap.hpp"
 #include "header.h"
 
-const char tail_path[] = "/Picture/dirt.png";//TODO create many picture like: tail_16x16, tail_8x8
-const char body_path[] = "/Picture/grass_bloc_mod.png";
-const char head_path[] = "/Picture/dirt_1.png";
-const char map_1[] = "/Picture/map_1.png";
-const char lilFood[] = "/Picture/solid.png";
+//const char tail_path[] = "/Picture/dirt.png";//TODO create many picture like: tail_16x16, tail_8x8
+////const char body_path[] = "/Picture/grass_bloc_mod.png";
+////const char head_path[] = "/Picture/dirt_1.png";
+////const char map_1[] = "/Picture/map_1.png";
+////const char lilFood[] = "/Picture/solid.png";
 
 //SDL_lib* SDL_lib::_inst = nullptr;
 //SDL_Renderer* SDL_lib::renderer = nullptr;
 //SDL_Window*     SDL_lib::_window = nullptr;
 //SDL_Texture*    SDL_lib::_textureMap = nullptr;
 //SDL_Texture*    SDL_lib::_textureFood = nullptr;
+
+sf::RenderWindow* SFML_lib::_window =nullptr;
 
 SFML_lib::SFML_lib() {}
 SFML_lib::~SFML_lib() {}
@@ -28,7 +30,8 @@ SFML_lib& SFML_lib::getInstance() {
 }
 
 void SFML_lib::init() {
-    _window = new sf::RenderWindow(sf::VideoMode(g_weight, g_height), "Nibbler");
+    _window = new sf::RenderWindow(sf::VideoMode(g_weight, g_height + HEIGHT_SCOREBOARD, 32), "Nibbler");
+    //_window->clear();
     _textureMap.loadFromFile("Picture/map_1.png");
     _snakeTexture[0].loadFromFile("Picture/dirt.png");
     _snakeTexture[1].loadFromFile("Picture/grass_bloc_mod.png");
@@ -89,17 +92,19 @@ void SFML_lib::delay(int time) {
 
 void SFML_lib::render() {
     _window->display();
-    _window->clear();
+    //_window->clear();
 }
 
 
 void SFML_lib::drawMap() {
+    _window->pollEvent(_event);
+    _window->clear();
     sf::Sprite map;
     map.setTexture(_textureMap);
     map.setPosition(WEIGHT_SCOREBOARD, HEIGHT_SCOREBOARD);
     auto size = map.getTexture()->getSize();
     map.setScale(float(g_weight)/size.x, float(g_weight)/size.y);
-   _window->draw(map);
+    _window->draw(map);
 
 }
 

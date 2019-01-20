@@ -4,6 +4,7 @@
 
 #pragma once
 
+#include "SFML/Graphics.hpp"
 #include "AView.hpp"
 #include <map>
 
@@ -21,15 +22,12 @@ void    delay(int) override;
 void    cleanWindow() override;
 void    drawFood(void*) override;
 private:
-    sf::RenderWindow *_window;
+    static sf::RenderWindow *_window;
     sf::Event _event;
     sf::Clock _clock;
     sf::Texture _textureMap;
     sf::Texture  _textureFood;
     std::map<int, sf::Texture> _snakeTexture;
-    //SDL_Rect    _scrR;//snake
-    //SDL_Rect    _fcrR;//food
-
 SFML_lib();
 ~SFML_lib();
 SFML_lib(const SFML_lib&) = delete;

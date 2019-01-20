@@ -37,7 +37,7 @@ void SDL_lib::init() {
             SDL_WINDOWPOS_CENTERED,
             SDL_WINDOWPOS_CENTERED,
             g_weight,
-            g_height,
+            g_height + HEIGHT_SCOREBOARD,
             SDL_WINDOW_SHOWN
             );
     if (!_window){

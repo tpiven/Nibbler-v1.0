@@ -8,8 +8,9 @@
 #include <ctime>
 #include <thread>
 #include <chrono>
-//#include "SDL_lib.hpp"
+#include "SDL_lib.hpp"
 #include "SFML_lib.hpp"
+#include "Allegra_lib.hpp"
 #include <vector>
 #include "global.h"
 #include <ctime>
@@ -27,6 +28,7 @@ Game_Obj* Game_Obj::_inst = nullptr;
 
 void Game_Obj::menu(AView* lib_ptr) {//draw menu for select map, and number of player
     //TODO create the main menu, think about design
+    //while(11111111){}
     //lib_ptr->drawMenu();
     //lib_ptr->render();
 }
@@ -39,14 +41,14 @@ Game_Obj* Game_Obj::getInstance() {
 }
 
 void Game_Obj::init() {
-    _libs = {&SFML_lib::getInstance()};//, SFML_lib::getInstance, ALLEGRO_lib::
+    _libs = {&SDL_lib::getInstance(), &SFML_lib::getInstance()};//, SFML_lib::getInstance, ALLEGRO_lib::
     menu(_libs[g_lib - 1]);
-
     _libs[g_lib - 1]->init();//draw map, load picture
     _libs[g_lib - 1]->drawMap();
     _logic.init(1);
     _food.updateFood();
     render(_libs[g_lib - 1]);//pre drawning before moving
+    std::cout << "g_Lib: " << g_lib << std::endl;
     main_loop();
 }
 
