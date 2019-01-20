@@ -41,8 +41,8 @@ void SDL_lib::init() {
             "Jörmungandr",
             SDL_WINDOWPOS_CENTERED,
             SDL_WINDOWPOS_CENTERED,
-            g_weight,//640//1440
-            g_height,//480//1072
+            g_weight,
+            g_height + HEIGHT_SCOREBOARD,
             SDL_WINDOW_SHOWN
             );
     if (!_window){

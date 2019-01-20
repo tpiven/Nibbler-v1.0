@@ -1,13 +1,15 @@
 cmake_minimum_required(VERSION 3.12)
 project(Nibbler_v1.1)
 
-set(CMAKE_CXX_STANDARD 11)
-set(SDL2_INCLUDE_DIR ~/.brew/include/SDL2/)
-set(SDL2_LIBRARY ~/.brew/lib/)
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 
-include_directories(${SDL2_INCLUDE_DIR})
-link_directories(${SDL2_LIBRARY})
+set(SOURCE_FILES main.cpp Menu.cpp Game_Obj.cpp Logic.cpp Mmap.cpp AView.cpp Food.cpp SFML_lib.cpp SDL_lib.cpp)
+set(INCLUDE_DIR ~/.brew/include/)
+set(LIBRARY ~/.brew/lib/)
 
-add_executable(Nibbler_v1.1 main.cpp Game_Obj.cpp Logic.cpp Mmap.cpp AView.cpp SDL_lib.cpp global.h Food.cpp Food.hpp header.h Menu.cpp Menu.hpp)
+include_directories(${INCLUDE_DIR})
+link_directories(${LIBRARY})
 
-target_link_libraries(Nibbler_v1.1 -lSDL2 -lSDL2_image)
+add_executable(Nibbler_v1.1 ${SOURCE_FILES})
+target_link_libraries(Nibbler_v1.1  -lSDL2 -lSDL2_image -lsfml-window -lsfml-graphics -lsfml-audio -lsfml-network -lsfml-system)
+

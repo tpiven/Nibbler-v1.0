@@ -6,6 +6,7 @@
 #include "global.h"
 #include "Mmap.hpp"
 #include "SDL_lib.hpp"
+#include "SFML_lib.hpp"
 #include <random>
 
 Food::Food() noexcept {
@@ -30,18 +31,19 @@ void Food::mandatoryFood() {
             y = dis_y(gen);
         }while(Mmap::getInstance().getValueFromMap(y, x) != 0);
         Mmap::getInstance().setValueInMap(-2, y, x);
+       // Mmap::getInstance().printMmap();
         _coors.y_arr = y;
         _coors.x_arr = x;
         _rectLil.y = _coors.y_dis = (y * g_height / 67) + HEIGHT_SCOREBOARD + _size_block/2;
         _rectLil.x = _coors.x_dis = (x * g_weight / 90) + _size_block/2;
     }
-    switch (g_lib){
+       switch (g_lib){
         case 1:
             SDL_lib::getInstance().drawFood(&_rectLil);
             break;
         case 2:
-            //TODO call sfml.draw();
-            break;
+            SFML_lib::getInstance().drawFood(&_rectLil);
+               break;
         case 3:
             //TODO call allegro.draw();
             break;

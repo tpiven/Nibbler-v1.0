@@ -9,10 +9,13 @@
 #include <thread>
 #include <chrono>
 #include "SDL_lib.hpp"
+#include "SFML_lib.hpp"
+#include "Allegra_lib.hpp"
 #include <vector>
 #include "global.h"
 #include <ctime>
 //#include <unistd.h>
+#include <unistd.h>
 #include <mutex>
 
 int const FPS = 60;
@@ -54,16 +57,14 @@ Game_Obj* Game_Obj::getInstance() {
 }
 
 void Game_Obj::init() {
-    _libs = {&SDL_lib::getInstance()};//, SFML_lib::getInstance, ALLEGRO_lib::
-    _libs[g_lib - 1]->init();// load picture
-    if (!menu(_libs[g_lib - 1])){
-        clean(_libs[g_lib - 1]);
-        return;
-    }
-    _libs[g_lib - 1]->drawMap();//draw map
+    _libs = {&SDL_lib::getInstance(), &SFML_lib::getInstance()};//, SFML_lib::getInstance, ALLEGRO_lib::
+    _libs[g_lib - 1]->init();//draw map, load picture
+    menu(_libs[g_lib - 1]);
+    _libs[g_lib - 1]->drawMap();
     _logic.init(1);
     _food.updateFood();
     render(_libs[g_lib - 1]);//pre drawning before moving
+    std::cout << "g_Lib: " << g_lib << std::endl;
     main_loop();
 }
 
@@ -72,7 +73,7 @@ void Game_Obj::main_loop() {
     while(_logic.runningGame()){
         frameStart = _libs[g_lib - 1]->getTicks();
         if (!action(_libs[g_lib - 1])){
-            break;
+                break;
         }
         frameTime = _libs[g_lib - 1]->getTicks() - frameStart;
         if (frameDealy > frameTime){
