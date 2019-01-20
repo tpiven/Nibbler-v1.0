@@ -12,12 +12,17 @@ const char body_path[] = "/Picture/grass_bloc_mod.png";
 const char head_path[] = "/Picture/dirt_1.png";
 const char map_1[] = "/Picture/map_1.png";
 const char lilFood[] = "/Picture/solid.png";
+const char buttonPress1_path[] = "/Picture/button1.png";
+const char buttonUnPress1_path[] = "/Picture/button1_1.png";
+const char buttonPress2_path[] = "/Picture/button2.png";
+const char buttonUnPress2_path[] = "/Picture/button2_2.png";
+const char arrow_path[] = "/Picture/arrow_path.png";
 
-SDL_lib* SDL_lib::_inst = nullptr;
 SDL_Renderer* SDL_lib::renderer = nullptr;
 SDL_Window*     SDL_lib::_window = nullptr;
 SDL_Texture*    SDL_lib::_textureMap = nullptr;
 SDL_Texture*    SDL_lib::_textureFood = nullptr;
+SDL_Texture*    SDL_lib::_textureArrow = nullptr;
 
 SDL_lib::SDL_lib() {}
 SDL_lib::~SDL_lib() {}
@@ -53,15 +58,35 @@ void SDL_lib::init() {
     char path[4096];
     _dir = getwd(path);
     size_t  n = _dir.rfind('/');
-    _dir.resize(n);
-    /************INIT TEXTURE FOR MAP************/
+    _dir.resize(n); //TODO investigate PATH of PICTURES
+    /************INIT TEXTURE FOR BUTTON***********/
+    _buttonTexture[0] = SDL_CreateTextureFromSurface(renderer, IMG_Load((_dir + buttonPress1_path).c_str()));
+    _buttonTexture[1] = SDL_CreateTextureFromSurface(renderer, IMG_Load((_dir + buttonPress2_path).c_str()));
+    if (!_buttonTexture[0]){
+        std::cout << "textureButton not exist" << std::endl;
+        exit(1);
+    }
+    /************INIT TEXTURE FOR ARROW************/
+    std::string toto = _dir + arrow_path;
+    SDL_Surface *qw = IMG_Load((_dir + arrow_path).c_str());
+    _textureArrow = SDL_CreateTextureFromSurface(renderer, IMG_Load((_dir + arrow_path).c_str()));
+    if (!_textureArrow){
+        std::cout << "textureArrow not exist" << std::endl;
+        exit(1);
+    }
+    /************INIT TEXTURE FOR MAP**************/
     _textureMap = SDL_CreateTextureFromSurface(renderer, IMG_Load((_dir + map_1).c_str()));
+    if (!_textureMap){
+        std::cout << "textuteMap not exist" << std::endl;
+        exit(1);
+    }
     /************INIT TEXTURE FOR SNAKE************/
     _snakeTexture[0] = SDL_CreateTextureFromSurface(renderer, IMG_Load((_dir + tail_path).c_str()));
     _snakeTexture[1] = SDL_CreateTextureFromSurface(renderer, IMG_Load((_dir + body_path).c_str()));
     _snakeTexture[2] = SDL_CreateTextureFromSurface(renderer, IMG_Load((_dir + head_path).c_str()));
     /************INIT TEXTURE FOR FOOD************/
     std::cout << "lilFood" << lilFood << std::endl;
+    std::cout << "path: " << _dir  << lilFood << std::endl;
     _textureFood = SDL_CreateTextureFromSurface(renderer, IMG_Load((_dir + lilFood).c_str()));
     if (!_textureFood){
         std::cout << "textuteFood not exist" << std::endl;
@@ -102,6 +127,8 @@ int SDL_lib::catchHook(){
                 return 123;
             case SDLK_RIGHT:
                 return 124;
+            case SDLK_RETURN:
+                return 36;//enter
             default:
                 return 0;
         }
@@ -121,8 +148,19 @@ void SDL_lib::render() {
     SDL_RenderPresent(renderer);
 }
 
-void SDL_lib::drawMap() {
+void SDL_lib::drawMenu(void* rectA, void* rectB, int b_block) {
     SDL_RenderClear(renderer);
+    _mcrR = *reinterpret_cast<SDL_Rect*>(rectA);
+    /***********ADD ARROW TEXTURE***********/
+    SDL_RenderCopy(renderer, _textureArrow, nullptr, &_mcrR);//render arrow
+    /***********ADD BUTTON TEXTURE***********/
+    _mcrR = *reinterpret_cast<SDL_Rect*>(rectB);
+    SDL_RenderCopy(renderer, _buttonTexture[0], nullptr, &_mcrR);//single player
+    _mcrR.y += _mcrR.h + 10;// distance between single and multi button
+    SDL_RenderCopy(renderer, _buttonTexture[1], nullptr, &_mcrR);//multi player
+}
+
+void SDL_lib::drawMap() {
     _scrR.y = HEIGHT_SCOREBOARD;
     _scrR.x = WEIGHT_SCOREBOARD;
     _scrR.w = g_weight;

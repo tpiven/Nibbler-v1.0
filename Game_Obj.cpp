@@ -14,8 +14,13 @@
 #include <vector>
 #include "global.h"
 #include <ctime>
+//#include <unistd.h>
 #include <unistd.h>
 #include <mutex>
+
+int const FPS = 60;
+uint32_t  frameStart;
+int frameTime;
 
 Game_Obj::Game_Obj() {}
 
@@ -26,11 +31,22 @@ Game_Obj::~Game_Obj() {
 
 Game_Obj* Game_Obj::_inst = nullptr;
 
-void Game_Obj::menu(AView* lib_ptr) {//draw menu for select map, and number of player
-    //TODO create the main menu, think about design
-    //while(11111111){}
-    //lib_ptr->drawMenu();
-    //lib_ptr->render();
+bool Game_Obj::menu(AView* lib) {//draw menu for select map, and number of player
+    _menu.initMenu();
+    int const frameDealy = 3000 / FPS;
+    while(_menu.runningMenu()){
+        frameStart = _libs[g_lib - 1]->getTicks();
+        if (handleEvent(lib) == -1){
+            return false;
+        }
+        _menu.changebutton();
+        frameTime = _libs[g_lib - 1]->getTicks() - frameStart;
+        if (frameDealy > frameTime){
+            _libs[g_lib - 1]->delay(frameDealy - frameTime);
+        }
+        render(lib);
+    }
+    return true;
 }
 
 Game_Obj* Game_Obj::getInstance() {
@@ -42,8 +58,8 @@ Game_Obj* Game_Obj::getInstance() {
 
 void Game_Obj::init() {
     _libs = {&SDL_lib::getInstance(), &SFML_lib::getInstance()};//, SFML_lib::getInstance, ALLEGRO_lib::
-    menu(_libs[g_lib - 1]);
     _libs[g_lib - 1]->init();//draw map, load picture
+    menu(_libs[g_lib - 1]);
     _libs[g_lib - 1]->drawMap();
     _logic.init(1);
     _food.updateFood();
@@ -53,11 +69,8 @@ void Game_Obj::init() {
 }
 
 void Game_Obj::main_loop() {
-    int const FPS = 60;
-    int const frameDealy = 7000 / FPS;
-    uint32_t  frameStart;
-    int frameTime;
-    while(_logic.running()){
+    int const frameDealy = 6000 / FPS;
+    while(_logic.runningGame()){
         frameStart = _libs[g_lib - 1]->getTicks();
         if (!action(_libs[g_lib - 1])){
                 break;
@@ -88,10 +101,11 @@ void Game_Obj::clean(AView * lib) {
 
 int Game_Obj::handleEvent(AView* lib) {
     int symb = lib->catchHook();
-    if (symb == -1)
+    if (symb == -1) {
         return symb;
+    }
     if (symb != 0) {
-        _logic.setKey(symb);
+        (!_menu.runningMenu()) ? _logic.setKey(symb) : _menu.setKey(symb);
     }
     return symb;
 }

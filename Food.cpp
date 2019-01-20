@@ -16,7 +16,6 @@ Food::Food() noexcept {
 }
 
 Food::~Food() {
-
 }
 
 void Food::mandatoryFood() {
@@ -35,8 +34,8 @@ void Food::mandatoryFood() {
        // Mmap::getInstance().printMmap();
         _coors.y_arr = y;
         _coors.x_arr = x;
-        _rectLil.y = _coors.y_dis = y * g_height / 67 + HEIGHT_SCOREBOARD;
-        _rectLil.x = _coors.x_dis = x * g_weight / 90;
+        _rectLil.y = _coors.y_dis = (y * g_height / 67) + HEIGHT_SCOREBOARD + _size_block/2;
+        _rectLil.x = _coors.x_dis = (x * g_weight / 90) + _size_block/2;
     }
        switch (g_lib){
         case 1:
@@ -53,7 +52,9 @@ void Food::mandatoryFood() {
     }
 }
 
-void Food::surpriseFood() {}
+void Food::surpriseFood() {
+
+}
 
 void Food::updateFood() {
     mandatoryFood();

@@ -16,6 +16,7 @@ void    init() override;
 int     catchHook() override;
 void    render() override;
 void    drawMap() override;
+void    drawMenu(void*, void*, int) override;
 void    drawSnake(void*, int) override;
 uint32_t getTicks() override;
 void    delay(int) override;

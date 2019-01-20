@@ -95,6 +95,9 @@ void SFML_lib::render() {
     //_window->clear();
 }
 
+void SFML_lib::drawMenu(void *, void *, int) {
+
+}
 
 void SFML_lib::drawMap() {
     _window->pollEvent(_event);
