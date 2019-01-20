@@ -12,8 +12,12 @@
 #include <vector>
 #include "global.h"
 #include <ctime>
-#include <unistd.h>
+//#include <unistd.h>
 #include <mutex>
+
+int const FPS = 60;
+uint32_t  frameStart;
+int frameTime;
 
 Game_Obj::Game_Obj() {}
 
@@ -25,11 +29,18 @@ Game_Obj::~Game_Obj() {
 Game_Obj* Game_Obj::_inst = nullptr;
 
 bool Game_Obj::menu(AView* lib) {//draw menu for select map, and number of player
+    _menu.initMenu();
+    int const frameDealy = 3000 / FPS;
     while(_menu.runningMenu()){
-        if (handleEvent(lib) == 1){
+        frameStart = _libs[g_lib - 1]->getTicks();
+        if (handleEvent(lib) == -1){
             return false;
         }
         _menu.changebutton();
+        frameTime = _libs[g_lib - 1]->getTicks() - frameStart;
+        if (frameDealy > frameTime){
+            _libs[g_lib - 1]->delay(frameDealy - frameTime);
+        }
         render(lib);
     }
     return true;
@@ -57,10 +68,7 @@ void Game_Obj::init() {
 }
 
 void Game_Obj::main_loop() {
-    int const FPS = 60;
-    int const frameDealy = 10000 / FPS;
-    uint32_t  frameStart;
-    int frameTime;
+    int const frameDealy = 6000 / FPS;
     while(_logic.runningGame()){
         frameStart = _libs[g_lib - 1]->getTicks();
         if (!action(_libs[g_lib - 1])){
