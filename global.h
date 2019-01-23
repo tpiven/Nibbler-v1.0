@@ -11,10 +11,11 @@ extern const char body_path[];
 extern const char head_path[];
 extern const char map_1[];
 extern const char lilFood[];
-extern const char buttonPress1_path[];
-extern const char buttonUnPress1_path[];
-extern const char buttonPress2_path[];
-extern const char buttonUnPress2_path[];
+extern const char buttonSingle_path[];
+extern const char buttonMulti_path[];
+extern const char buttonOption_path[];
+extern const char buttonContinue_path[];
+extern const char buttonExit_path[];
 extern const char arrow_path[];
 #define HEIGHT_SCOREBOARD 100
 #define WEIGHT_SCOREBOARD 0

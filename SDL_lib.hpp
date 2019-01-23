@@ -17,6 +17,7 @@ public:
     void    drawMenu(void*, void*, int) override;
     void    drawMap() override;
     void    drawSnake(void*, int) override;
+    void    renderClear() override;
     uint32_t getTicks() override;
     void    delay(int) override;
     void    cleanWindow() override;

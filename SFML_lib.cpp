@@ -131,6 +131,10 @@ void SFML_lib::drawFood(void* rect) {
     _window->draw(food);
 }
 
+void SFML_lib::renderClear() {
+
+}
+
 void SFML_lib::cleanWindow() {
     _window->clear();
     _window->close();

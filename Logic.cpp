@@ -93,6 +93,8 @@ void Logic::setKey(int key) {
     }
 }
 
+int Logic::getkey() const { return _key;}
+
 void Logic::updateHead(t_coor& head) {
     if (head.inPortal){
         //head.x_arr = 10;//?

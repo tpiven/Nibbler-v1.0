@@ -13,10 +13,11 @@ const char body_path[] = "/Picture/grass_bloc_mod.png";
 const char head_path[] = "/Picture/dirt_1.png";
 const char map_1[] = "/Picture/map_1.png";
 const char lilFood[] = "/Picture/solid.png";
-const char buttonPress1_path[] = "/Picture/button1.png";
-const char buttonUnPress1_path[] = "/Picture/button1_1.png";
-const char buttonPress2_path[] = "/Picture/button2.png";
-const char buttonUnPress2_path[] = "/Picture/button2_2.png";
+const char buttonSingle_path[] = "/Picture/button1.png";
+const char buttonMulti_path[] = "/Picture/button2.png";
+extern const char buttonOption_path[] = "/Picture/options.png";
+extern const char buttonContinue_path[] = "/Picture/continue.png";
+extern const char buttonExit_path[] = "/Picture/exit.png";
 const char arrow_path[] = "/Picture/arrow_path.png";
 
 SDL_Renderer* SDL_lib::renderer = nullptr;
@@ -61,7 +62,9 @@ void SDL_lib::init() {
     size_t  n = _dir.rfind('/');
     //_dir.resize(n); //TODO investigate PATH of PICTURES
     /************INIT TEXTURE FOR BUTTON***********/
-    _buttonTexture = {{0, CREATE_TEXTURE((_dir + buttonPress1_path).c_str())}, {1, CREATE_TEXTURE((_dir + buttonPress2_path).c_str())}};
+    _buttonTexture = {{0, CREATE_TEXTURE((_dir + buttonSingle_path).c_str())}, {1, CREATE_TEXTURE((_dir + buttonMulti_path).c_str())},
+                      {2, CREATE_TEXTURE((_dir + buttonContinue_path).c_str())}, {3, CREATE_TEXTURE((_dir + buttonOption_path).c_str())},
+                      {4, CREATE_TEXTURE((_dir + buttonExit_path).c_str())}};
     if (!_buttonTexture[0]){
         std::cerr << "textureButton not exist" << std::endl;
         exit(1);
@@ -147,8 +150,7 @@ void SDL_lib::render() {
     SDL_RenderPresent(renderer);
 }
 
-void SDL_lib::drawMenu(void* rectA, void* rectB, int b_block) {
-    SDL_RenderClear(renderer);
+void SDL_lib::drawMenu(void* rectA, void* rectB, int typeMenu) {
     _mcrR = *reinterpret_cast<SDL_Rect*>(rectA);
     /***********ADD ARROW TEXTURE***********/
     SDL_RenderCopy(renderer, _textureArrow, nullptr, &_mcrR);//render arrow
@@ -175,6 +177,10 @@ void SDL_lib::drawSnake(void* rect, int b_block) {//b_block - wich texture rende
 void SDL_lib::drawFood(void* rect) {
     _fcrR = *reinterpret_cast<SDL_Rect*>(rect);
     SDL_RenderCopy(renderer, _textureFood, nullptr, &_fcrR);
+}
+
+void SDL_lib::renderClear() {
+    SDL_RenderClear(renderer);
 }
 
 void SDL_lib::cleanWindow() {

@@ -17,6 +17,7 @@ public:
     void    move();
     bool    runningGame() const;
     void    setKey(int key);
+    int     getkey() const;
     void    init(int);
 private:
     lst _cors;
