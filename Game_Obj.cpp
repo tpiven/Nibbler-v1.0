@@ -105,13 +105,20 @@ bool Game_Obj::escapeLogic() {
     return true;
 }
 
+bool Game_Obj::pauseLogic() {
+    _menu.pauseDialog();
+    return menu(_libs[g_lib - 1]);
+}
+
 bool Game_Obj::action(AView *lib) {
-    if (handleEvent(lib) == -1){
+    int key = handleEvent(lib);
+    if (key == -1 || (key == ' ' && !pauseLogic())){
         return false;
     }
     update(lib);
     render(lib);
-    if (handleEvent(lib) == -1){
+    key = handleEvent(lib);
+    if (key == -1 || (key == ' ' && !pauseLogic())){
         return false;
     }
     return true;
@@ -127,7 +134,7 @@ int Game_Obj::handleEvent(AView* lib) {
         return symb;
     }
     if (symb != 0) {
-        (!_menu.runningMenu()) ? _logic.setKey(symb) : _menu.setKey(symb);
+        (!_menu.runningMenu() && symb != ' ') ? _logic.setKey(symb) : _menu.setKey(symb);
     }
     return symb;
 }

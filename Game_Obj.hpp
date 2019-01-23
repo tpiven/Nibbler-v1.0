@@ -22,6 +22,7 @@ private:
     bool    action(AView*);
     void    main_loop();
     bool    escapeLogic();
+    bool    pauseLogic();
     std::vector<AView*> _libs;
     Logic   _logic;
     Menu    _menu;

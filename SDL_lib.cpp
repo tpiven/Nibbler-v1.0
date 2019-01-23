@@ -109,8 +109,8 @@ int SDL_lib::catchHook(){
     if (_event.type == SDL_KEYDOWN){
         switch (_event.key.keysym.sym){
             case SDLK_ESCAPE:
-                std::cout << "EXIT" << std::endl;
-                return -1;
+                std::cout << "PAUSE" << std::endl;
+                return ' ';
             case SDLK_w:
                 std::cout << "w" << std::endl;
                 return 'w';
