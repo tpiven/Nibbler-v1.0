@@ -6,6 +6,7 @@
 #include "SDL2/SDL_image.h"
 #include "AView.hpp"
 #include <map>
+#include "TextureManager.hpp"
 
 class SDL_lib : public AView{
 public:
@@ -21,6 +22,7 @@ public:
     void    cleanWindow() override;
     void    drawFood(void*) override;
 private:
+    friend class TextureManager;
     static SDL_Renderer * renderer;
     static SDL_Window *_window;
     SDL_Event   _event;

@@ -6,6 +6,7 @@
 #include "global.h"
 #include <unistd.h>
 #include "Mmap.hpp"
+#define CREATE_TEXTURE(str) TextureManager::getInstance().LoadTexture(str)
 
 const char tail_path[] = "/Picture/dirt.png";//TODO create many picture like: tail_16x16, tail_8x8
 const char body_path[] = "/Picture/grass_bloc_mod.png";
@@ -34,7 +35,7 @@ SDL_lib& SDL_lib::getInstance() {
 void SDL_lib::init() {
     /************INIT WINDOW************/
     if (SDL_Init(SDL_INIT_EVERYTHING) != 0){
-        std::cout << "Trouble with init SDL" << std::endl;
+        std::cerr << "Trouble with init SDL" << std::endl;
         exit(-1);
     }
     _window = SDL_CreateWindow(
@@ -46,12 +47,12 @@ void SDL_lib::init() {
             SDL_WINDOW_SHOWN
             );
     if (!_window){
-        std::cout << "Error Window: " << &SDL_Error << std::endl;
+        std::cerr << "Error Window: " << &SDL_Error << std::endl;
         exit(-1);
     }
     renderer = SDL_CreateRenderer(_window, -1, SDL_RENDERER_ACCELERATED);
     if (!renderer) {
-        std::cout << "Trouble wih render" << std::endl;
+        std::cerr << "Trouble wih render" << std::endl;
         return;
     }
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, 0);//BAG NOT WORKING
@@ -60,36 +61,34 @@ void SDL_lib::init() {
     size_t  n = _dir.rfind('/');
     //_dir.resize(n); //TODO investigate PATH of PICTURES
     /************INIT TEXTURE FOR BUTTON***********/
-    _buttonTexture[0] = SDL_CreateTextureFromSurface(renderer, IMG_Load((_dir + buttonPress1_path).c_str()));
-    _buttonTexture[1] = SDL_CreateTextureFromSurface(renderer, IMG_Load((_dir + buttonPress2_path).c_str()));
+    _buttonTexture = {{0, CREATE_TEXTURE((_dir + buttonPress1_path).c_str())}, {1, CREATE_TEXTURE((_dir + buttonPress2_path).c_str())}};
     if (!_buttonTexture[0]){
-        std::cout << "textureButton not exist" << std::endl;
+        std::cerr << "textureButton not exist" << std::endl;
         exit(1);
     }
     /************INIT TEXTURE FOR ARROW************/
     std::string toto = _dir + arrow_path;
     SDL_Surface *qw = IMG_Load((_dir + arrow_path).c_str());
-    _textureArrow = SDL_CreateTextureFromSurface(renderer, IMG_Load((_dir + arrow_path).c_str()));
+    _textureArrow = CREATE_TEXTURE((_dir + arrow_path).c_str());
     if (!_textureArrow){
-        std::cout << "textureArrow not exist" << std::endl;
+        std::cerr << "textureArrow not exist" << std::endl;
         exit(1);
     }
     /************INIT TEXTURE FOR MAP**************/
-    _textureMap = SDL_CreateTextureFromSurface(renderer, IMG_Load((_dir + map_1).c_str()));
+    _textureMap = CREATE_TEXTURE((_dir + map_1).c_str());
     if (!_textureMap){
-        std::cout << "textuteMap not exist" << std::endl;
+        std::cerr << "textuteMap not exist" << std::endl;
         exit(1);
     }
     /************INIT TEXTURE FOR SNAKE************/
-    _snakeTexture[0] = SDL_CreateTextureFromSurface(renderer, IMG_Load((_dir + tail_path).c_str()));
-    _snakeTexture[1] = SDL_CreateTextureFromSurface(renderer, IMG_Load((_dir + body_path).c_str()));
-    _snakeTexture[2] = SDL_CreateTextureFromSurface(renderer, IMG_Load((_dir + head_path).c_str()));
+    _snakeTexture = {{0, CREATE_TEXTURE((_dir + tail_path).c_str())}, {1, CREATE_TEXTURE((_dir + body_path).c_str())},
+                     {2, CREATE_TEXTURE((_dir + head_path).c_str())}};
     /************INIT TEXTURE FOR FOOD************/
     std::cout << "lilFood" << lilFood << std::endl;
     std::cout << "path: " << _dir  << lilFood << std::endl;
-    _textureFood = SDL_CreateTextureFromSurface(renderer, IMG_Load((_dir + lilFood).c_str()));
+    _textureFood = CREATE_TEXTURE((_dir + lilFood).c_str());
     if (!_textureFood){
-        std::cout << "textuteFood not exist" << std::endl;
+        std::cerr << "textuteFood not exist" << std::endl;
         exit(1);
     }
 }
