@@ -32,7 +32,7 @@ Game_Obj::~Game_Obj() {
 Game_Obj* Game_Obj::_inst = nullptr;
 
 bool Game_Obj::menu(AView* lib) {//draw menu for select map, and number of player
-    int const frameDealy = 3000 / FPS;
+    int const frameDealy = 4000 / FPS;
     while(_menu.runningMenu()){
         lib->renderClear();
         frameStart = _libs[g_lib - 1]->getTicks();

@@ -62,10 +62,10 @@ void SDL_lib::init() {
     size_t  n = _dir.rfind('/');
     //_dir.resize(n); //TODO investigate PATH of PICTURES
     /************INIT TEXTURE FOR BUTTON***********/
-    _buttonTexture = {{0, CREATE_TEXTURE((_dir + buttonSingle_path).c_str())}, {1, CREATE_TEXTURE((_dir + buttonMulti_path).c_str())},
-                      {2, CREATE_TEXTURE((_dir + buttonContinue_path).c_str())}, {3, CREATE_TEXTURE((_dir + buttonOption_path).c_str())},
-                      {4, CREATE_TEXTURE((_dir + buttonExit_path).c_str())}};
-    if (!_buttonTexture[0]){
+    _buttonTexture = {{"single", CREATE_TEXTURE((_dir + buttonSingle_path).c_str())}, {"multi", CREATE_TEXTURE((_dir + buttonMulti_path).c_str())},
+                      {"continue", CREATE_TEXTURE((_dir + buttonContinue_path).c_str())}, {"option", CREATE_TEXTURE((_dir + buttonOption_path).c_str())},
+                      {"exit", CREATE_TEXTURE((_dir + buttonExit_path).c_str())}};
+    if (_buttonTexture.empty()){
         std::cerr << "textureButton not exist" << std::endl;
         exit(1);
     }
@@ -86,6 +86,10 @@ void SDL_lib::init() {
     /************INIT TEXTURE FOR SNAKE************/
     _snakeTexture = {{0, CREATE_TEXTURE((_dir + tail_path).c_str())}, {1, CREATE_TEXTURE((_dir + body_path).c_str())},
                      {2, CREATE_TEXTURE((_dir + head_path).c_str())}};
+    if (_snakeTexture.empty()){
+        std::cerr << "textureSnake not exist" << std::endl;
+        exit(1);
+    }
     /************INIT TEXTURE FOR FOOD************/
     std::cout << "lilFood" << lilFood << std::endl;
     std::cout << "path: " << _dir  << lilFood << std::endl;
@@ -156,9 +160,22 @@ void SDL_lib::drawMenu(void* rectA, void* rectB, int typeMenu) {
     SDL_RenderCopy(renderer, _textureArrow, nullptr, &_mcrR);//render arrow
     /***********ADD BUTTON TEXTURE***********/
     _mcrR = *reinterpret_cast<SDL_Rect*>(rectB);
-    SDL_RenderCopy(renderer, _buttonTexture[0], nullptr, &_mcrR);//single player
-    _mcrR.y += _mcrR.h + 10;// distance between single and multi button
-    SDL_RenderCopy(renderer, _buttonTexture[1], nullptr, &_mcrR);//multi player
+    if (typeMenu == 3){
+        SDL_RenderCopy(renderer, _buttonTexture["continue"], nullptr, & _mcrR);
+        _mcrR.y += _mcrR.h + 10;// distance between continue and multi option
+        SDL_RenderCopy(renderer, _buttonTexture["option"], nullptr, &_mcrR);
+        _mcrR.y += _mcrR.h + 10;// distance between option and multi exit
+        SDL_RenderCopy(renderer, _buttonTexture["exit"], nullptr, &_mcrR);
+    }
+    else {
+        SDL_RenderCopy(renderer, _buttonTexture["single"], nullptr, &_mcrR);//single player
+        _mcrR.y += _mcrR.h + 10;// distance between single and multi button
+        SDL_RenderCopy(renderer, _buttonTexture["multi"], nullptr, &_mcrR);//multi player
+        _mcrR.y += _mcrR.h + 10;// distance between multi and option
+        SDL_RenderCopy(renderer, _buttonTexture["option"], nullptr, &_mcrR);
+        _mcrR.y += _mcrR.h + 10;// distance between option and exit
+        SDL_RenderCopy(renderer, _buttonTexture["exit"], nullptr, &_mcrR);
+    }
 }
 
 void SDL_lib::drawMap() {

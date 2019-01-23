@@ -35,7 +35,7 @@ private:
     SDL_Rect    _fcrR;//food
     std::string _dir;
     std::map<int, SDL_Texture*> _snakeTexture;
-    std::map<int, SDL_Texture*> _buttonTexture;
+    std::map<std::string, SDL_Texture*> _buttonTexture;
     SDL_lib();
     ~SDL_lib();
     SDL_lib(const SDL_lib&) = delete;
