@@ -21,6 +21,7 @@ private:
     void    clean(AView*);
     bool    action(AView*);
     void    main_loop();
+    bool    escapeLogic();
     std::vector<AView*> _libs;
     Logic   _logic;
     Menu    _menu;

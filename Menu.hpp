@@ -13,7 +13,7 @@ public:
     void    initMenu();
     void    setKey(int key);
     bool    runningMenu() const;
-    void    changebutton();
+    bool    changebutton();
     void    escapeDialog();
     void    pauseDialog();
 private:

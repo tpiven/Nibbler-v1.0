@@ -39,7 +39,9 @@ bool Game_Obj::menu(AView* lib) {//draw menu for select map, and number of playe
         if (handleEvent(lib) == -1){
             return false;
         }
-        _menu.changebutton();
+        if (!_menu.changebutton()){
+            return false;
+        }
         frameTime = _libs[g_lib - 1]->getTicks() - frameStart;
         if (frameDealy > frameTime){
             _libs[g_lib - 1]->delay(frameDealy - frameTime);
@@ -78,8 +80,7 @@ void Game_Obj::main_loop() {
         _libs[g_lib - 1]->renderClear();
         frameStart = _libs[g_lib - 1]->getTicks();
         if (!_logic.runningGame()){
-            _menu.escapeDialog();
-            if (!menu(_libs[g_lib - 1])){
+            if (!escapeLogic()){
                 break;
             }
         }
@@ -92,6 +93,16 @@ void Game_Obj::main_loop() {
         }
     }
     clean(_libs[g_lib - 1]);
+}
+
+bool Game_Obj::escapeLogic() {
+    _menu.escapeDialog();
+    if (!menu(_libs[g_lib - 1])){
+        return false;
+    }
+    _logic.restart();
+    _food.restart();
+    return true;
 }
 
 bool Game_Obj::action(AView *lib) {

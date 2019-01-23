@@ -42,9 +42,14 @@ void Menu::initMenu() {
     }
 }
 
-void Menu::changebutton() {
+bool Menu::changebutton() {
     if (_key == 36){//enter, which mean that player chosed number of players
+        _key = 0;
         _select = false;
+        if ((_typeMenu == 3 && _numButton == 3) || (_typeMenu != 3 && _numButton == 4)){
+            return false;
+        }
+        return true;
     }
     moveArrow();
     switch (g_lib){
@@ -61,6 +66,7 @@ void Menu::changebutton() {
             break;
     }
     _key = 0;
+    return true;
 }
 
 void Menu::moveArrow() {

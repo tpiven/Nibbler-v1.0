@@ -45,6 +45,8 @@ void Logic::init(int n_pl) {
         }
         _rect.y = _cors.back().y_dis;
         _rect.x = _cors.back().x_dis;
+        _rectCopy = _rect;
+        _corsCopy = _cors;
         switch (g_lib){
             case 1:
                 SDL_lib::getInstance().drawSnake(&_rect, j);
@@ -164,6 +166,14 @@ void Logic::move() {
                 break;
         }
     }
+}
+
+void Logic::restart() {
+    _cors.erase(_cors.begin(), _cors.end());
+    _cors = _corsCopy;
+    _rect = _rectCopy;
+    _playGame = true;
+    _key = (_pl == 1) ? 'd' : 'a';
 }
 
 bool Logic::runningGame() const { return _playGame;}
