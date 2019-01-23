@@ -15,6 +15,7 @@ public:
     Food &operator=(Food&&) = delete;
     ~Food();
     void    updateFood();
+    void    restart();
 private:
     void    mandatoryFood();
     void    surpriseFood();

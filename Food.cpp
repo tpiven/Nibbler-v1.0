@@ -56,7 +56,12 @@ void Food::surpriseFood() {
 
 }
 
+
 void Food::updateFood() {
     mandatoryFood();
     surpriseFood();
+}
+
+void Food::restart() {
+    Mmap::getInstance().setValueInMap(0, _coors.y_arr, _coors.x_arr);
 }

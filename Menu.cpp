@@ -14,8 +14,9 @@ Menu::Menu() noexcept {
     _rectB.h = _size_block;
     _rectB.w = _size_block * 4;
 
-    _numButton = 1;
-    _select = true;
+    _numButton = 1;//number of button
+    _typeMenu = 1;//flag for 1 is Start_menu, 2 is Escape_Menu, 3 is Pause_menu
+    _select = true;//flag for select menu
 }
 
 void Menu::initMenu() {
@@ -27,7 +28,7 @@ void Menu::initMenu() {
     _numButton = 1;
     switch (g_lib){
         case 1:
-            SDL_lib::getInstance().drawMenu(&_rectA, &_rectB, 0);
+            SDL_lib::getInstance().drawMenu(&_rectA, &_rectB, _typeMenu);
             SDL_lib::getInstance().render();
             break;
         case 2:
@@ -41,22 +42,20 @@ void Menu::initMenu() {
     }
 }
 
-void Menu::changebutton() {
+bool Menu::changebutton() {
     if (_key == 36){//enter, which mean that player chosed number of players
+        _key = 0;
+        _typeMenu = 3;
         _select = false;
+        if ((_typeMenu == 3 && _numButton == 3) || (_typeMenu != 3 && _numButton == 4)){
+            return false;
+        }
+        return true;
     }
-    if (_key == 125 && _numButton == 1){
-        _rectA.y +=  _rectA.h + 10;
-        _numButton = 2;
-    }
-    else if (_key == 126 && _numButton == 2){
-        _rectA.y -=  _rectA.h + 10;
-        _numButton = 1;
-    }
-    std::cout << "_rectA.h: " << _rectA.h << " _rectA.w: " << _rectA.w << " _rectA.y: " << _rectA.y << " _rectA.x: " << _rectA.x << std::endl;
+    moveArrow();
     switch (g_lib){
         case 1:
-            SDL_lib::getInstance().drawMenu(&_rectA, &_rectB, 0);
+            SDL_lib::getInstance().drawMenu(&_rectA, &_rectB, _typeMenu);
             break;
         case 2:
             //TODO call sfml.draw();
@@ -68,6 +67,23 @@ void Menu::changebutton() {
             break;
     }
     _key = 0;
+    return true;
+}
+
+void Menu::moveArrow() {
+    if (_key == 125 && _numButton != 4){//125 down
+        _rectA.y += (_typeMenu == 3 && _numButton == 3) ? 0 :  _rectA.h + 10;
+        _numButton += (_typeMenu == 3 && _numButton == 3) ? 0 : 1;
+    }
+    else if (_key == 126 && _numButton != 1){//126 up
+        _rectA.y -=  _rectA.h + 10;
+        _numButton--;
+    }
+}
+
+void Menu::escapeDialog() { _select = true;}
+void Menu::pauseDialog() {
+    _select = true;
 }
 
 bool Menu::runningMenu() const { return _select;}
