@@ -7,6 +7,7 @@
 #include "Mmap.hpp"
 #include "SDL_lib.hpp"
 #include "SFML_lib.hpp"
+#include "Allegra_lib.hpp"
 #include <random>
 
 Food::Food() noexcept {
@@ -45,7 +46,7 @@ void Food::mandatoryFood() {
             SFML_lib::getInstance().drawFood(&_rectLil);
                break;
         case 3:
-            //TODO call allegro.draw();
+            Allegra_lib::getInstance().drawFood(&_rectLil);
             break;
         default:
             break;

@@ -14,7 +14,6 @@
 #include <vector>
 #include "global.h"
 #include <ctime>
-//#include <unistd.h>
 #include <unistd.h>
 #include <mutex>
 
@@ -59,7 +58,7 @@ Game_Obj* Game_Obj::getInstance() {
 }
 
 void Game_Obj::init() {
-    _libs = {&SDL_lib::getInstance(), &SFML_lib::getInstance()};//, SFML_lib::getInstance, ALLEGRO_lib::
+    _libs = {&SDL_lib::getInstance(), &SFML_lib::getInstance(), &Allegra_lib::getInstance()};
     _libs[g_lib - 1]->init();//draw map, load picture
     _menu.initMenu();
     if (!menu(_libs[g_lib - 1])){
@@ -70,7 +69,6 @@ void Game_Obj::init() {
     _logic.init(1);
     _food.updateFood();
     render(_libs[g_lib - 1]);//pre drawning before moving
-    std::cout << "g_Lib: " << g_lib << std::endl;
     main_loop();
 }
 

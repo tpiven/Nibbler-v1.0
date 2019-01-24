@@ -9,6 +9,7 @@
 #include "Mmap.hpp"
 #include "SDL_lib.hpp"
 #include "SFML_lib.hpp"
+#include "Allegra_lib.hpp"
 
 Logic::Logic() noexcept {
     _size_block = g_weight / 90;
@@ -55,7 +56,7 @@ void Logic::init(int n_pl) {
                 SFML_lib::getInstance().drawSnake(&_rect, j);
                 break;
             case 3:
-                //TODO call allegro.draw();
+                Allegra_lib::getInstance().drawSnake(&_rect, j);
                 break;
             default:
                 break;
@@ -121,6 +122,7 @@ void Logic::move() {
     updateHead(head);
     int ch = Mmap::getInstance().getValueFromMap(head.y_arr, head.x_arr);
     if (ch > 0 || ch == -1){
+        Mmap::getInstance().printMmap();
         crash();
         return;
     }
@@ -169,6 +171,9 @@ void Logic::move() {
 }
 
 void Logic::restart() {
+    for(auto it : _cors){
+        Mmap::getInstance().setValueInMap(0, it.y_arr, it.x_arr);
+    }
     _cors.erase(_cors.begin(), _cors.end());
     _cors = _corsCopy;
     _rect = _rectCopy;

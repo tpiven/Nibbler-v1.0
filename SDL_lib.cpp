@@ -91,8 +91,6 @@ void SDL_lib::init() {
         exit(1);
     }
     /************INIT TEXTURE FOR FOOD************/
-    std::cout << "lilFood" << lilFood << std::endl;
-    std::cout << "path: " << _dir  << lilFood << std::endl;
     _textureFood = CREATE_TEXTURE((_dir + lilFood).c_str());
     if (!_textureFood){
         std::cerr << "textuteFood not exist" << std::endl;

@@ -5,6 +5,8 @@
 #include "Menu.hpp"
 #include "global.h"
 #include "SDL_lib.hpp"
+#include "SFML_lib.hpp"
+#include "Allegra_lib.hpp"
 
 Menu::Menu() noexcept {
     _size_block = g_weight / 90 + 20;//50 is scale for arrow
@@ -32,10 +34,12 @@ void Menu::initMenu() {
             SDL_lib::getInstance().render();
             break;
         case 2:
-            //TODO call sfml.draw();
+            SFML_lib::getInstance().drawMenu(&_rectA, &_rectB, _typeMenu);
+            SFML_lib::getInstance().render();
             break;
         case 3:
-            //TODO call allegro.draw();
+            Allegra_lib::getInstance().drawMenu(&_rectA, &_rectB, _typeMenu);
+            Allegra_lib::getInstance().render();
             break;
         default:
             break;
@@ -45,11 +49,12 @@ void Menu::initMenu() {
 bool Menu::changebutton() {
     if (_key == 36){//enter, which mean that player chosed number of players
         _key = 0;
-        _typeMenu = 3;
         _select = false;
         if ((_typeMenu == 3 && _numButton == 3) || (_typeMenu != 3 && _numButton == 4)){
             return false;
         }
+        _typeMenu = 1;
+        _select = false;
         return true;
     }
     moveArrow();
@@ -58,10 +63,10 @@ bool Menu::changebutton() {
             SDL_lib::getInstance().drawMenu(&_rectA, &_rectB, _typeMenu);
             break;
         case 2:
-            //TODO call sfml.draw();
+            SFML_lib::getInstance().drawMenu(&_rectA, &_rectB, _typeMenu);
             break;
         case 3:
-            //TODO call allegro.draw();
+            Allegra_lib::getInstance().drawMenu(&_rectA, &_rectB, _typeMenu);
             break;
         default:
             break;
@@ -81,8 +86,11 @@ void Menu::moveArrow() {
     }
 }
 
-void Menu::escapeDialog() { _select = true;}
+void Menu::escapeDialog() {
+    _typeMenu = 2;
+    _select = true;}
 void Menu::pauseDialog() {
+    _typeMenu = 3;
     _select = true;
 }
 

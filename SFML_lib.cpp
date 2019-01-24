@@ -96,7 +96,7 @@ void SFML_lib::delay(int time) {
 
 void SFML_lib::render() {
     _window->display();
-    //_window->clear();
+
 }
 
 void SFML_lib::drawMenu(void* rectA, void* rectB, int b_block) {
