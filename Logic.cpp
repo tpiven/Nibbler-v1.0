@@ -169,6 +169,9 @@ void Logic::move() {
 }
 
 void Logic::restart() {
+    for(auto it : _cors){
+        Mmap::getInstance().setValueInMap(0, it.y_arr, it.x_arr);
+    }
     _cors.erase(_cors.begin(), _cors.end());
     _cors = _corsCopy;
     _rect = _rectCopy;
