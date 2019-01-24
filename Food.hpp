@@ -19,8 +19,12 @@ public:
 private:
     void    mandatoryFood();
     void    surpriseFood();
-    t_scr _rectLil;//struct for render texture
-    t_coor _coors;
+    t_scr _rectLil;//struct for render texture smallFood
+    t_scr _rectBig;//struct for render texture bigFood
+    t_coor _coorLilFood;
+    t_coor _coorBigFood;
     int _size_block;
+//    int _cntCreateFood;
+    bool _drawBig;
 };
 

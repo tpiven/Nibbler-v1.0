@@ -89,9 +89,6 @@ void Logic::setKey(int key) {
         else if ((key == 'a' && _key != 'd') || (key == 'd' && _key != 'a')){
             _key = static_cast<char>(key);
         }
-//        else if (key == ' '){
-//            //TODO need implement pause
-//        }
     }
 }
 
@@ -184,7 +181,6 @@ bool Logic::runningGame() const { return _playGame;}
 
 void Logic::crash() {
     _playGame = false;
-    //Mmap::getInstance().printMmap();
 }
 
 void Logic::grow() {
