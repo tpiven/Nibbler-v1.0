@@ -31,12 +31,14 @@ SFML_lib& SFML_lib::getInstance() {
 
 void SFML_lib::init() {
     _window = new sf::RenderWindow(sf::VideoMode(g_weight, g_height + HEIGHT_SCOREBOARD, 32), "Nibbler");
-    //_window->clear();
-    _textureMap.loadFromFile("Picture/map_1.png");
+     _textureMap.loadFromFile("Picture/map_1.png");
     _snakeTexture[0].loadFromFile("Picture/dirt.png");
     _snakeTexture[1].loadFromFile("Picture/grass_bloc_mod.png");
     _snakeTexture[2].loadFromFile("Picture/dirt_1.png");
-    _textureFood.loadFromFile("Picture/small_food.png");
+    _textureFood.loadFromFile("Picture/solid.png");
+    _textureArrow.loadFromFile("Picture/arrow_path.png");
+    _buttonTexture[0].loadFromFile("Picture/button1.png");
+    _buttonTexture[1].loadFromFile("Picture/button2.png");
 
 }
 
@@ -73,6 +75,8 @@ int SFML_lib::catchHook(){
                     return 123;
                 case sf::Keyboard::Right:
                     return 124;
+                case sf::Keyboard::Return:
+                    return 36;
                 default:
                     return 0;
             }
@@ -95,8 +99,29 @@ void SFML_lib::render() {
     //_window->clear();
 }
 
-void SFML_lib::drawMenu(void *, void *, int) {
-
+void SFML_lib::drawMenu(void* rectA, void* rectB, int b_block) {
+    _window->pollEvent(_event);
+    _window->clear();
+    sf::Sprite arrow;
+    arrow.setTexture(_textureArrow);
+    t_scr A = *reinterpret_cast<t_scr*>(rectA);
+    arrow.setPosition(A.x, A.y);
+    auto size = arrow.getTexture()->getSize();
+    arrow.setScale(float(A.w)/size.x, float(A.h)/size.y);
+    _window->draw(arrow);
+    t_scr B = *reinterpret_cast<t_scr*>(rectB);
+    sf::Sprite button1;
+    sf::Sprite button2;
+    button1.setTexture(_buttonTexture[0]);
+    button2.setTexture(_buttonTexture[1]);
+    size = button1.getTexture()->getSize();
+    button1.setScale(float(B.w)/size.x, float(B.h)/size.y);
+    button1.setPosition(B.x, B.y);
+    size = button2.getTexture()->getSize();
+    button2.setScale(float(B.w)/size.x, float(B.h)/size.y);
+    button2.setPosition(B.x, (B.y + B.h + 10));
+    _window->draw(button1);
+    _window->draw(button2);
 }
 
 void SFML_lib::drawMap() {
@@ -106,7 +131,8 @@ void SFML_lib::drawMap() {
     map.setTexture(_textureMap);
     map.setPosition(WEIGHT_SCOREBOARD, HEIGHT_SCOREBOARD);
     auto size = map.getTexture()->getSize();
-    map.setScale(float(g_weight)/size.x, float(g_weight)/size.y);
+    map.setScale(float(g_weight)/size.x, float(g_height)/size.y);
+
     _window->draw(map);
 
 }
@@ -130,10 +156,10 @@ void SFML_lib::drawFood(void* rect) {
     food.setPosition(_fcrR.x, _fcrR.y);
     _window->draw(food);
 }
-
 void SFML_lib::renderClear() {
 
 }
+
 
 void SFML_lib::cleanWindow() {
     _window->clear();
