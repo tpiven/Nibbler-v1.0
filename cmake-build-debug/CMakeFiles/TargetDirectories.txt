@@ -1,3 +1,0 @@
-/Users/tpiven/mydir/Nibbler-v1.0/cmake-build-debug/CMakeFiles/rebuild_cache.dir
-/Users/tpiven/mydir/Nibbler-v1.0/cmake-build-debug/CMakeFiles/edit_cache.dir
-/Users/tpiven/mydir/Nibbler-v1.0/cmake-build-debug/CMakeFiles/Nibbler_v1.1.dir
