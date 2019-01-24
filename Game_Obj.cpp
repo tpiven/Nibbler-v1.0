@@ -70,7 +70,6 @@ void Game_Obj::init() {
     _logic.init(1);
     _food.updateFood();
     render(_libs[g_lib - 1]);//pre drawning before moving
-    std::cout << "g_Lib: " << g_lib << std::endl;
     main_loop();
 }
 
