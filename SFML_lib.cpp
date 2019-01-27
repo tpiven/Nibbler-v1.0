@@ -132,7 +132,6 @@ void SFML_lib::drawMap() {
     map.setPosition(WEIGHT_SCOREBOARD, HEIGHT_SCOREBOARD);
     auto size = map.getTexture()->getSize();
     map.setScale(float(g_weight)/size.x, float(g_height)/size.y);
-
     _window->draw(map);
 
 }

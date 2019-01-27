@@ -29,9 +29,7 @@ public:
 
 private:
     ALLEGRO_DISPLAY             *display;
-    ALLEGRO_EVENT_QUEUE         *event_queue;
-    ALLEGRO_EVENT_QUEUE   		*_eventTimerQueue;
-    ALLEGRO_TIMER         		*_timer;
+    static ALLEGRO_EVENT_QUEUE         *event_queue;
     ALLEGRO_BITMAP        		*_map;
     ALLEGRO_BITMAP              *food;
     ALLEGRO_BITMAP              *arrow;

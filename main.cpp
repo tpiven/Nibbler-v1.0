@@ -39,6 +39,7 @@ int main(int ac, char *av[]){
             }
         }
         else if (i == 2){
+            int n = size(std::stoi(*(av + i)), 67);
             g_height = size(std::stoi(*(av + i)), 67);
             if (g_height > 2144 || g_height < 536) {
                 std::cout << "Not valued height" << std::endl;
