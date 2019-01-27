@@ -22,6 +22,7 @@ public:
     void    delay(int) override;
     void    cleanWindow() override;
     void    drawFood(void*) override;
+    void    drawInterface(int, int) override;
 private:
     friend class TextureManager;
     static SDL_Renderer * renderer;

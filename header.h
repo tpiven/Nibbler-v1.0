@@ -4,6 +4,8 @@
 
 #pragma once
 
+//typedef std::chrono::duration<float, std::ratio<1>> duration;
+
 typedef struct s_scr{
     int x;
     int y;
@@ -16,4 +18,5 @@ typedef struct s_coor{
     int x_dis;
     int y_arr;
     int x_arr;
+    bool inPortal;
 }            t_coor;

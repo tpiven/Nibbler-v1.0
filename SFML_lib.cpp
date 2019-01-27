@@ -39,6 +39,9 @@ void SFML_lib::init() {
     _textureArrow.loadFromFile("Picture/arrow_path.png");
     _buttonTexture[0].loadFromFile("Picture/button1.png");
     _buttonTexture[1].loadFromFile("Picture/button2.png");
+    _buttonTexture[2].loadFromFile("Picture/options.png");
+    _buttonTexture[3].loadFromFile("Picture/continue.png");
+    _buttonTexture[4].loadFromFile("Picture/exit.png");
 
 }
 
@@ -51,8 +54,7 @@ int SFML_lib::catchHook(){
         if (_event.type == sf::Event::KeyPressed) {
             switch (_event.key.code) {
                 case sf::Keyboard::Escape:
-                    std::cout << "rtuut" << std::endl;
-                    return -1;
+                    return ' ';
                 case sf::Keyboard::W:
                     std::cout << "w" << std::endl;
                     return 'w';
@@ -99,30 +101,67 @@ void SFML_lib::render() {
 
 }
 
-void SFML_lib::drawMenu(void* rectA, void* rectB, int b_block) {
+void SFML_lib::drawMenu(void* rectA, void* rectB, int typeMenu) {
     _window->pollEvent(_event);
     _window->clear();
     sf::Sprite arrow;
-    arrow.setTexture(_textureArrow);
     t_scr A = *reinterpret_cast<t_scr*>(rectA);
+    t_scr B = *reinterpret_cast<t_scr*>(rectB);
+    arrow.setTexture(_textureArrow);
     arrow.setPosition(A.x, A.y);
     auto size = arrow.getTexture()->getSize();
     arrow.setScale(float(A.w)/size.x, float(A.h)/size.y);
     _window->draw(arrow);
-    t_scr B = *reinterpret_cast<t_scr*>(rectB);
-    sf::Sprite button1;
-    sf::Sprite button2;
-    button1.setTexture(_buttonTexture[0]);
-    button2.setTexture(_buttonTexture[1]);
-    size = button1.getTexture()->getSize();
-    button1.setScale(float(B.w)/size.x, float(B.h)/size.y);
-    button1.setPosition(B.x, B.y);
-    size = button2.getTexture()->getSize();
-    button2.setScale(float(B.w)/size.x, float(B.h)/size.y);
-    button2.setPosition(B.x, (B.y + B.h + 10));
-    _window->draw(button1);
-    _window->draw(button2);
+    if (typeMenu == 3) {
+        sf::Sprite button;
+        button.setTexture(_buttonTexture[3]);
+        size = button.getTexture()->getSize();
+        button.setScale(float(B.w) / size.x, float(B.h) / size.y);
+        button.setPosition(B.x, B.y);
+        _window->draw(button);
+        button.setTexture(_buttonTexture[2]);
+        size = button.getTexture()->getSize();
+        button.setScale(float(B.w) / size.x, float(B.h) / size.y);
+        B.y += B.h + 10;
+        button.setPosition(B.x, B.y);
+        _window->draw(button);
+        button.setTexture(_buttonTexture[4]);
+        size = button.getTexture()->getSize();
+        button.setScale(float(B.w) / size.x, float(B.h) / size.y);
+        B.y += B.h + 10;
+        button.setPosition(B.x, B.y);
+        _window->draw(button);
+    }
+
+    else {
+            sf::Sprite button;
+            button.setTexture(_buttonTexture[0]);
+            size = button.getTexture()->getSize();
+            button.setScale(float(B.w)/size.x, float(B.h)/size.y);
+            button.setPosition(B.x, B.y);
+            _window->draw(button);
+            button.setTexture(_buttonTexture[1]);
+            size = button.getTexture()->getSize();
+            button.setScale(float(B.w)/size.x, float(B.h)/size.y);
+            B.y += B.h + 10;
+            button.setPosition(B.x, B.y);
+            _window->draw(button);
+            button.setTexture(_buttonTexture[2]);
+            size = button.getTexture()->getSize();
+            button.setScale(float(B.w)/size.x, float(B.h)/size.y);
+            B.y += B.h + 10;
+            button.setPosition(B.x, B.y);
+            _window->draw(button);
+            button.setTexture(_buttonTexture[4]);
+            size = button.getTexture()->getSize();
+            button.setScale(float(B.w)/size.x, float(B.h)/size.y);
+            B.y += B.h + 10;
+            button.setPosition(B.x, B.y);
+            _window->draw(button);
+    }
 }
+
+
 
 void SFML_lib::drawMap() {
     _window->pollEvent(_event);
@@ -132,6 +171,7 @@ void SFML_lib::drawMap() {
     map.setPosition(WEIGHT_SCOREBOARD, HEIGHT_SCOREBOARD);
     auto size = map.getTexture()->getSize();
     map.setScale(float(g_weight)/size.x, float(g_height)/size.y);
+
     _window->draw(map);
 
 }
@@ -154,6 +194,13 @@ void SFML_lib::drawFood(void* rect) {
     food.scale(float(_fcrR.w)/size.x, float(_fcrR.h)/size.y);
     food.setPosition(_fcrR.x, _fcrR.y);
     _window->draw(food);
+}
+
+void SFML_lib::drawInterface(int score, int time) {
+
+    sf::Text text;
+
+
 }
 void SFML_lib::renderClear() {
 

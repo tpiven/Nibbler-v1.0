@@ -194,6 +194,10 @@ void SDL_lib::drawFood(void* rect) {
     SDL_RenderCopy(renderer, _textureFood, nullptr, &_fcrR);
 }
 
+void SDL_lib::drawInterface(int score, int time) {
+
+}
+
 void SDL_lib::renderClear() {
     SDL_RenderClear(renderer);
 }

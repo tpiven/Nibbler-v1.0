@@ -129,6 +129,10 @@ void Allegra_lib::drawMenu(void* rectA, void* rectB, int b_block) {
     al_draw_bitmap(button2,B.x, (B.y + B.h + 10), 0);
 }
 
+void Allegra_lib::drawInterface(int score, int time) {
+
+}
+
 void Allegra_lib::renderClear() {
     al_clear_to_color(al_map_rgb(0,0,0));
 

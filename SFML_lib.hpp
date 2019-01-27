@@ -22,6 +22,7 @@ uint32_t getTicks() override;
 void    delay(int) override;
 void    cleanWindow() override;
 void    drawFood(void*) override;
+void    drawInterface(int, int) override;
 void    renderClear() override;
 
 private:

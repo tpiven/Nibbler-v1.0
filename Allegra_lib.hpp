@@ -26,6 +26,7 @@ public:
     void    delay(int) override;
     void    cleanWindow() override;
     void    drawFood(void*) override;
+    void    drawInterface(int, int) override;
 
 private:
     ALLEGRO_DISPLAY             *display;

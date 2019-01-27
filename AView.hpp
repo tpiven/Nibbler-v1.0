@@ -48,6 +48,7 @@ public:
     virtual void    drawMap() = 0;
     virtual void    drawSnake(void*, int) = 0;
     virtual void    drawFood(void*) = 0;
+    virtual void    drawInterface(int, int) = 0;
     virtual uint32_t     getTicks() = 0;
     virtual void    delay(int) = 0;
     virtual void    cleanWindow() = 0;

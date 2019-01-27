@@ -3,7 +3,7 @@ project(Nibbler_v1.1)
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 
-set(SOURCE_FILES main.cpp Menu.cpp Game_Obj.cpp Logic.cpp Mmap.cpp AView.cpp Food.cpp SFML_lib.cpp SDL_lib.cpp TextureManager.cpp TextureManager.hpp Allegra_lib.cpp)
+set(SOURCE_FILES main.cpp Menu.cpp Game_Obj.cpp Logic.cpp Mmap.cpp AView.cpp Food.cpp SFML_lib.cpp SDL_lib.cpp TextureManager.cpp TextureManager.hpp Allegra_lib.cpp Interface.cpp Interface.hpp)
 set(INCLUDE_DIR ~/.brew/include/)
 set(LIBRARY ~/.brew/lib/)
 
