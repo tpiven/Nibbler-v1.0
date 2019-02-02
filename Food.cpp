@@ -3,6 +3,7 @@
 //
 
 #include "Food.hpp"
+#include "Interface.hpp"
 #include "global.h"
 #include "Mmap.hpp"
 #include "Game_Obj.hpp"
@@ -30,7 +31,8 @@ Food::~Food() {
 void Food::mandatoryFood() {
     if (GET_VALUE_FROM_MAP(_coorLilFood.y_arr, _coorLilFood.x_arr) != -2){//-2 on array is food
         if (_coorLilFood.y_arr != 0 & _coorLilFood.x_arr != 0) {
-            Game_Obj::getInstance()->getInterface().setScore(10);
+           Interface *qw = Interface::getInstance();
+           qw->setScore(10);
         }
         cntCreateFood++;
         int x = 0;
@@ -67,7 +69,8 @@ void Food::mandatoryFood() {
 void Food::surpriseFood() {
     if (GET_VALUE_FROM_MAP(_coorBigFood.y_arr, _coorBigFood.x_arr) != -2) {
         if(_drawBig == true) {
-            Game_Obj::getInstance()->getInterface().setScore(50);
+            Interface *qw =  Interface::getInstance();
+            qw->setScore(50);
         }
         _drawBig = false;
         std::random_device rd;

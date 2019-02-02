@@ -9,13 +9,24 @@
 #include "SFML_lib.hpp"
 #include "Allegra_lib.hpp"
 
-Interface:: Interface() noexcept {
+Interface:: Interface() {
     score = 0;
     time = 0;
 }
 
 Interface:: ~Interface() {
+    delete _inst;
 }
+
+Interface *Interface::_inst  = nullptr;
+
+Interface * Interface::getInstance() {
+    if (!_inst){
+        _inst = new Interface;
+    }
+    return _inst;
+}
+
 
 void Interface::setScore(int plus) {
     score = score + plus;
