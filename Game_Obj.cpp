@@ -5,6 +5,7 @@
 #include "Game_Obj.hpp"
 #include "Logic.hpp"
 #include "Mmap.hpp"
+#include "Interface.hpp"
 #include <ctime>
 #include <thread>
 #include <chrono>
@@ -58,12 +59,11 @@ Game_Obj* Game_Obj::getInstance() {
     }
     return _inst;
 }
-Interface& Game_Obj::getInterface() {
-    return _interface;
-}
+
 
 void Game_Obj::init() {
     _libs = {&SDL_lib::getInstance(), &SFML_lib::getInstance(), &Allegra_lib::getInstance()};
+    _interface = Interface::getInstance();
     _libs[g_lib - 1]->init();//draw map, load picture
     _menu.initMenu();
 
@@ -71,10 +71,10 @@ void Game_Obj::init() {
         clean(_libs[g_lib - 1]);
         return;
     }
-    _interface.initInterface();
+    _interface->initInterface();
     _libs[g_lib - 1]->drawMap();
     _logic.init(1);
-    _interface.changeTimeAndScore();
+    _interface->changeTimeAndScore();
     _food.updateFood();
     render(_libs[g_lib - 1]);//pre drawning before moving
     main_loop();
@@ -108,7 +108,7 @@ bool Game_Obj::escapeLogic() {
     }
     _logic.restart();
     _food.restart();
-    _interface.restart();
+    _interface->restart();
     return true;
 }
 
@@ -149,7 +149,7 @@ int Game_Obj::handleEvent(AView* lib) {
 void Game_Obj::update(AView* lib) {
     lib->drawMap();
     _logic.move();
-   _interface.changeTimeAndScore();
+   _interface->changeTimeAndScore();
    _food.updateFood();
 }
 

@@ -9,16 +9,22 @@
 
 class Interface {
 public:
-    Interface() noexcept;
-    ~Interface();
+    static Interface* getInstance();
     void initInterface();
     void changeTimeAndScore();
     void setScore(int plus);
     void restart();
 private:
+    static Interface *_inst;
     int score;
     int time;
     std::chrono::time_point<std::chrono::system_clock> start;
+    Interface();
+    ~Interface();
+    Interface(Interface &&) = delete;
+    Interface(const Interface &) = delete;
+    Interface& operator=(const Interface &) = delete;
+    Interface& operator=(Interface &&) = delete;
 
 
 };

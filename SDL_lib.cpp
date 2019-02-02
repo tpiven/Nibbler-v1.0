@@ -106,7 +106,7 @@ void SDL_lib::init() {
         exit(-1);
     }
     std::cout << "FONT_PATH: " << _dir + font_path << std::endl;
-    _font = TTF_OpenFont((_dir + font_path).c_str(), 20);
+    _font = TTF_OpenFont((_dir + font_path).c_str(), SizeFont);
     if (!_font){//TODO change size font on variable
         std::cerr << "textureText not exist" << std::endl;
         exit(1);

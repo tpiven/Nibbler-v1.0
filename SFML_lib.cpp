@@ -42,6 +42,11 @@ void SFML_lib::init() {
     _buttonTexture[2].loadFromFile("Picture/options.png");
     _buttonTexture[3].loadFromFile("Picture/continue.png");
     _buttonTexture[4].loadFromFile("Picture/exit.png");
+    font.loadFromFile("Picture/ArialItalic.ttf");
+    text.setFont(font);
+    text.setCharacterSize(SizeFont);
+    text.setFillColor(sf::Color::Red);
+    timeBigFood.loadFromFile("Picture/map_1.png", sf::IntRect(10, 10, 5, SizeFont - 10));
 
 }
 
@@ -198,28 +203,20 @@ void SFML_lib::drawFood(void* rect) {
 
 void SFML_lib::drawInterface(std::string clock, int score) {
 
-    sf::Font font;
-    font.loadFromFile("Picture/ArialItalic.ttf");
-    sf::Text text;
-    text.setFont(font);
     text.setString(clock);
-    text.setCharacterSize(24);
-    text.setFillColor(sf::Color::Red);
-    text.setPosition(50, 30);
-   _window->draw(text);
+    text.setPosition(50, HEIGHT_SCOREBOARD / 2);
+    _window->draw(text);
     text.setString("Score:   " + std::to_string(score));
-    text.setPosition(250, 30);
+    text.setPosition(g_weight / 3, HEIGHT_SCOREBOARD / 2);
     _window->draw(text);
 }
 
 void SFML_lib::drawTimeBigFood(int time) {
-    sf::Texture texture;
-    texture.loadFromFile("Picture/map_1.png", sf::IntRect(10, 10, 3, 10));
     sf::Sprite sprite;
-    sprite.setTexture(texture);
+    sprite.setTexture(timeBigFood);
     sprite.setColor(sf::Color::Green);
     for (int i = 0; i < time; i++) {
-        sprite.setPosition(450 + (3 * i), 30);
+        sprite.setPosition((g_weight / 3) * 2 + (3 * i), HEIGHT_SCOREBOARD / 2);
         _window->draw(sprite);
     }
 }
