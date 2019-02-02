@@ -25,6 +25,8 @@ void    drawFood(void*) override;
 void    drawInterface(std::string, int) override;
 void    drawTimeBigFood(int) override;
 void    renderClear() override;
+void    hideWindow() override;
+void    showWindow() override;
 
 private:
     static sf::RenderWindow *_window;

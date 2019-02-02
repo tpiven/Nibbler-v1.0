@@ -60,9 +60,28 @@ Game_Obj* Game_Obj::getInstance() {
     return _inst;
 }
 
+void Game_Obj::addNewSharedLib() {
+//    //add to _libs new shared lib
+//    //_libs[g_lib] = new SHARED
+//    //TODO must do new normal  add lib
+//    switch (g_lib){
+//        case 1:
+//            _libs[g_lib - 1] = &SDL_lib::getInstance();
+//            break;
+//        case 2:
+//            _libs[g_lib - 1] = &SFML_lib::getInstance();
+//            break;
+//        case 3:
+//            _libs[g_lib - 1] = &Allegra_lib::getInstance();
+//            break;
+//        default:
+//            break;
+//    }
+}
 
 void Game_Obj::init() {
     _libs = {&SDL_lib::getInstance(), &SFML_lib::getInstance(), &Allegra_lib::getInstance()};
+    addNewSharedLib();
     _interface = Interface::getInstance();
     _libs[g_lib - 1]->init();//draw map, load picture
     _menu.initMenu();
@@ -135,12 +154,29 @@ void Game_Obj::clean(AView * lib) {
     lib->cleanWindow();
 }
 
-int Game_Obj::handleEvent(AView* lib) {
+void Game_Obj::switchLib(int symb, AView*& lib) {
+    std::cout << "G_HEIGHT: " << g_height << std::endl;
+    std::cout << "G_WEIGHT: " << g_weight << std::endl;
+    std::cout << "HEIGHT_BOARD: " << HEIGHT_SCOREBOARD << std::endl;
+    _libs[g_lib - 1]->hideWindow();
+    _libs[symb - 1]->showWindow();
+    std::cout << "-------------------" << std::endl;
+    std::cout << "G_HEIGHT: " << g_height << std::endl;
+    std::cout << "G_WEIGHT: " << g_weight << std::endl;
+    std::cout << "HEIGHT_BOARD: " << HEIGHT_SCOREBOARD << std::endl;
+    g_lib = symb;
+    lib = _libs[g_lib - 1];
+}
+
+int Game_Obj::handleEvent(AView*& lib) {
     int symb = lib->catchHook();
     if (symb == -1) {
         return symb;
     }
-    if (symb != 0) {
+    if ((symb == 1 || symb == 2 || symb == 3) && symb != g_lib){
+        switchLib(symb, lib);
+    }
+    else if (symb != 0) {
         (!_menu.runningMenu() && symb != ' ') ? _logic.setKey(symb) : _menu.setKey(symb);
     }
     return symb;

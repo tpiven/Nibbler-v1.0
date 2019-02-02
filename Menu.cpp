@@ -47,6 +47,11 @@ void Menu::initMenu() {
 }
 
 bool Menu::changebutton() {
+    _size_block = g_weight / 90 + 20;//50 is scale for arrow
+    _rectA.w = _rectA.h = _size_block;//rect for Arrow
+    _rectB.h = _size_block;
+    _rectB.w = _size_block * 4;
+
     if (_key == 36){//enter, which mean that player chosed number of players
         _key = 0;
         _select = false;

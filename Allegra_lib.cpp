@@ -31,6 +31,10 @@ Allegra_lib& Allegra_lib::getInstance() {
 }
 
 void Allegra_lib::init() {
+    g_weight *= 2;
+    g_height *= 2;
+    HEIGHT_SCOREBOARD = g_weight / 14;
+    SizeFont = HEIGHT_SCOREBOARD / 4;
     al_init();
     al_init_image_addon();
     display = al_create_display(g_weight, g_height + HEIGHT_SCOREBOARD);
@@ -46,8 +50,7 @@ void Allegra_lib::init() {
     arrow = al_load_bitmap("Picture/arrow_path.png");
     button1 = al_load_bitmap("Picture/button1.png");
     button2 = al_load_bitmap("Picture/button2.png");
-
-
+    _isInit = true;
 }
 
 int Allegra_lib::catchHook() {
@@ -136,6 +139,8 @@ void Allegra_lib::drawTimeBigFood(int) {
 
 }
 
+void Allegra_lib::hideWindow() {}
+void Allegra_lib::showWindow() {}
 
 void Allegra_lib::renderClear() {
     al_clear_to_color(al_map_rgb(0,0,0));

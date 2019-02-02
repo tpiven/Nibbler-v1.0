@@ -106,12 +106,13 @@ void SDL_lib::init() {
         exit(-1);
     }
     std::cout << "FONT_PATH: " << _dir + font_path << std::endl;
-    _font = TTF_OpenFont((_dir + font_path).c_str(), SizeFont);
-    if (!_font){//TODO change size font on variable
+
+    if (!(_font = TTF_OpenFont((_dir + font_path).c_str(), SizeFont))){//TODO change size font on variable
         std::cerr << "textureText not exist" << std::endl;
         exit(1);
     }
     _textColor = {255, 0, 0, 0};//color red
+    _isInit = true;
 }
 
 int SDL_lib::catchHook(){
@@ -149,6 +150,12 @@ int SDL_lib::catchHook(){
                 return 124;
             case SDLK_RETURN:
                 return 36;//enter
+            case SDLK_1://change current lib on SDL
+                return 1;
+            case SDLK_2://change current lib on SFML
+                return 2;
+            case SDLK_3://change current lib on ALLEGRO
+                return 3;
             default:
                 return 0;
         }
@@ -229,6 +236,24 @@ void SDL_lib::drawTimeBigFood(int) {
 
 void SDL_lib::renderClear() {
     SDL_RenderClear(renderer);
+}
+
+void SDL_lib::hideWindow() { SDL_HideWindow(_window); }
+
+void SDL_lib::showWindow() {
+    if (!_isInit){
+//        g_weight /= 2;
+//        g_height /= 2;
+//        HEIGHT_SCOREBOARD = g_weight / 14;
+//        SizeFont = HEIGHT_SCOREBOARD / 4;
+        init();
+    }else{
+//        g_weight /= 2;
+//        g_height /= 2;
+//        HEIGHT_SCOREBOARD = g_weight / 14;
+//        SizeFont = HEIGHT_SCOREBOARD / 4;
+    }
+    SDL_ShowWindow(_window);
 }
 
 void SDL_lib::cleanWindow() {

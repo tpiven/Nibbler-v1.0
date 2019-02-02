@@ -29,6 +29,9 @@ Food::~Food() {
 }
 
 void Food::mandatoryFood() {
+    _size_block = (g_weight / 90) / 2;
+    _rectLil.w = _rectLil.h = _size_block;
+
     if (GET_VALUE_FROM_MAP(_coorLilFood.y_arr, _coorLilFood.x_arr) != -2){//-2 on array is food
         if (_coorLilFood.y_arr != 0 & _coorLilFood.x_arr != 0) {
            Interface *qw = Interface::getInstance();
@@ -67,6 +70,9 @@ void Food::mandatoryFood() {
 }
 
 void Food::surpriseFood() {
+    _size_block = (g_weight / 90) / 2;
+    _rectBig.w = _rectBig.h = _size_block * 2;
+
     if (GET_VALUE_FROM_MAP(_coorBigFood.y_arr, _coorBigFood.x_arr) != -2) {
         if(_drawBig == true) {
             Interface *qw =  Interface::getInstance();
