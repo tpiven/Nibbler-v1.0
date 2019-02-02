@@ -4,6 +4,7 @@
 #pragma once
 #include "SDL2/SDL.h"
 #include "SDL2/SDL_image.h"
+#include "SDL2/SDL_ttf.h"
 #include "AView.hpp"
 #include <map>
 #include "TextureManager.hpp"
@@ -32,9 +33,16 @@ private:
     static SDL_Texture *_textureMap;
     static SDL_Texture *_textureFood;
     static SDL_Texture  *_textureArrow;
+
+    static SDL_Texture  *_textureText;
+    static TTF_Font     *_font;
+    SDL_Color           _textColor;
+
     SDL_Rect    _mcrR;//menu
     SDL_Rect    _scrR;//snake
     SDL_Rect    _fcrR;//food
+    SDL_Rect    _tcrR;//text
+
     std::string _dir;
     std::map<int, SDL_Texture*> _snakeTexture;
     std::map<std::string, SDL_Texture*> _buttonTexture;

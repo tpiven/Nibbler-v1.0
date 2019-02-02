@@ -11,5 +11,4 @@ include_directories(${INCLUDE_DIR})
 link_directories(${LIBRARY})
 
 add_executable(Nibbler_v1.1 ${SOURCE_FILES})
-target_link_libraries(Nibbler_v1.1  -lSDL2 -lSDL2_image -lsfml-window -lsfml-graphics -lsfml-audio -lsfml-network -lsfml-system -lallegro -lallegro_image -lallegro_dialog)
-
+target_link_libraries(Nibbler_v1.1  -lSDL2 -lSDL2_image -lSDL2_ttf  -lsfml-window -lsfml-graphics -lsfml-audio -lsfml-network -lsfml-system -lallegro -lallegro_image -lallegro_dialog)

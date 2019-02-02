@@ -7,6 +7,7 @@
 #include <unistd.h>
 #include "Mmap.hpp"
 #define CREATE_TEXTURE(str) TextureManager::getInstance().LoadTexture(str)
+#define CREATE_TEXTURETEXT(str, color, tcrR) TextureManager::getInstance().LoadTextureText(str, color, tcrR)
 
 const char tail_path[] = "/Picture/dirt.png";//TODO create many picture like: tail_16x16, tail_8x8
 const char body_path[] = "/Picture/grass_bloc_mod.png";
@@ -19,12 +20,15 @@ extern const char buttonOption_path[] = "/Picture/options.png";
 extern const char buttonContinue_path[] = "/Picture/continue.png";
 extern const char buttonExit_path[] = "/Picture/exit.png";
 const char arrow_path[] = "/Picture/arrow_path.png";
+const char font_path[] = "/Picture/ArialItalic.ttf";
 
 SDL_Renderer* SDL_lib::renderer = nullptr;
 SDL_Window*     SDL_lib::_window = nullptr;
 SDL_Texture*    SDL_lib::_textureMap = nullptr;
 SDL_Texture*    SDL_lib::_textureFood = nullptr;
 SDL_Texture*    SDL_lib::_textureArrow = nullptr;
+SDL_Texture*    SDL_lib::_textureText = nullptr;
+TTF_Font*       SDL_lib::_font = nullptr;
 
 SDL_lib::SDL_lib() {}
 SDL_lib::~SDL_lib() {}
@@ -96,6 +100,18 @@ void SDL_lib::init() {
         std::cerr << "textuteFood not exist" << std::endl;
         exit(1);
     }
+    /************INIT TEXTURE FOR FONT************/
+    if (TTF_Init() < 0){
+        std::cout << TTF_GetError() << std::endl;
+        exit(-1);
+    }
+    std::cout << "FONT_PATH: " << _dir + font_path << std::endl;
+    _font = TTF_OpenFont((_dir + font_path).c_str(), 20);
+    if (!_font){//TODO change size font on variable
+        std::cerr << "textureText not exist" << std::endl;
+        exit(1);
+    }
+    _textColor = {255, 0, 0, 0};//color red
 }
 
 int SDL_lib::catchHook(){
@@ -195,7 +211,16 @@ void SDL_lib::drawFood(void* rect) {
 }
 
 void SDL_lib::drawInterface(std::string clock, int score) {
-
+    /***************DRAW CLOCK****************/
+    _textureText = CREATE_TEXTURETEXT(clock.c_str(), _textColor, _tcrR);
+    _tcrR.x = 50;
+    _tcrR.y = HEIGHT_SCOREBOARD/2;
+    SDL_RenderCopy(renderer, _textureText, nullptr, &_tcrR);
+    /***************DRAW SCORE****************/
+    _textureText = CREATE_TEXTURETEXT(("Score:   " + std::to_string(score)).c_str(), _textColor, _tcrR);
+    _tcrR.x = g_weight/3;
+    _tcrR.y = HEIGHT_SCOREBOARD/2;
+    SDL_RenderCopy(renderer, _textureText, nullptr, &_tcrR);
 }
 
 void SDL_lib::drawTimeBigFood(int) {
