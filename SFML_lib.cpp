@@ -196,17 +196,37 @@ void SFML_lib::drawFood(void* rect) {
     _window->draw(food);
 }
 
-void SFML_lib::drawInterface(int score, int time) {
+void SFML_lib::drawInterface(std::string clock, int score) {
 
+    sf::Font font;
+    font.loadFromFile("Picture/ArialItalic.ttf");
     sf::Text text;
-
-
+    text.setFont(font);
+    text.setString(clock);
+    text.setCharacterSize(24);
+    text.setFillColor(sf::Color::Red);
+    text.setPosition(50, 30);
+   _window->draw(text);
+    text.setString("Score:   " + std::to_string(score));
+    text.setPosition(250, 30);
+    _window->draw(text);
 }
+
+void SFML_lib::drawTimeBigFood(int time) {
+    sf::Texture texture;
+    texture.loadFromFile("Picture/map_1.png", sf::IntRect(10, 10, 3, 10));
+    sf::Sprite sprite;
+    sprite.setTexture(texture);
+    sprite.setColor(sf::Color::Green);
+    for (int i = 0; i < time; i++) {
+        sprite.setPosition(450 + (3 * i), 30);
+        _window->draw(sprite);
+    }
+}
+
 void SFML_lib::renderClear() {
 
 }
-
-
 void SFML_lib::cleanWindow() {
     _window->clear();
     _window->close();

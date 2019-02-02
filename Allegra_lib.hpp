@@ -5,9 +5,9 @@
 #pragma once
 
 
-#include "allegro5/allegro.h"
-#include "allegro5/allegro_image.h"
-#include "allegro5/allegro_native_dialog.h"
+//#include "allegro5/allegro.h"
+//#include "allegro5/allegro_image.h"
+//#include "allegro5/allegro_native_dialog.h"
 
 #include "AView.hpp"
 #include <map>
@@ -26,7 +26,8 @@ public:
     void    delay(int) override;
     void    cleanWindow() override;
     void    drawFood(void*) override;
-    void    drawInterface(int, int) override;
+    void    drawInterface(std::string, int) override;
+    void    drawTimeBigFood(int) override;
 
 private:
     ALLEGRO_DISPLAY             *display;

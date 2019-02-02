@@ -4,8 +4,6 @@
 
 #pragma once
 
-//typedef std::chrono::duration<float, std::ratio<1>> duration;
-
 typedef struct s_scr{
     int x;
     int y;

@@ -38,8 +38,8 @@ void Menu::initMenu() {
             SFML_lib::getInstance().render();
             break;
         case 3:
-            Allegra_lib::getInstance().drawMenu(&_rectA, &_rectB, _typeMenu);
-            Allegra_lib::getInstance().render();
+           Allegra_lib::getInstance().drawMenu(&_rectA, &_rectB, _typeMenu);
+           Allegra_lib::getInstance().render();
             break;
         default:
             break;

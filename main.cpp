@@ -7,13 +7,16 @@ int g_lib;
 
 
 int size(int n, int g){
-    if (n % g == 0)
-        return n;
-    else {
-        return (g *(n / g));
+    if (g == 1) {
+        if (n % 90 == 0)
+            return n;
+        else
+            return (90 *(n / 90));
     }
-
-
+    else if (g == 2) {
+        return (67 * (g_weight / 90));
+    }
+    return 0;
 }
 
 int main(int ac, char *av[]){
@@ -28,14 +31,14 @@ int main(int ac, char *av[]){
             return -1;
         }
         if (i == 1) {
-            g_weight = size(std::stoi(*(av + i)), 90);
+            g_weight = size(std::stoi(*(av + i)), 1);
             if (g_weight > 2880 || g_weight < 720) {
                 std::cout << "Not valued weight" << std::endl;
                 return -1;
             }
         }
         else if (i == 2){
-            g_height = size(std::stoi(*(av + i)), 67);
+            g_height = size(std::stoi(*(av + i)), 2);
             if (g_height > 2144 || g_height < 536) {
                 std::cout << "Not valued height" << std::endl;
                 return -1;

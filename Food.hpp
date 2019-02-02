@@ -5,6 +5,7 @@
 #pragma once
 
 #include "header.h"
+#include "Interface.hpp"
 
 class Food {
 public:
@@ -26,5 +27,6 @@ private:
     int _size_block;
 //    int _cntCreateFood;
     bool _drawBig;
+    std::chrono::time_point<std::chrono::system_clock> startBig;
 };
 

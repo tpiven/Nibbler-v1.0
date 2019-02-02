@@ -2,8 +2,8 @@
 // Created by kmykhailenko on 02.01.19.
 //
 #pragma once
-#include "SDL2/SDL.h"
-#include "SDL2/SDL_image.h"
+//#include "SDL2/SDL.h"
+//#include "SDL2/SDL_image.h"
 #include "AView.hpp"
 #include <map>
 #include "TextureManager.hpp"
@@ -22,7 +22,8 @@ public:
     void    delay(int) override;
     void    cleanWindow() override;
     void    drawFood(void*) override;
-    void    drawInterface(int, int) override;
+    void    drawInterface(std::string, int) override;
+    void    drawTimeBigFood(int) override;
 private:
     friend class TextureManager;
     static SDL_Renderer * renderer;

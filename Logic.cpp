@@ -159,7 +159,7 @@ void Logic::move() {
                 SFML_lib::getInstance().drawSnake(&_rect, j);
                 break;
             case 3:
-                //TODO call allegro.draw();
+                Allegra_lib::getInstance().drawSnake(&_rect, j);
                 break;
             default:
                 break;
