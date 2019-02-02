@@ -32,14 +32,16 @@ Game_Obj::~Game_Obj() {
 Game_Obj* Game_Obj::_inst = nullptr;
 
 bool Game_Obj::menu(AView* lib) {//draw menu for select map, and number of player
-    _menu.initMenu();
-    int const frameDealy = 3000 / FPS;
+    int const frameDealy = 4000 / FPS;
     while(_menu.runningMenu()){
+        lib->renderClear();
         frameStart = _libs[g_lib - 1]->getTicks();
         if (handleEvent(lib) == -1){
             return false;
         }
-        _menu.changebutton();
+        if (!_menu.changebutton()){
+            return false;
+        }
         frameTime = _libs[g_lib - 1]->getTicks() - frameStart;
         if (frameDealy > frameTime){
             _libs[g_lib - 1]->delay(frameDealy - frameTime);
@@ -59,6 +61,7 @@ Game_Obj* Game_Obj::getInstance() {
 void Game_Obj::init() {
     _libs = {&SDL_lib::getInstance(), &SFML_lib::getInstance()};//, SFML_lib::getInstance, ALLEGRO_lib::
     _libs[g_lib - 1]->init();//draw map, load picture
+    _menu.initMenu();
     if (!menu(_libs[g_lib - 1])){
         clean(_libs[g_lib - 1]);
         return;
@@ -67,15 +70,20 @@ void Game_Obj::init() {
     _logic.init(1);
     _food.updateFood();
     render(_libs[g_lib - 1]);//pre drawning before moving
-    std::cout << "g_Lib: " << g_lib << std::endl;
     main_loop();
 }
 
 void Game_Obj::main_loop() {
     int const frameDealy = 6000 / FPS;
-    while(_logic.runningGame()){
+    while(1){
+        _libs[g_lib - 1]->renderClear();
         frameStart = _libs[g_lib - 1]->getTicks();
-        if (!action(_libs[g_lib - 1])){
+        if (!_logic.runningGame()){
+            if (!escapeLogic()){
+                break;
+            }
+        }
+        else if (!action(_libs[g_lib - 1])){
                 break;
         }
         frameTime = _libs[g_lib - 1]->getTicks() - frameStart;
@@ -86,13 +94,30 @@ void Game_Obj::main_loop() {
     clean(_libs[g_lib - 1]);
 }
 
+bool Game_Obj::escapeLogic() {
+    _menu.escapeDialog();
+    if (!menu(_libs[g_lib - 1])){
+        return false;
+    }
+    _logic.restart();
+    _food.restart();
+    return true;
+}
+
+bool Game_Obj::pauseLogic() {
+    _menu.pauseDialog();
+    return menu(_libs[g_lib - 1]);
+}
+
 bool Game_Obj::action(AView *lib) {
-    if (handleEvent(lib) == -1){
+    int key = handleEvent(lib);
+    if (key == -1 || (key == ' ' && !pauseLogic())){
         return false;
     }
     update(lib);
     render(lib);
-    if (handleEvent(lib) == -1){
+    key = handleEvent(lib);
+    if (key == -1 || (key == ' ' && !pauseLogic())){
         return false;
     }
     return true;
@@ -108,7 +133,7 @@ int Game_Obj::handleEvent(AView* lib) {
         return symb;
     }
     if (symb != 0) {
-        (!_menu.runningMenu()) ? _logic.setKey(symb) : _menu.setKey(symb);
+        (!_menu.runningMenu() && symb != ' ') ? _logic.setKey(symb) : _menu.setKey(symb);
     }
     return symb;
 }
@@ -121,5 +146,4 @@ void Game_Obj::update(AView* lib) {
 
 void Game_Obj::render(AView* lib) {
     lib->render();
-//    Mmap::getInstance().printMmap();
 }

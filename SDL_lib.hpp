@@ -6,6 +6,7 @@
 #include "SDL2/SDL_image.h"
 #include "AView.hpp"
 #include <map>
+#include "TextureManager.hpp"
 
 class SDL_lib : public AView{
 public:
@@ -16,11 +17,13 @@ public:
     void    drawMenu(void*, void*, int) override;
     void    drawMap() override;
     void    drawSnake(void*, int) override;
+    void    renderClear() override;
     uint32_t getTicks() override;
     void    delay(int) override;
     void    cleanWindow() override;
     void    drawFood(void*) override;
 private:
+    friend class TextureManager;
     static SDL_Renderer * renderer;
     static SDL_Window *_window;
     SDL_Event   _event;
@@ -32,7 +35,7 @@ private:
     SDL_Rect    _fcrR;//food
     std::string _dir;
     std::map<int, SDL_Texture*> _snakeTexture;
-    std::map<int, SDL_Texture*> _buttonTexture;
+    std::map<std::string, SDL_Texture*> _buttonTexture;
     SDL_lib();
     ~SDL_lib();
     SDL_lib(const SDL_lib&) = delete;

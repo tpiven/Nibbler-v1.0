@@ -13,13 +13,17 @@ public:
     void    initMenu();
     void    setKey(int key);
     bool    runningMenu() const;
-    void    changebutton();
+    bool    changebutton();
+    void    escapeDialog();
+    void    pauseDialog();
 private:
-    int _numButton;
+    int _numButton;//number of button
     char _key;//w,a,s,d
     int _size_block;
     t_scr _rectA;//struct for render Arrow texture
     t_scr _rectB;//struct for render Button texture
     bool _select;//flag for select menu
+    int  _typeMenu;//flag for 1 is Start_menu, 2 is Escape_Menu, 3 is Pause_menu
+    void moveArrow();
 };
 

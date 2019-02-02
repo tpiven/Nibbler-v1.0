@@ -45,6 +45,8 @@ void Logic::init(int n_pl) {
         }
         _rect.y = _cors.back().y_dis;
         _rect.x = _cors.back().x_dis;
+        _rectCopy = _rect;
+        _corsCopy = _cors;
         switch (g_lib){
             case 1:
                 SDL_lib::getInstance().drawSnake(&_rect, j);
@@ -87,11 +89,10 @@ void Logic::setKey(int key) {
         else if ((key == 'a' && _key != 'd') || (key == 'd' && _key != 'a')){
             _key = static_cast<char>(key);
         }
-        else if (key == ' '){
-            //TODO need implement pause
-        }
     }
 }
+
+int Logic::getkey() const { return _key;}
 
 void Logic::updateHead(t_coor& head) {
     if (head.inPortal){
@@ -117,6 +118,7 @@ void Logic::move() {
     updateHead(head);
     int ch = Mmap::getInstance().getValueFromMap(head.y_arr, head.x_arr);
     if (ch > 0 || ch == -1){
+        Mmap::getInstance().printMmap();
         crash();
         return;
     }
@@ -164,11 +166,21 @@ void Logic::move() {
     }
 }
 
+void Logic::restart() {
+    for(auto it : _cors){
+        Mmap::getInstance().setValueInMap(0, it.y_arr, it.x_arr);
+    }
+    _cors.erase(_cors.begin(), _cors.end());
+    _cors = _corsCopy;
+    _rect = _rectCopy;
+    _playGame = true;
+    _key = (_pl == 1) ? 'd' : 'a';
+}
+
 bool Logic::runningGame() const { return _playGame;}
 
 void Logic::crash() {
     _playGame = false;
-    //Mmap::getInstance().printMmap();
 }
 
 void Logic::grow() {
