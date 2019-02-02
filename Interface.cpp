@@ -51,13 +51,13 @@ void Interface::changeTimeAndScore() {
     }
     switch (g_lib){
         case 1:
-            SDL_lib::getInstance().drawInterface(score, 1));
+            SDL_lib::getInstance().drawInterface(clock, score);
             break;
         case 2:
             SFML_lib::getInstance().drawInterface(clock, score);
             break;
         case 3:
-            Allegra_lib::getInstance().drawInterface(score, 1);
+            Allegra_lib::getInstance().drawInterface(clock, score);
             break;
         default:
             break;
