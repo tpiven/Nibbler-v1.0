@@ -63,7 +63,7 @@ Interface& Game_Obj::getInterface() {
 }
 
 void Game_Obj::init() {
-    _libs = {&SFML_lib::getInstance(),&SFML_lib::getInstance()};//{&SDL_lib::getInstance(), &SFML_lib::getInstance(), &Allegra_lib::getInstance()};
+    _libs = {&SDL_lib::getInstance(), &SFML_lib::getInstance(), &Allegra_lib::getInstance()};
     _libs[g_lib - 1]->init();//draw map, load picture
     _menu.initMenu();
 

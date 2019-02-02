@@ -2,8 +2,8 @@
 // Created by kmykhailenko on 02.01.19.
 //
 #pragma once
-//#include "SDL2/SDL.h"
-//#include "SDL2/SDL_image.h"
+#include "SDL2/SDL.h"
+#include "SDL2/SDL_image.h"
 #include "AView.hpp"
 #include <map>
 #include "TextureManager.hpp"

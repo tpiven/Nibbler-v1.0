@@ -30,6 +30,7 @@ private:
     Menu    _menu;
     Food    _food;
     Interface _interface;
+    //
     Game_Obj();
     ~Game_Obj();
     Game_Obj(Game_Obj &&) = delete;

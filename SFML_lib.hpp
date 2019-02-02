@@ -11,7 +11,7 @@
 
 class SFML_lib: public AView{
 public:
-static SFML_lib & getInstance();
+static SFML_lib &  getInstance();
 void    init() override;
 int     catchHook() override;
 void    render() override;
