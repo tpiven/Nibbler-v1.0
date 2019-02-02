@@ -33,8 +33,11 @@ private:
     sf::Texture _textureMap;
     sf::Texture  _textureFood;
     sf::Texture _textureArrow;
+    sf::Texture timeBigFood;
     std::map<int, sf::Texture> _snakeTexture;
     std::map<int, sf::Texture> _buttonTexture;
+    sf::Font font;
+    sf::Text text;
 SFML_lib();
 ~SFML_lib();
 SFML_lib(const SFML_lib&) = delete;

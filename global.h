@@ -5,6 +5,8 @@
 
 extern int g_weight;
 extern int g_height;
+extern int HEIGHT_SCOREBOARD;
+extern int SizeFont;
 extern int g_lib;//1-SDL, 2-SFML, 3-allegro
 extern const char tail_path[];
 extern const char body_path[];
@@ -16,5 +18,4 @@ extern const char buttonUnPress1_path[];
 extern const char buttonPress2_path[];
 extern const char buttonUnPress2_path[];
 extern const char arrow_path[];
-#define HEIGHT_SCOREBOARD 100
 #define WEIGHT_SCOREBOARD 0

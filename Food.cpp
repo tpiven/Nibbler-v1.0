@@ -98,7 +98,7 @@ void Food::surpriseFood() {
         }
     }
     auto t = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now() - startBig);
-    if (t.count() >= 5000){
+    if (t.count() >= 8000){
 
         _drawBig = false;
         SET_VALUE_IN_MAP(0, _coorBigFood.y_arr, _coorBigFood.x_arr);

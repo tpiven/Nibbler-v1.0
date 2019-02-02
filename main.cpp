@@ -4,6 +4,8 @@
 int g_weight;
 int g_height;
 int g_lib;
+int HEIGHT_SCOREBOARD;
+int SizeFont;
 
 
 int size(int n, int g){
@@ -32,14 +34,14 @@ int main(int ac, char *av[]){
         }
         if (i == 1) {
             g_weight = size(std::stoi(*(av + i)), 1);
-            if (g_weight > 2880 || g_weight < 720) {
+            if (g_weight > 1620 || g_weight < 720) {
                 std::cout << "Not valued weight" << std::endl;
                 return -1;
             }
         }
         else if (i == 2){
             g_height = size(std::stoi(*(av + i)), 2);
-            if (g_height > 2144 || g_height < 536) {
+            if (g_height > 1206 || g_height < 536) {
                 std::cout << "Not valued height" << std::endl;
                 return -1;
             }
@@ -54,6 +56,12 @@ int main(int ac, char *av[]){
             }
         }
     }
+    if (g_lib != 1){
+        g_weight *= 2;
+        g_height *= 2;
+    }
+    HEIGHT_SCOREBOARD = g_weight / 14;
+    SizeFont = HEIGHT_SCOREBOARD / 4;
     Game_Obj *obj = Game_Obj::getInstance();
     obj->init();
     return 0;
