@@ -14,7 +14,6 @@
 #include <vector>
 #include "global.h"
 #include <ctime>
-//#include <unistd.h>
 #include <unistd.h>
 #include <mutex>
 
@@ -34,7 +33,9 @@ Game_Obj* Game_Obj::_inst = nullptr;
 bool Game_Obj::menu(AView* lib) {//draw menu for select map, and number of player
     int const frameDealy = 4000 / FPS;
     while(_menu.runningMenu()){
+
         lib->renderClear();
+
         frameStart = _libs[g_lib - 1]->getTicks();
         if (handleEvent(lib) == -1){
             return false;
@@ -57,17 +58,23 @@ Game_Obj* Game_Obj::getInstance() {
     }
     return _inst;
 }
+Interface& Game_Obj::getInterface() {
+    return _interface;
+}
 
 void Game_Obj::init() {
-    _libs = {&SDL_lib::getInstance(), &SFML_lib::getInstance()};//, SFML_lib::getInstance, ALLEGRO_lib::
+    _libs = {&SDL_lib::getInstance(), &SFML_lib::getInstance(), &Allegra_lib::getInstance()};
     _libs[g_lib - 1]->init();//draw map, load picture
     _menu.initMenu();
+
     if (!menu(_libs[g_lib - 1])){
         clean(_libs[g_lib - 1]);
         return;
     }
+    _interface.initInterface();
     _libs[g_lib - 1]->drawMap();
     _logic.init(1);
+    _interface.changeTimeAndScore();
     _food.updateFood();
     render(_libs[g_lib - 1]);//pre drawning before moving
     main_loop();
@@ -101,6 +108,7 @@ bool Game_Obj::escapeLogic() {
     }
     _logic.restart();
     _food.restart();
+    _interface.restart();
     return true;
 }
 
@@ -141,7 +149,8 @@ int Game_Obj::handleEvent(AView* lib) {
 void Game_Obj::update(AView* lib) {
     lib->drawMap();
     _logic.move();
-    _food.updateFood();
+   _interface.changeTimeAndScore();
+   _food.updateFood();
 }
 
 void Game_Obj::render(AView* lib) {

@@ -9,6 +9,7 @@
 #include "Mmap.hpp"
 #include "SDL_lib.hpp"
 #include "SFML_lib.hpp"
+#include "Allegra_lib.hpp"
 
 Logic::Logic() noexcept {
     _size_block = g_weight / 90;
@@ -55,7 +56,7 @@ void Logic::init(int n_pl) {
                 SFML_lib::getInstance().drawSnake(&_rect, j);
                 break;
             case 3:
-                //TODO call allegro.draw();
+                Allegra_lib::getInstance().drawSnake(&_rect, j);
                 break;
             default:
                 break;
@@ -158,7 +159,7 @@ void Logic::move() {
                 SFML_lib::getInstance().drawSnake(&_rect, j);
                 break;
             case 3:
-                //TODO call allegro.draw();
+                Allegra_lib::getInstance().drawSnake(&_rect, j);
                 break;
             default:
                 break;

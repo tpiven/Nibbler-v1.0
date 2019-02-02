@@ -7,6 +7,7 @@
 #include "Logic.hpp"
 #include "Food.hpp"
 #include "Menu.hpp"
+#include "Interface.hpp"
 
 class Game_Obj {
 public:
@@ -15,6 +16,7 @@ public:
     int     handleEvent(AView*);
     void    update(AView*);
     void    render(AView*);
+    Interface& getInterface();
 private:
     static Game_Obj *_inst;
     bool    menu(AView*);
@@ -27,6 +29,8 @@ private:
     Logic   _logic;
     Menu    _menu;
     Food    _food;
+    Interface _interface;
+    //
     Game_Obj();
     ~Game_Obj();
     Game_Obj(Game_Obj &&) = delete;

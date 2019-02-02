@@ -11,7 +11,7 @@
 
 class SFML_lib: public AView{
 public:
-static SFML_lib & getInstance();
+static SFML_lib &  getInstance();
 void    init() override;
 int     catchHook() override;
 void    render() override;
@@ -22,6 +22,8 @@ uint32_t getTicks() override;
 void    delay(int) override;
 void    cleanWindow() override;
 void    drawFood(void*) override;
+void    drawInterface(std::string, int) override;
+void    drawTimeBigFood(int) override;
 void    renderClear() override;
 
 private:

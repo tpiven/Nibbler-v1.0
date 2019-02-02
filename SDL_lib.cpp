@@ -194,6 +194,14 @@ void SDL_lib::drawFood(void* rect) {
     SDL_RenderCopy(renderer, _textureFood, nullptr, &_fcrR);
 }
 
+void SDL_lib::drawInterface(std::string clock, int score) {
+
+}
+
+void SDL_lib::drawTimeBigFood(int) {
+
+}
+
 void SDL_lib::renderClear() {
     SDL_RenderClear(renderer);
 }

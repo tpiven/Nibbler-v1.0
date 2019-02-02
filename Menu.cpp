@@ -5,6 +5,8 @@
 #include "Menu.hpp"
 #include "global.h"
 #include "SDL_lib.hpp"
+#include "SFML_lib.hpp"
+#include "Allegra_lib.hpp"
 
 Menu::Menu() noexcept {
     _size_block = g_weight / 90 + 20;//50 is scale for arrow
@@ -32,10 +34,12 @@ void Menu::initMenu() {
             SDL_lib::getInstance().render();
             break;
         case 2:
-            //TODO call sfml.draw();
+            SFML_lib::getInstance().drawMenu(&_rectA, &_rectB, _typeMenu);
+            SFML_lib::getInstance().render();
             break;
         case 3:
-            //TODO call allegro.draw();
+           Allegra_lib::getInstance().drawMenu(&_rectA, &_rectB, _typeMenu);
+           Allegra_lib::getInstance().render();
             break;
         default:
             break;
@@ -59,10 +63,10 @@ bool Menu::changebutton() {
             SDL_lib::getInstance().drawMenu(&_rectA, &_rectB, _typeMenu);
             break;
         case 2:
-            //TODO call sfml.draw();
+            SFML_lib::getInstance().drawMenu(&_rectA, &_rectB, _typeMenu);
             break;
         case 3:
-            //TODO call allegro.draw();
+            Allegra_lib::getInstance().drawMenu(&_rectA, &_rectB, _typeMenu);
             break;
         default:
             break;
