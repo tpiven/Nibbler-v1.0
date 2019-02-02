@@ -107,15 +107,15 @@ void Food::surpriseFood() {
             switch (g_lib){
                 case 1:
                     SDL_lib::getInstance().drawFood(&_rectBig);
-                    SDL_lib::getInstance().drawTimeBigFood(static_cast<int>((5000 - t.count())/100));
+                    SDL_lib::getInstance().drawTimeBigFood(static_cast<int>((8000 - t.count())/100));
                     break;
                 case 2:
                     SFML_lib::getInstance().drawFood(&_rectBig);
-                    SFML_lib::getInstance().drawTimeBigFood(static_cast<int>((5000 - t.count())/100));
+                    SFML_lib::getInstance().drawTimeBigFood(static_cast<int>((8000 - t.count())/100));
                     break;
                 case 3:
                     Allegra_lib::getInstance().drawFood(&_rectBig);
-                    Allegra_lib::getInstance().drawTimeBigFood(static_cast<int>((5000 - t.count())/100));
+                    Allegra_lib::getInstance().drawTimeBigFood(static_cast<int>((8000 - t.count())/100));
                     break;
                 default:
                     break;
