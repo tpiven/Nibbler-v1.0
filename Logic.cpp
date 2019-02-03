@@ -96,11 +96,6 @@ void Logic::setKey(int key) {
 int Logic::getkey() const { return _key;}
 
 void Logic::updateHead(t_coor& head) {
-    if (head.inPortal){
-        //head.x_arr = 10;//?
-        //head.y_arr = 15;//?
-        return;
-    }
     if (_key == 'a' || _key == 'd'){
         head.x_dis += (_key == 'd') ? _size_block : -_size_block;
         head.x_arr += (_key == 'd') ? 1 : -1;
@@ -108,9 +103,6 @@ void Logic::updateHead(t_coor& head) {
     else if (_key == 'w' || _key == 's'){
         head.y_dis += (_key == 's') ? _size_block : -_size_block;
         head.y_arr += (_key == 's') ? 1 : -1;
-    }
-    if (!head.inPortal && Mmap::getInstance().getValueFromMap(head.y_arr, head.x_arr) == -5){
-        head.inPortal = true;
     }
 }
 
@@ -126,6 +118,11 @@ void Logic::move() {
     else if (ch == -2){
         grow();
     }
+    else if (ch == -5) {
+        head.x_arr = (head.x_arr == 0) ? 88 : 1;
+        head.x_dis = (head.x_arr *  g_weight) / 90;
+    }
+
     for(auto it = _cors.begin(), it_c = ++_cors.begin(); it != _cors.end(); it++){
         int j = 0;
 
@@ -149,7 +146,7 @@ void Logic::move() {
                 Mmap::getInstance().setValueInMap(-1, it->y_arr, it->x_arr);
             }
         }
-        _rect.y = it->y_dis;
+         _rect.y = it->y_dis;
         _rect.x = it->x_dis;
         switch (g_lib){
             case 1:

@@ -6,11 +6,13 @@
 
 
 #include "allegro5/allegro.h"
+#include <allegro5/allegro_primitives.h>
 #include "allegro5/allegro_image.h"
 #include "allegro5/allegro_native_dialog.h"
 
 #include "AView.hpp"
 #include <map>
+
 
 class Allegra_lib: public AView{
 public:
@@ -31,7 +33,7 @@ public:
 
 private:
     ALLEGRO_DISPLAY             *display;
-    static ALLEGRO_EVENT_QUEUE         *event_queue;
+    ALLEGRO_EVENT_QUEUE         *event_queue;
     ALLEGRO_BITMAP        		*_map;
     ALLEGRO_BITMAP              *food;
     ALLEGRO_BITMAP              *arrow;

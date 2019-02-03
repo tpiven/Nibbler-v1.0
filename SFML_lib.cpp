@@ -20,7 +20,7 @@
 //SDL_Texture*    SDL_lib::_textureMap = nullptr;
 //SDL_Texture*    SDL_lib::_textureFood = nullptr;
 
-sf::RenderWindow* SFML_lib::_window =nullptr;
+sf::RenderWindow* SFML_lib::_window = nullptr;
 
 SFML_lib::SFML_lib() {}
 SFML_lib::~SFML_lib() {}
