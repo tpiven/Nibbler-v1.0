@@ -231,22 +231,28 @@ void SFML_lib::renderClear() {
 
 }
 
-void SFML_lib::hideWindow() { _window->setVisible(false); }
+void SFML_lib::hideWindow() {
+//    _window->setVisible(false);
+    _window->clear();
+    _window->close();
+}
 
 void SFML_lib::showWindow() {
-    if (!_isInit){
-        g_weight *= 2;
-        g_height *= 2;
-        HEIGHT_SCOREBOARD = g_weight / 14;
-        SizeFont = HEIGHT_SCOREBOARD / 4;
-        init();
-    }else{
-        g_weight *= 2;
-        g_height *= 2;
-        HEIGHT_SCOREBOARD = g_weight / 14;
-        SizeFont = HEIGHT_SCOREBOARD / 4;
-    }
-    _window->setVisible(true);
+//    if (!_isInit){
+//        g_weight *= 2;
+//        g_height *= 2;
+//        HEIGHT_SCOREBOARD = g_weight / 14;
+//        SizeFont = HEIGHT_SCOREBOARD / 4;
+//        init();
+//    }
+//    else{
+////        g_weight *= 2;
+////        g_height *= 2;
+////        HEIGHT_SCOREBOARD = g_weight / 14;
+////        SizeFont = HEIGHT_SCOREBOARD / 4;
+//    }
+    init();
+//    _window->setVisible(true);
 }
 
 void SFML_lib::cleanWindow() {

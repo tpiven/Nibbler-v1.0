@@ -238,25 +238,28 @@ void SDL_lib::renderClear() {
 }
 
 void SDL_lib::hideWindow() {
-    SDL_HideWindow(_window);
-//    SDL_DestroyRenderer(renderer);
-//    SDL_DestroyWindow(_window);
+//    SDL_HideWindow(_window);
+    SDL_DestroyWindow(_window);
+    SDL_DestroyRenderer(renderer);
+    SDL_Quit();
 }
 
 void SDL_lib::showWindow() {
-    if (!_isInit){
-        g_weight /= 2;
-        g_height /= 2;
-        HEIGHT_SCOREBOARD = g_weight / 14;
-        SizeFont = HEIGHT_SCOREBOARD / 4;
-        init();
-    }else{
-        g_weight /= 2;
-        g_height /= 2;
-        HEIGHT_SCOREBOARD = g_weight / 14;
-        SizeFont = HEIGHT_SCOREBOARD / 4;
-    }
-    SDL_ShowWindow(_window);
+//    if (!_isInit){
+////        g_weight /= 2;
+////        g_height /= 2;
+////        HEIGHT_SCOREBOARD = g_weight / 14;
+////        SizeFont = HEIGHT_SCOREBOARD / 4;
+//        init();
+//    }else{
+////        g_weight /= 2;
+////        g_height /= 2;
+////        HEIGHT_SCOREBOARD = g_weight / 14;
+////        SizeFont = HEIGHT_SCOREBOARD / 4;
+//    }
+
+    init();
+//    SDL_ShowWindow(_window);
 //    init();
 //    renderClear();
 }

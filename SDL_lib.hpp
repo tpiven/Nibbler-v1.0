@@ -43,6 +43,7 @@ private:
     SDL_Rect    _scrR;//snake
     SDL_Rect    _fcrR;//food
     SDL_Rect    _tcrR;//text
+    bool        _isInit;
 
     std::string _dir;
     std::map<int, SDL_Texture*> _snakeTexture;
