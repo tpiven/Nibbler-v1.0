@@ -84,6 +84,12 @@ int SFML_lib::catchHook(){
                     return 124;
                 case sf::Keyboard::Return:
                     return 36;
+                case sf::Keyboard::Num1:
+                    return 1;
+                case sf::Keyboard::Num2:
+                    return 2;
+                case sf::Keyboard::Num3:
+                    return 3;
                 default:
                     return 0;
             }
@@ -226,6 +232,7 @@ void SFML_lib::renderClear() {
 }
 
 void SFML_lib::hideWindow() { _window->setVisible(false); }
+
 void SFML_lib::showWindow() {
     if (!_isInit){
         g_weight *= 2;

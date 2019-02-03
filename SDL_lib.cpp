@@ -74,8 +74,6 @@ void SDL_lib::init() {
         exit(1);
     }
     /************INIT TEXTURE FOR ARROW************/
-    std::string toto = _dir + arrow_path;
-    SDL_Surface *qw = IMG_Load((_dir + arrow_path).c_str());
     _textureArrow = CREATE_TEXTURE((_dir + arrow_path).c_str());
     if (!_textureArrow){
         std::cerr << "textureArrow not exist" << std::endl;
@@ -116,6 +114,7 @@ void SDL_lib::init() {
 }
 
 int SDL_lib::catchHook(){
+//    SDL_PollEvent(&_event);
     SDL_PollEvent(&_event);
     if (_event.type == SDL_QUIT){
         std::cout << "EXIT" << std::endl;
@@ -238,22 +237,28 @@ void SDL_lib::renderClear() {
     SDL_RenderClear(renderer);
 }
 
-void SDL_lib::hideWindow() { SDL_HideWindow(_window); }
+void SDL_lib::hideWindow() {
+    SDL_HideWindow(_window);
+//    SDL_DestroyRenderer(renderer);
+//    SDL_DestroyWindow(_window);
+}
 
 void SDL_lib::showWindow() {
     if (!_isInit){
-//        g_weight /= 2;
-//        g_height /= 2;
-//        HEIGHT_SCOREBOARD = g_weight / 14;
-//        SizeFont = HEIGHT_SCOREBOARD / 4;
+        g_weight /= 2;
+        g_height /= 2;
+        HEIGHT_SCOREBOARD = g_weight / 14;
+        SizeFont = HEIGHT_SCOREBOARD / 4;
         init();
     }else{
-//        g_weight /= 2;
-//        g_height /= 2;
-//        HEIGHT_SCOREBOARD = g_weight / 14;
-//        SizeFont = HEIGHT_SCOREBOARD / 4;
+        g_weight /= 2;
+        g_height /= 2;
+        HEIGHT_SCOREBOARD = g_weight / 14;
+        SizeFont = HEIGHT_SCOREBOARD / 4;
     }
     SDL_ShowWindow(_window);
+//    init();
+//    renderClear();
 }
 
 void SDL_lib::cleanWindow() {

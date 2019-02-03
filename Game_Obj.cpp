@@ -34,7 +34,6 @@ Game_Obj* Game_Obj::_inst = nullptr;
 bool Game_Obj::menu(AView* lib) {//draw menu for select map, and number of player
     int const frameDealy = 4000 / FPS;
     while(_menu.runningMenu()){
-
         lib->renderClear();
 
         frameStart = _libs[g_lib - 1]->getTicks();
@@ -85,7 +84,6 @@ void Game_Obj::init() {
     _interface = Interface::getInstance();
     _libs[g_lib - 1]->init();//draw map, load picture
     _menu.initMenu();
-
     if (!menu(_libs[g_lib - 1])){
         clean(_libs[g_lib - 1]);
         return;
@@ -102,6 +100,7 @@ void Game_Obj::init() {
 void Game_Obj::main_loop() {
     int const frameDealy = 6000 / FPS;
     while(1){
+        std::cout << "G_LIB: " << g_lib << std::endl;
         _libs[g_lib - 1]->renderClear();
         frameStart = _libs[g_lib - 1]->getTicks();
         if (!_logic.runningGame()){
@@ -143,10 +142,10 @@ bool Game_Obj::action(AView *lib) {
     }
     update(lib);
     render(lib);
-    key = handleEvent(lib);
-    if (key == -1 || (key == ' ' && !pauseLogic())){
-        return false;
-    }
+//    key = handleEvent(lib);
+//    if (key == -1 || (key == ' ' && !pauseLogic())){
+//        return false;
+//    }
     return true;
 }
 
@@ -174,6 +173,10 @@ int Game_Obj::handleEvent(AView*& lib) {
         return symb;
     }
     if ((symb == 1 || symb == 2 || symb == 3) && symb != g_lib){
+        if (g_lib == 2){
+            int a = 10;
+            std::cout << "QWERTY" << std::endl;
+        }
         switchLib(symb, lib);
     }
     else if (symb != 0) {
