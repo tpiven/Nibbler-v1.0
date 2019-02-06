@@ -25,6 +25,8 @@ public:
     void    drawFood(void*) override;
     void    drawInterface(std::string, int) override;
     void    drawTimeBigFood(int) override;
+    void    hideWindow() override;
+    void    showWindow() override;
 private:
     friend class TextureManager;
     static SDL_Renderer * renderer;
@@ -37,7 +39,6 @@ private:
     static SDL_Texture  *_textureText;
     static TTF_Font     *_font;
     SDL_Color           _textColor;
-
     SDL_Rect    _mcrR;//menu
     SDL_Rect    _scrR;//snake
     SDL_Rect    _fcrR;//food

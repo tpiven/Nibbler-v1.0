@@ -13,7 +13,7 @@ class Game_Obj {
 public:
     static Game_Obj* getInstance();
     void    init();
-    int     handleEvent(AView*);
+    int     handleEvent(AView*&);
     void    update(AView*);
     void    render(AView*);
 
@@ -23,6 +23,8 @@ private:
     void    clean(AView*);
     bool    action(AView*);
     void    main_loop();
+    void    addNewSharedLib();
+    void    switchLib(int, AView*&);
     bool    escapeLogic();
     bool    pauseLogic();
     std::vector<AView*> _libs;
@@ -30,7 +32,6 @@ private:
     Menu    _menu;
     Food    _food;
     Interface  *_interface;
-    //
     Game_Obj();
     ~Game_Obj();
     Game_Obj(Game_Obj &&) = delete;

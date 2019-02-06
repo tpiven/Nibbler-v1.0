@@ -1,6 +1,9 @@
 #include <regex>
 #include "Game_Obj.hpp"
 #include "global.h"
+
+#include "allegro5/allegro.h"
+
 int g_weight;
 int g_height;
 int g_lib;
@@ -21,33 +24,33 @@ int size(int n, int g){
     return 0;
 }
 
-int main(int ac, char *av[]){
+int main(int argc, char **argv){
     std::regex check("[\\s]*?\\d{3,4}[\\s]*?$");
-    if (ac != 4){//TODO must change on exception
+    if (argc != 4){//TODO must change on exception
         std::cout << "usage: ???" << std::endl;
         return -1;
     }
-    for (int i = 1; i < ac; ++i) {
-        if (!std::regex_match(*(av + i), (i != 3) ? check : std::regex("[\\s]*?\\d{1}[\\s]*?$"))){
+    for (int i = 1; i < argc; ++i) {
+        if (!std::regex_match(*(argv + i), (i != 3) ? check : std::regex("[\\s]*?\\d{1}[\\s]*?$"))){
             std::cout << "usage: ???" << std::endl;//TODO must change on exception
             return -1;
         }
         if (i == 1) {
-            g_weight = size(std::stoi(*(av + i)), 1);
+            g_weight = size(std::stoi(*(argv + i)), 1);
             if (g_weight > 1620 || g_weight < 720) {
                 std::cout << "Not valued weight" << std::endl;
                 return -1;
             }
         }
         else if (i == 2){
-            g_height = size(std::stoi(*(av + i)), 2);
+            g_height = size(std::stoi(*(argv + i)), 2);
             if (g_height > 1206 || g_height < 536) {
                 std::cout << "Not valued height" << std::endl;
                 return -1;
             }
         }
         else if (i == 3){
-            g_lib = std::stoi(*(av + i));
+            g_lib = std::stoi(*(argv + i));
             if (g_lib > 3) {
                 {
                     std::cout << "Not valued number of libraries" << std::endl;
@@ -56,7 +59,7 @@ int main(int ac, char *av[]){
             }
         }
     }
-    if (g_lib != 1){
+    if (g_lib == 2){
         g_weight *= 2;
         g_height *= 2;
     }

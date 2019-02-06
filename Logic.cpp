@@ -107,11 +107,13 @@ void Logic::updateHead(t_coor& head) {
 }
 
 void Logic::move() {
+    _size_block = g_weight / 90;
+    _rect.w = _rect.h = _size_block;
     t_coor head = _cors.back();
     updateHead(head);
     int ch = Mmap::getInstance().getValueFromMap(head.y_arr, head.x_arr);
     if (ch > 0 || ch == -1){
-        Mmap::getInstance().printMmap();
+//        Mmap::getInstance().printMmap();
         crash();
         return;
     }

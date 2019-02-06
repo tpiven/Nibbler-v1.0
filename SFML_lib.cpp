@@ -47,7 +47,7 @@ void SFML_lib::init() {
     text.setCharacterSize(SizeFont);
     text.setFillColor(sf::Color::Red);
     timeBigFood.loadFromFile("Picture/map_1.png", sf::IntRect(10, 10, 5, SizeFont - 10));
-
+    _isInit = true;
 }
 
 int SFML_lib::catchHook(){
@@ -84,6 +84,12 @@ int SFML_lib::catchHook(){
                     return 124;
                 case sf::Keyboard::Return:
                     return 36;
+                case sf::Keyboard::Num1:
+                    return 1;
+                case sf::Keyboard::Num2:
+                    return 2;
+                case sf::Keyboard::Num3:
+                    return 3;
                 default:
                     return 0;
             }
@@ -224,6 +230,25 @@ void SFML_lib::drawTimeBigFood(int time) {
 void SFML_lib::renderClear() {
 
 }
+
+void SFML_lib::hideWindow() { _window->setVisible(false); }
+
+void SFML_lib::showWindow() {
+    if (!_isInit){
+        g_weight *= 2;
+        g_height *= 2;
+        HEIGHT_SCOREBOARD = g_weight / 14;
+        SizeFont = HEIGHT_SCOREBOARD / 4;
+        init();
+    }else{
+        g_weight *= 2;
+        g_height *= 2;
+        HEIGHT_SCOREBOARD = g_weight / 14;
+        SizeFont = HEIGHT_SCOREBOARD / 4;
+    }
+    _window->setVisible(true);
+}
+
 void SFML_lib::cleanWindow() {
     _window->clear();
     _window->close();

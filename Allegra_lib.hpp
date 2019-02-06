@@ -30,6 +30,8 @@ public:
     void    drawFood(void*) override;
     void    drawInterface(std::string, int) override;
     void    drawTimeBigFood(int) override;
+    void    hideWindow() override;
+    void    showWindow() override;
 
 private:
     ALLEGRO_DISPLAY             *display;
