@@ -29,7 +29,7 @@ public:
     void    showWindow() override;
 private:
     friend class TextureManager;
-    static SDL_Renderer * renderer;
+    SDL_Renderer * renderer;
     static SDL_Window *_window;
     SDL_Event   _event;
     static SDL_Texture *_textureMap;

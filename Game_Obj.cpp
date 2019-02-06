@@ -142,10 +142,10 @@ bool Game_Obj::action(AView *lib) {
     }
     update(lib);
     render(lib);
-//    key = handleEvent(lib);
-//    if (key == -1 || (key == ' ' && !pauseLogic())){
-//        return false;
-//    }
+    key = handleEvent(lib);
+    if (key == -1 || (key == ' ' && !pauseLogic())){
+        return false;
+    }
     return true;
 }
 

@@ -10,8 +10,8 @@
 class TextureManager {
 public:
     static TextureManager & getInstance();
-    SDL_Texture* LoadTexture(const char *filename);
-    SDL_Texture* LoadTextureText(const char *filename, SDL_Color &color, SDL_Rect &tcrR);
+    SDL_Texture* LoadTexture(const char *filename, SDL_Renderer*&);
+    SDL_Texture* LoadTextureText(const char *filename, SDL_Color &color, SDL_Rect &tcrR, SDL_Renderer*&);
 private:
     TextureManager();
     ~TextureManager();

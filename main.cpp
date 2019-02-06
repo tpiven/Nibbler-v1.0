@@ -2,7 +2,7 @@
 #include "Game_Obj.hpp"
 #include "global.h"
 
-#include "allegro5/allegro.h"
+//#include "allegro5/allegro.h"
 
 int g_weight;
 int g_height;

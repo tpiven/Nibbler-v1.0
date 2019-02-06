@@ -21,7 +21,7 @@
 //ALLEGRO_BITMAP *button1 = NULL;
 //ALLEGRO_BITMAP *button2 = NULL;
 //ALLEGRO_BITMAP *arrow = NULL;
-ALLEGRO_EVENT_QUEUE *Allegra_lib::event_queue = NULL;
+
 
 Allegra_lib::Allegra_lib() {}
 Allegra_lib::~Allegra_lib() {}
@@ -101,13 +101,12 @@ void Allegra_lib::render() {
     al_flip_display();
 }
 
-void Allegra_lib::drawMenu(void* rectA, void* rectB, int typeMenu) {
 
 void Allegra_lib::drawMap() {
     al_clear_to_color(al_map_rgb(0,0,0));
     al_draw_bitmap(_map, WEIGHT_SCOREBOARD, HEIGHT_SCOREBOARD, 0);
 
-    }
+}
 
 void Allegra_lib::drawSnake(void* rect, int b_block) {//b_block - wich texture render: tail, body, head
     t_scr _fcrR = *reinterpret_cast<t_scr*>(rect);
@@ -115,14 +114,10 @@ void Allegra_lib::drawSnake(void* rect, int b_block) {//b_block - wich texture r
 }
 
 void Allegra_lib::drawFood(void* rect) {
-    t_scr _fcrR = *reinterpret_cast<t_scr*>(rect);
+    t_scr _fcrR = *reinterpret_cast<t_scr *>(rect);
     al_draw_bitmap(food, _fcrR.x, _fcrR.y, 0);
-
-
-void Allegra_lib::drawMap() {
-
-
 }
+
 void Allegra_lib::drawMenu(void* rectA, void* rectB, int b_block) {
     t_scr A = *reinterpret_cast<t_scr*>(rectA);
     al_draw_bitmap(arrow, A.x, A.y, 0);
@@ -131,18 +126,18 @@ void Allegra_lib::drawMenu(void* rectA, void* rectB, int b_block) {
     al_draw_bitmap(button2,B.x, (B.y + B.h + 10), 0);
 }
 
-void Allegra_lib::drawFood(void* rect) {
-
-}
 
 void Allegra_lib::drawInterface(std::string clock, int score) {
+
+}
+void Allegra_lib::drawTimeBigFood(int) {
 
 }
 
 void Allegra_lib::hideWindow() {}
 void Allegra_lib::showWindow() {}
 
-}
+
 
 void Allegra_lib::renderClear() {
     al_clear_to_color(al_map_rgb(0,0,0));
