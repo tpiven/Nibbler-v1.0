@@ -3,6 +3,7 @@
 //
 
 #pragma once
+#include <dlfcn.h>
 
 typedef struct s_scr{
     int x;

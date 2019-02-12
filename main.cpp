@@ -59,10 +59,10 @@ int main(int argc, char **argv){
             }
         }
     }
-    if (g_lib == 2){
-        g_weight *= 2;
-        g_height *= 2;
-    }
+//    if (g_lib != 1){
+//        g_weight *= 2;
+//        g_height *= 2;
+//    }
     HEIGHT_SCOREBOARD = g_weight / 14;
     SizeFont = HEIGHT_SCOREBOARD / 4;
     Game_Obj *obj = Game_Obj::getInstance();

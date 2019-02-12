@@ -16,6 +16,8 @@ public:
     int     handleEvent(AView*&);
     void    update(AView*);
     void    render(AView*);
+    AView* viev;
+    std::vector<AView*> _libs;
 
 private:
     static Game_Obj *_inst;
@@ -27,7 +29,7 @@ private:
     void    switchLib(int, AView*&);
     bool    escapeLogic();
     bool    pauseLogic();
-    std::vector<AView*> _libs;
+
     Logic   _logic;
     Menu    _menu;
     Food    _food;
@@ -38,4 +40,5 @@ private:
     Game_Obj(const Game_Obj &) = delete;
     Game_Obj& operator=(const Game_Obj &) = delete;
     Game_Obj& operator=(Game_Obj&&) = delete;
+    void *dl_handle;
 };

@@ -4,9 +4,10 @@
 
 #include "Menu.hpp"
 #include "global.h"
-#include "SDL_lib.hpp"
-#include "SFML_lib.hpp"
-#include "Allegra_lib.hpp"
+#include "Game_Obj.hpp"
+//#include "SDL_lib.hpp"
+//#include "SFML_lib.hpp"
+//#include "Allegra_lib.hpp"
 
 Menu::Menu() noexcept {
     _size_block = g_weight / 90 + 20;//50 is scale for arrow
@@ -30,18 +31,22 @@ void Menu::initMenu() {
     _numButton = 1;
     switch (g_lib){
         case 1:
-            SDL_lib::getInstance().drawMenu(&_rectA, &_rectB, _typeMenu);
-            SDL_lib::getInstance().render();
+           Game_Obj *liba = Game_Obj::getInstance();
+            liba->_libs[0]->drawMenu(&_rectA, &_rectB, _typeMenu);
+            liba->_libs[0]->render();
             break;
-        case 2:
-            SFML_lib::getInstance().drawMenu(&_rectA, &_rectB, _typeMenu);
-            SFML_lib::getInstance().render();
+//        case 2:
+            Game_Obj *q = Game_Obj::getInstance();
+            q->_libs[2]->drawMenu(&_rectA, &_rectB, _typeMenu);
+            q->_libs[2]->render();
+//            SFML_lib::getInstance().drawMenu(&_rectA, &_rectB, _typeMenu);
+//            SFML_lib::getInstance().render();
             break;
-        case 3:
-           Allegra_lib::getInstance().drawMenu(&_rectA, &_rectB, _typeMenu);
-           Allegra_lib::getInstance().render();
+       //case 3:
+//           Allegra_lib::getInstance().drawMenu(&_rectA, &_rectB, _typeMenu);
+//           Allegra_lib::getInstance().render();
             break;
-        default:
+   //     default:
             break;
     }
 }
@@ -65,15 +70,18 @@ bool Menu::changebutton() {
     moveArrow();
     switch (g_lib){
         case 1:
-            SDL_lib::getInstance().drawMenu(&_rectA, &_rectB, _typeMenu);
+         Game_Obj *rtr = Game_Obj::getInstance();
+         rtr->_libs[0]->drawMenu(&_rectA, &_rectB, _typeMenu);
+         break;
+
+       // case 2:
+            Game_Obj *qw = Game_Obj::getInstance();
+            qw->_libs[2]->drawMenu(&_rectA, &_rectB, _typeMenu);
             break;
-        case 2:
-            SFML_lib::getInstance().drawMenu(&_rectA, &_rectB, _typeMenu);
+       // case 3:
+        //    Allegra_lib::getInstance().drawMenu(&_rectA, &_rectB, _typeMenu);
             break;
-        case 3:
-            Allegra_lib::getInstance().drawMenu(&_rectA, &_rectB, _typeMenu);
-            break;
-        default:
+    //    default:
             break;
     }
     _key = 0;

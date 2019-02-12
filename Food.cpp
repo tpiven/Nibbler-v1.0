@@ -7,9 +7,9 @@
 #include "global.h"
 #include "Mmap.hpp"
 #include "Game_Obj.hpp"
-#include "SDL_lib.hpp"
-#include "SFML_lib.hpp"
-#include "Allegra_lib.hpp"
+//#include "SDL_lib.hpp"
+//#include "SFML_lib.hpp"
+//#include "Allegra_lib.hpp"
 #include <random>
 #define GET_VALUE_FROM_MAP(y,x) Mmap::getInstance().getValueFromMap(y, x)
 #define SET_VALUE_IN_MAP(v,y,x) Mmap::getInstance().setValueInMap(v,y,x)
@@ -54,19 +54,19 @@ void Food::mandatoryFood() {
         _rectLil.y = _coorLilFood.y_dis = (y * g_height / 67) + HEIGHT_SCOREBOARD + _size_block/2;
         _rectLil.x = _coorLilFood.x_dis = (x * g_weight / 90) + _size_block/2;
     }
-    switch (g_lib){
-        case 1:
-            SDL_lib::getInstance().drawFood(&_rectLil);
-            break;
-        case 2:
-            SFML_lib::getInstance().drawFood(&_rectLil);
-               break;
-        case 3:
-            Allegra_lib::getInstance().drawFood(&_rectLil);
-            break;
-        default:
-            break;
-    }
+//    switch (g_lib){
+//        case 1:
+//            SDL_lib::getInstance().drawFood(&_rectLil);
+//            break;
+//        case 2:
+//            SFML_lib::getInstance().drawFood(&_rectLil);
+//               break;
+//        case 3:
+//            Allegra_lib::getInstance().drawFood(&_rectLil);
+//            break;
+//        default:
+//            break;
+//    }
 }
 
 void Food::surpriseFood() {
@@ -110,22 +110,22 @@ void Food::surpriseFood() {
         SET_VALUE_IN_MAP(0, _coorBigFood.y_arr, _coorBigFood.x_arr);
     }
     if (_drawBig){
-            switch (g_lib){
-                case 1:
-                    SDL_lib::getInstance().drawFood(&_rectBig);
-                    SDL_lib::getInstance().drawTimeBigFood(static_cast<int>((8000 - t.count())/100));
-                    break;
-                case 2:
-                    SFML_lib::getInstance().drawFood(&_rectBig);
-                    SFML_lib::getInstance().drawTimeBigFood(static_cast<int>((8000 - t.count())/100));
-                    break;
-                case 3:
-                    Allegra_lib::getInstance().drawFood(&_rectBig);
-                    Allegra_lib::getInstance().drawTimeBigFood(static_cast<int>((8000 - t.count())/100));
-                    break;
-                default:
-                    break;
-            }
+//            switch (g_lib){
+//                case 1:
+//                    SDL_lib::getInstance().drawFood(&_rectBig);
+//                    SDL_lib::getInstance().drawTimeBigFood(static_cast<int>((8000 - t.count())/100));
+//                    break;
+//                case 2:
+//                    SFML_lib::getInstance().drawFood(&_rectBig);
+//                    SFML_lib::getInstance().drawTimeBigFood(static_cast<int>((8000 - t.count())/100));
+//                    break;
+//                case 3:
+//                    Allegra_lib::getInstance().drawFood(&_rectBig);
+//                    Allegra_lib::getInstance().drawTimeBigFood(static_cast<int>((8000 - t.count())/100));
+//                    break;
+//                default:
+//                    break;
+//            }
        }
 }
 

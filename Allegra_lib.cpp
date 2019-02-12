@@ -50,7 +50,7 @@ void Allegra_lib::init() {
     arrow = al_load_bitmap("Picture/arrow_path.png");
     button1 = al_load_bitmap("Picture/button1.png");
     button2 = al_load_bitmap("Picture/button2.png");
-    _isInit = true;
+
 }
 
 int Allegra_lib::catchHook() {

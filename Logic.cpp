@@ -7,9 +7,9 @@
 #include <iterator>
 #include <iostream>
 #include "Mmap.hpp"
-#include "SDL_lib.hpp"
-#include "SFML_lib.hpp"
-#include "Allegra_lib.hpp"
+//#include "SDL_lib.hpp"
+//#include "SFML_lib.hpp"
+//#include "Allegra_lib.hpp"
 
 Logic::Logic() noexcept {
     _size_block = g_weight / 90;
@@ -48,19 +48,19 @@ void Logic::init(int n_pl) {
         _rect.x = _cors.back().x_dis;
         _rectCopy = _rect;
         _corsCopy = _cors;
-        switch (g_lib){
-            case 1:
-                SDL_lib::getInstance().drawSnake(&_rect, j);
-                    break;
-            case 2:
-                SFML_lib::getInstance().drawSnake(&_rect, j);
-                break;
-            case 3:
-                Allegra_lib::getInstance().drawSnake(&_rect, j);
-                break;
-            default:
-                break;
-        }
+//        switch (g_lib){
+//            case 1:
+//                SDL_lib::getInstance().drawSnake(&_rect, j);
+//                    break;
+//            case 2:
+//                SFML_lib::getInstance().drawSnake(&_rect, j);
+//                break;
+//            case 3:
+//                Allegra_lib::getInstance().drawSnake(&_rect, j);
+//                break;
+//            default:
+//                break;
+//        }
     }
 }
 
@@ -150,19 +150,19 @@ void Logic::move() {
         }
          _rect.y = it->y_dis;
         _rect.x = it->x_dis;
-        switch (g_lib){
-            case 1:
-                SDL_lib::getInstance().drawSnake(&_rect, j);
-                break;
-            case 2:
-                SFML_lib::getInstance().drawSnake(&_rect, j);
-                break;
-            case 3:
-                Allegra_lib::getInstance().drawSnake(&_rect, j);
-                break;
-            default:
-                break;
-        }
+//        switch (g_lib){
+//            case 1:
+//                SDL_lib::getInstance().drawSnake(&_rect, j);
+//                break;
+//            case 2:
+//                SFML_lib::getInstance().drawSnake(&_rect, j);
+//                break;
+//            case 3:
+//                Allegra_lib::getInstance().drawSnake(&_rect, j);
+//                break;
+//            default:
+//                break;
+//        }
     }
 }
 

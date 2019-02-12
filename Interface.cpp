@@ -5,9 +5,10 @@
 #include "Interface.hpp"
 #include "global.h"
 #include "header.h"
-#include "SDL_lib.hpp"
-#include "SFML_lib.hpp"
-#include "Allegra_lib.hpp"
+#include <iostream>
+//#include "SDL_lib.hpp"
+//#include "SFML_lib.hpp"
+//#include "Allegra_lib.hpp"
 
 Interface:: Interface() {
     score = 0;
@@ -60,19 +61,19 @@ void Interface::changeTimeAndScore() {
     else {
         clock = clock + std::to_string(seconds);
     }
-    switch (g_lib){
-        case 1:
-            SDL_lib::getInstance().drawInterface(clock, score);
-            break;
-        case 2:
-            SFML_lib::getInstance().drawInterface(clock, score);
-            break;
-        case 3:
-            Allegra_lib::getInstance().drawInterface(clock, score);
-            break;
-        default:
-            break;
-    }
+//    switch (g_lib){
+//        case 1:
+//            SDL_lib::getInstance().drawInterface(clock, score);
+//            break;
+//        case 2:
+//            SFML_lib::getInstance().drawInterface(clock, score);
+//            break;
+//        case 3:
+//            Allegra_lib::getInstance().drawInterface(clock, score);
+//            break;
+//        default:
+//            break;
+//    }
 }
 
 void Interface::restart() {

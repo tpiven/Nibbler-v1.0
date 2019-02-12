@@ -9,9 +9,9 @@
 #include <ctime>
 #include <thread>
 #include <chrono>
-#include "SDL_lib.hpp"
-#include "SFML_lib.hpp"
-#include "Allegra_lib.hpp"
+//#include "SDL_lib.hpp"
+//#include "SFML_lib.hpp"
+//#include "Allegra_lib.hpp"
 #include <vector>
 #include "global.h"
 #include <ctime>
@@ -36,16 +36,16 @@ bool Game_Obj::menu(AView* lib) {//draw menu for select map, and number of playe
     while(_menu.runningMenu()){
         lib->renderClear();
 
-        frameStart = _libs[g_lib - 1]->getTicks();
+        frameStart = lib->getTicks();
         if (handleEvent(lib) == -1){
             return false;
         }
         if (!_menu.changebutton()){
             return false;
         }
-        frameTime = _libs[g_lib - 1]->getTicks() - frameStart;
+        frameTime = lib->getTicks() - frameStart;
         if (frameDealy > frameTime){
-            _libs[g_lib - 1]->delay(frameDealy - frameTime);
+            lib->delay(frameDealy - frameTime);
         }
         render(lib);
     }
@@ -60,26 +60,27 @@ Game_Obj* Game_Obj::getInstance() {
 }
 
 void Game_Obj::addNewSharedLib() {
-//    //add to _libs new shared lib
-//    //_libs[g_lib] = new SHARED
-//    //TODO must do new normal  add lib
-//    switch (g_lib){
-//        case 1:
-//            _libs[g_lib - 1] = &SDL_lib::getInstance();
-//            break;
-//        case 2:
-//            _libs[g_lib - 1] = &SFML_lib::getInstance();
-//            break;
-//        case 3:
-//            _libs[g_lib - 1] = &Allegra_lib::getInstance();
-//            break;
-//        default:
-//            break;
-//    }
+
+    AView*		(*getInstance)();
+
+    if (this->dl_handle != NULL) {
+        dlclose(this->dl_handle);
+    }
+    this->dl_handle = dlopen("../libSFML.so", RTLD_LAZY | RTLD_LOCAL);
+    if (!this->dl_handle)
+        throw std::logic_error( dlerror() );
+
+    //create = reinterpret_cast<IGraphics* (*)()>(dlsym(this->_dl, "NewDisplay")
+    getInstance = reinterpret_cast<AView*(*)()> (dlsym(this->dl_handle, "getInstance"));
+    if (!getInstance) {
+        throw std::logic_error( dlerror()) ;
+    }
+    _libs.push_back(getInstance());
+  //  this->_libs[0] = getInstance();
 }
 
 void Game_Obj::init() {
-    _libs = {&SDL_lib::getInstance(), &SFML_lib::getInstance(), &Allegra_lib::getInstance()};
+   // _libs = {&SDL_lib::getInstance(), &SFML_lib::getInstance(), &Allegra_lib::getInstance()};
     addNewSharedLib();
     _interface = Interface::getInstance();
     _libs[g_lib - 1]->init();//draw map, load picture

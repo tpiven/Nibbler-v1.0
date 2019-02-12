@@ -40,6 +40,7 @@ private:
     std::map<int, sf::Texture> _buttonTexture;
     sf::Font font;
     sf::Text text;
+    bool        _isInit;
 SFML_lib();
 ~SFML_lib();
 SFML_lib(const SFML_lib&) = delete;
