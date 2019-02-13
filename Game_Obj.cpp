@@ -22,6 +22,7 @@ int const FPS = 60;
 uint32_t  frameStart;
 int frameTime;
 
+
 Game_Obj::Game_Obj() {}
 
 Game_Obj::~Game_Obj() {
@@ -30,6 +31,7 @@ Game_Obj::~Game_Obj() {
 }
 
 Game_Obj* Game_Obj::_inst = nullptr;
+
 
 bool Game_Obj::menu(AView* lib) {//draw menu for select map, and number of player
     int const frameDealy = 4000 / FPS;
@@ -61,40 +63,45 @@ Game_Obj* Game_Obj::getInstance() {
 
 void Game_Obj::addNewSharedLib() {
 
-    AView*		(*getInstance)();
+    AView*		(*getInstance)(int, int);
+    AView*      (*getlib)(int, int);
 
-    if (this->dl_handle != NULL) {
-        dlclose(this->dl_handle);
+    if (this->dl_lib != NULL) {
+        dlclose(this->dl_lib);
     }
-    this->dl_handle = dlopen("../libSFML.so", RTLD_LAZY | RTLD_LOCAL);
-    if (!this->dl_handle)
+    this->dl_lib = dlopen(library[g_lib - 1].c_str(), RTLD_LAZY | RTLD_LOCAL);
+    if (!this->dl_lib)
         throw std::logic_error( dlerror() );
 
-    //create = reinterpret_cast<IGraphics* (*)()>(dlsym(this->_dl, "NewDisplay")
-    getInstance = reinterpret_cast<AView*(*)()> (dlsym(this->dl_handle, "getInstance"));
+
+    getInstance = reinterpret_cast<AView*(*)(int, int)> (dlsym(this->dl_lib, "getInstance"));
     if (!getInstance) {
         throw std::logic_error( dlerror()) ;
     }
-    _libs.push_back(getInstance());
-  //  this->_libs[0] = getInstance();
+    viev = getInstance(g_weight, g_height);
 }
 
 void Game_Obj::init() {
+    library[0] = "../libSDL.so";
+    library[1] = "../libSFML.so";
+    library[2] = "../libAllegro.so";
    // _libs = {&SDL_lib::getInstance(), &SFML_lib::getInstance(), &Allegra_lib::getInstance()};
     addNewSharedLib();
     _interface = Interface::getInstance();
-    _libs[g_lib - 1]->init();//draw map, load picture
+    viev->init();
+    //_libs[g_lib - 1]->init();//draw map, load picture
     _menu.initMenu();
-    if (!menu(_libs[g_lib - 1])){
-        clean(_libs[g_lib - 1]);
+    if (!menu(viev)){
+        clean(viev);
         return;
     }
     _interface->initInterface();
-    _libs[g_lib - 1]->drawMap();
+    //_libs[g_lib - 1]->drawMap();
+    viev->drawMap();
     _logic.init(1);
     _interface->changeTimeAndScore();
     _food.updateFood();
-    render(_libs[g_lib - 1]);//pre drawning before moving
+    render(viev);//pre drawning before moving
     main_loop();
 }
 
@@ -102,27 +109,27 @@ void Game_Obj::main_loop() {
     int const frameDealy = 6000 / FPS;
     while(1){
         std::cout << "G_LIB: " << g_lib << std::endl;
-        _libs[g_lib - 1]->renderClear();
-        frameStart = _libs[g_lib - 1]->getTicks();
+        viev->renderClear();
+        frameStart = viev->getTicks();
         if (!_logic.runningGame()){
             if (!escapeLogic()){
                 break;
             }
         }
-        else if (!action(_libs[g_lib - 1])){
+        else if (!action(viev)){
                 break;
         }
-        frameTime = _libs[g_lib - 1]->getTicks() - frameStart;
+        frameTime = viev->getTicks() - frameStart;
         if (frameDealy > frameTime){
-            _libs[g_lib - 1]->delay(frameDealy - frameTime);
+            viev->delay(frameDealy - frameTime);
         }
     }
-    clean(_libs[g_lib - 1]);
+    clean(viev);
 }
 
 bool Game_Obj::escapeLogic() {
     _menu.escapeDialog();
-    if (!menu(_libs[g_lib - 1])){
+    if (!menu(viev)){
         return false;
     }
     _logic.restart();
@@ -133,7 +140,7 @@ bool Game_Obj::escapeLogic() {
 
 bool Game_Obj::pauseLogic() {
     _menu.pauseDialog();
-    return menu(_libs[g_lib - 1]);
+    return menu(viev);
 }
 
 bool Game_Obj::action(AView *lib) {
@@ -158,14 +165,16 @@ void Game_Obj::switchLib(int symb, AView*& lib) {
     std::cout << "G_HEIGHT: " << g_height << std::endl;
     std::cout << "G_WEIGHT: " << g_weight << std::endl;
     std::cout << "HEIGHT_BOARD: " << HEIGHT_SCOREBOARD << std::endl;
-    _libs[g_lib - 1]->hideWindow();
-    _libs[symb - 1]->showWindow();
+    viev->hideWindow();
+    g_lib = symb;
+    addNewSharedLib();
+    viev->showWindow();
     std::cout << "-------------------" << std::endl;
     std::cout << "G_HEIGHT: " << g_height << std::endl;
     std::cout << "G_WEIGHT: " << g_weight << std::endl;
     std::cout << "HEIGHT_BOARD: " << HEIGHT_SCOREBOARD << std::endl;
-    g_lib = symb;
-    lib = _libs[g_lib - 1];
+
+    lib = viev;
 }
 
 int Game_Obj::handleEvent(AView*& lib) {

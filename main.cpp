@@ -2,7 +2,6 @@
 #include "Game_Obj.hpp"
 #include "global.h"
 
-//#include "allegro5/allegro.h"
 
 int g_weight;
 int g_height;
@@ -59,7 +58,7 @@ int main(int argc, char **argv){
             }
         }
     }
-//    if (g_lib != 1){
+//    if (g_lib == 2){
 //        g_weight *= 2;
 //        g_height *= 2;
 //    }

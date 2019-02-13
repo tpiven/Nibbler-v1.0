@@ -7,6 +7,7 @@
 #include <iterator>
 #include <iostream>
 #include "Mmap.hpp"
+#include "Game_Obj.hpp"
 //#include "SDL_lib.hpp"
 //#include "SFML_lib.hpp"
 //#include "Allegra_lib.hpp"
@@ -48,6 +49,8 @@ void Logic::init(int n_pl) {
         _rect.x = _cors.back().x_dis;
         _rectCopy = _rect;
         _corsCopy = _cors;
+        Game_Obj *t = Game_Obj::getInstance();
+        t->viev->drawSnake(&_rect, j);
 //        switch (g_lib){
 //            case 1:
 //                SDL_lib::getInstance().drawSnake(&_rect, j);
@@ -150,6 +153,8 @@ void Logic::move() {
         }
          _rect.y = it->y_dis;
         _rect.x = it->x_dis;
+        Game_Obj *r = Game_Obj::getInstance();
+        r->viev->drawSnake(&_rect, j);
 //        switch (g_lib){
 //            case 1:
 //                SDL_lib::getInstance().drawSnake(&_rect, j);

@@ -3,7 +3,7 @@ NAME = libSDL.so
 
 SRC = SDL_lib.cpp TextureManager.cpp
 
-FLAGS = -Wall -Wextra -Werror
+FLAGS = -Wall -Wextra -Werror -std=c++11
 
 all: $(NAME)
 

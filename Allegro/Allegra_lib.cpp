@@ -24,11 +24,15 @@
 
 
 Allegra_lib::Allegra_lib() {}
-Allegra_lib::~Allegra_lib() {}
-Allegra_lib& Allegra_lib::getInstance() {
-    static Allegra_lib instance;
-    return instance;
+Allegra_lib::Allegra_lib(int gweight, int gheight) {
+    weight = gweight;
+    height = gheight;
+    height_scoreboard = weight / 14;
+    sizeFont = height_scoreboard / 4;
 }
+
+Allegra_lib::~Allegra_lib() {}
+
 
 void Allegra_lib::init() {
 //    g_weight *= 2;
@@ -81,6 +85,8 @@ int Allegra_lib::catchHook() {
                 return 123;
            case ALLEGRO_KEY_RIGHT:
                return 124;
+           case ALLEGRO_KEY_ENTER:
+               return 36;
            default:
                return 0;
        }
@@ -148,4 +154,9 @@ void Allegra_lib::renderClear() {
 }
 void Allegra_lib::cleanWindow() {
 
+}
+
+extern "C"  AView* getInstance(int weight, int height) {
+    // static SFML_lib instance;
+    return new Allegra_lib(weight, height);
 }

@@ -9,28 +9,30 @@
 #include "../header.h"
 
 //const char tail_path[] = "/Picture/dirt.png";//TODO create many picture like: tail_16x16, tail_8x8
-////const char body_path[] = "/Picture/grass_bloc_mod.png";
-////const char head_path[] = "/Picture/dirt_1.png";
-////const char map_1[] = "/Picture/map_1.png";
-////const char lilFood[] = "/Picture/solid.png";
+//const char body_path[] = "/Picture/grass_bloc_mod.png";
+//const char head_path[] = "/Picture/dirt_1.png";
+//const char map_1[] = "/Picture/map_1.png";
+//const char lilFood[] = "/Picture/solid.png";
 
-//SDL_lib* SDL_lib::_inst = nullptr;
-//SDL_Renderer* SDL_lib::renderer = nullptr;
-//SDL_Window*     SDL_lib::_window = nullptr;
-//SDL_Texture*    SDL_lib::_textureMap = nullptr;
-//SDL_Texture*    SDL_lib::_textureFood = nullptr;
 
 sf::RenderWindow* SFML_lib::_window = nullptr;
 
 SFML_lib::SFML_lib() {
-   // this->init();
+
 }
+
+SFML_lib::SFML_lib(int g_weight, int g_height) {
+    weight = g_weight;
+    height = g_height;
+    height_scoreboard = g_weight / 14;
+    sizeFont = height_scoreboard / 4;
+    _isInit = false;
+}
+
 SFML_lib::~SFML_lib() {}
 
-
-
 void SFML_lib::init() {
-    _window = new sf::RenderWindow(sf::VideoMode(1440, 1072 + 100, 32), "Nibbler");
+    _window = new sf::RenderWindow(sf::VideoMode(weight, height + height_scoreboard, 32), "Nibbler");
      _textureMap.loadFromFile("Picture/map_1.png");
     _snakeTexture[0].loadFromFile("Picture/dirt.png");
     _snakeTexture[1].loadFromFile("Picture/grass_bloc_mod.png");
@@ -44,9 +46,9 @@ void SFML_lib::init() {
     _buttonTexture[4].loadFromFile("Picture/exit.png");
     font.loadFromFile("Picture/ArialItalic.ttf");
     text.setFont(font);
-    text.setCharacterSize(30);
+    text.setCharacterSize(sizeFont);
     text.setFillColor(sf::Color::Red);
-    timeBigFood.loadFromFile("Picture/map_1.png", sf::IntRect(10, 10, 5, 20));
+    timeBigFood.loadFromFile("Picture/map_1.png", sf::IntRect(10, 10, 5, sizeFont - 10));
     _isInit = true;
 }
 
@@ -179,9 +181,9 @@ void SFML_lib::drawMap() {
     _window->clear();
     sf::Sprite map;
     map.setTexture(_textureMap);
-    map.setPosition(0, 100);
+    map.setPosition(0, height_scoreboard);
     auto size = map.getTexture()->getSize();
-    map.setScale(float(1440)/size.x, float(1072)/size.y);
+    map.setScale(float(weight)/size.x, float(height)/size.y);
 
     _window->draw(map);
 
@@ -210,10 +212,10 @@ void SFML_lib::drawFood(void* rect) {
 void SFML_lib::drawInterface(std::string clock, int score) {
 
     text.setString(clock);
-    text.setPosition(50, 100 / 2);
+    text.setPosition(50, height_scoreboard / 2);
     _window->draw(text);
     text.setString("Score:   " + std::to_string(score));
-    text.setPosition(1440 / 3, 100 / 2);
+    text.setPosition(weight / 3, height_scoreboard / 2);
     _window->draw(text);
 }
 
@@ -222,7 +224,7 @@ void SFML_lib::drawTimeBigFood(int time) {
     sprite.setTexture(timeBigFood);
     sprite.setColor(sf::Color::Green);
     for (int i = 0; i < time; i++) {
-        sprite.setPosition((1440 / 3) * 2 + (3 * i), 100 / 2);
+        sprite.setPosition((weight / 3) * 2 + (3 * i), height_scoreboard / 2);
         _window->draw(sprite);
     }
 }
@@ -232,27 +234,19 @@ void SFML_lib::renderClear() {
 }
 
 void SFML_lib::hideWindow() {
-//    _window->setVisible(false);
     _window->clear();
     _window->close();
 }
 
 void SFML_lib::showWindow() {
 //    if (!_isInit){
-//        g_weight *= 2;
-//        g_height *= 2;
-//        HEIGHT_SCOREBOARD = g_weight / 14;
-//        SizeFont = HEIGHT_SCOREBOARD / 4;
 //        init();
 //    }
-//    else{
-////        g_weight *= 2;
-////        g_height *= 2;
-////        HEIGHT_SCOREBOARD = g_weight / 14;
-////        SizeFont = HEIGHT_SCOREBOARD / 4;
+//    else {
+//
+//        _window->setVisible(true);
 //    }
     init();
-//    _window->setVisible(true);
 }
 
 void SFML_lib::cleanWindow() {
@@ -261,7 +255,7 @@ void SFML_lib::cleanWindow() {
 
 }
 
-extern "C"  AView* getInstance() {
+extern "C"  AView* getInstance(int weight, int height) {
     // static SFML_lib instance;
-    return new SFML_lib();
+    return new SFML_lib(weight, height);
 }

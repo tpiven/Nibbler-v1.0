@@ -8,7 +8,6 @@
 #include "allegro5/allegro.h"
 #include <allegro5/allegro_primitives.h>
 #include "allegro5/allegro_image.h"
-#include "allegro5/allegro_native_dialog.h"
 
 #include "../AView.hpp"
 #include <map>
@@ -16,7 +15,9 @@
 
 class Allegra_lib: public AView{
 public:
-    static Allegra_lib & getInstance();
+    Allegra_lib();
+    Allegra_lib(int, int);
+    ~Allegra_lib();
     void    init() override;
     int     catchHook() override;
     void    render() override;
@@ -42,10 +43,14 @@ private:
     ALLEGRO_BITMAP              *button1;
     ALLEGRO_BITMAP              *button2;
    std::map<int, ALLEGRO_BITMAP*> _snakeTexture;
+    int weight;
+    int height;
+    int height_scoreboard;
+    int sizeFont;
 
 
-    Allegra_lib();
-    ~Allegra_lib();
+
+
     Allegra_lib(const Allegra_lib&) = delete;
     Allegra_lib(Allegra_lib&&) = delete;
     Allegra_lib &operator=(const Allegra_lib &) = delete;

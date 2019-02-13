@@ -54,6 +54,8 @@ void Food::mandatoryFood() {
         _rectLil.y = _coorLilFood.y_dis = (y * g_height / 67) + HEIGHT_SCOREBOARD + _size_block/2;
         _rectLil.x = _coorLilFood.x_dis = (x * g_weight / 90) + _size_block/2;
     }
+    Game_Obj *b = Game_Obj::getInstance();
+    b->viev->drawFood(&_rectLil);
 //    switch (g_lib){
 //        case 1:
 //            SDL_lib::getInstance().drawFood(&_rectLil);
@@ -110,6 +112,9 @@ void Food::surpriseFood() {
         SET_VALUE_IN_MAP(0, _coorBigFood.y_arr, _coorBigFood.x_arr);
     }
     if (_drawBig){
+        Game_Obj *a = Game_Obj::getInstance();
+        a->viev->drawFood(&_rectBig);
+        a->viev->drawTimeBigFood(static_cast<int>((8000 - t.count())/100));
 //            switch (g_lib){
 //                case 1:
 //                    SDL_lib::getInstance().drawFood(&_rectBig);

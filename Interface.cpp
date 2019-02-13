@@ -6,6 +6,7 @@
 #include "global.h"
 #include "header.h"
 #include <iostream>
+#include "Game_Obj.hpp"
 //#include "SDL_lib.hpp"
 //#include "SFML_lib.hpp"
 //#include "Allegra_lib.hpp"
@@ -61,6 +62,9 @@ void Interface::changeTimeAndScore() {
     else {
         clock = clock + std::to_string(seconds);
     }
+    Game_Obj *o = Game_Obj::getInstance();
+    o->viev->drawInterface(clock, score);
+
 //    switch (g_lib){
 //        case 1:
 //            SDL_lib::getInstance().drawInterface(clock, score);

@@ -5,13 +5,15 @@
 #include "SDL2/SDL.h"
 #include "SDL2/SDL_image.h"
 #include "SDL2/SDL_ttf.h"
-#include "AView.hpp"
+#include "../AView.hpp"
 #include <map>
 #include "TextureManager.hpp"
 
 class SDL_lib : public AView{
 public:
-    static SDL_lib & getInstance();
+    SDL_lib();
+    SDL_lib(int weight, int height);
+    ~SDL_lib();
     void    init() override;
     int     catchHook() override;
     void    render() override;
@@ -29,7 +31,7 @@ public:
     void    showWindow() override;
 private:
     friend class TextureManager;
-    SDL_Renderer * renderer;
+    static SDL_Renderer * renderer;
     static SDL_Window *_window;
     SDL_Event   _event;
     static SDL_Texture *_textureMap;
@@ -44,12 +46,15 @@ private:
     SDL_Rect    _fcrR;//food
     SDL_Rect    _tcrR;//text
     bool        _isInit;
+    int g_weight;
+    int g_height;
+    int HEIGHT_SCOREBOARD;
+    int SizeFont;
 
     std::string _dir;
     std::map<int, SDL_Texture*> _snakeTexture;
     std::map<std::string, SDL_Texture*> _buttonTexture;
-    SDL_lib();
-    ~SDL_lib();
+
     SDL_lib(const SDL_lib&) = delete;
     SDL_lib(SDL_lib&&) = delete;
     SDL_lib &operator=(const SDL_lib &) = delete;

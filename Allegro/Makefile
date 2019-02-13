@@ -8,7 +8,7 @@ FLAGS = -Wall -Wextra -Werror -std=c++11
 all: $(NAME)
 
 $(NAME): 
-	g++ $(FLAGS) -shared -fPIC -o $(NAME) $(SRC) -I ~/.brew/include -L ~/.brew/lib -lallegro  -lallegro_image -lallegro_dialog -rpath ~/.brew/lib
+	g++ $(FLAGS) -shared -fPIC -o $(NAME) $(SRC) -I ~/.brew/include -L ~/.brew/lib -lallegro -lallegro_image  -rpath ~/.brew/lib
 	mv $(NAME) ..
 	
 clean:

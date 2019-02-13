@@ -12,8 +12,9 @@
 class SFML_lib: public AView{
 public:
     SFML_lib();
+    SFML_lib(int g_weight, int g_height);
     ~SFML_lib();
-//static SFML_lib &  getInstance();
+
 void    init() override;
 int     catchHook() override;
 void    render() override;
@@ -42,11 +43,12 @@ private:
     std::map<int, sf::Texture> _buttonTexture;
     sf::Font font;
     sf::Text text;
-    bool        _isInit;
+    int weight;
+    int height;
+    int height_scoreboard;
+    int sizeFont;
+    bool _isInit;
 
-SFML_lib(const SFML_lib&) = delete;
-SFML_lib(SFML_lib&&) = delete;
-SFML_lib &operator=(const SFML_lib &) = delete;
-SFML_lib &operator=(SFML_lib&&) = delete;
+
 };
 

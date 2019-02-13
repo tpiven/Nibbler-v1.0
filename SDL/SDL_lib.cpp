@@ -3,11 +3,11 @@
 //
 
 #include "SDL_lib.hpp"
-#include "global.h"
+#include "../global.h"
 #include <unistd.h>
-#include "Mmap.hpp"
-#define CREATE_TEXTURE(str, render) TextureManager::getInstance().LoadTexture(str, render)
-#define CREATE_TEXTURETEXT(str, color, tcrR, render) TextureManager::getInstance().LoadTextureText(str, color, tcrR, render)
+#include "../Mmap.hpp"
+#define CREATE_TEXTURE(str) TextureManager::getInstance().LoadTexture(str)
+#define CREATE_TEXTURETEXT(str, color, tcrR) TextureManager::getInstance().LoadTextureText(str, color, tcrR)
 
 const char tail_path[] = "/Picture/dirt.png";//TODO create many picture like: tail_16x16, tail_8x8
 const char body_path[] = "/Picture/grass_bloc_mod.png";
@@ -22,7 +22,7 @@ extern const char buttonExit_path[] = "/Picture/exit.png";
 const char arrow_path[] = "/Picture/arrow_path.png";
 const char font_path[] = "/Picture/ArialItalic.ttf";
 
-//SDL_Renderer* SDL_lib::renderer = nullptr;
+SDL_Renderer* SDL_lib::renderer = nullptr;
 SDL_Window*     SDL_lib::_window = nullptr;
 SDL_Texture*    SDL_lib::_textureMap = nullptr;
 SDL_Texture*    SDL_lib::_textureFood = nullptr;
@@ -31,11 +31,18 @@ SDL_Texture*    SDL_lib::_textureText = nullptr;
 TTF_Font*       SDL_lib::_font = nullptr;
 
 SDL_lib::SDL_lib() {}
-SDL_lib::~SDL_lib() {}
-SDL_lib& SDL_lib::getInstance() {
-    static SDL_lib instance;
-    return instance;
+
+SDL_lib::SDL_lib(int weight, int height) {
+
+    g_weight = weight;
+    g_height = height;
+    HEIGHT_SCOREBOARD = g_weight / 14;
+    SizeFont = HEIGHT_SCOREBOARD / 4;
+    _isInit = false;
 }
+
+SDL_lib::~SDL_lib() {}
+
 
 void SDL_lib::init() {
     /************INIT WINDOW************/
@@ -50,7 +57,7 @@ void SDL_lib::init() {
             g_weight,
             g_height + HEIGHT_SCOREBOARD,
             SDL_WINDOW_SHOWN
-            );
+    );
     if (!_window){
         std::cerr << "Error Window: " << &SDL_Error << std::endl;
         exit(-1);
@@ -63,37 +70,37 @@ void SDL_lib::init() {
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, 0);//BAG NOT WORKING
     char path[4096];
     _dir = getwd(path);
-    size_t  n = _dir.rfind('/');
+   // size_t  n = _dir.rfind('/');
     //_dir.resize(n); //TODO investigate PATH of PICTURES
     /************INIT TEXTURE FOR BUTTON***********/
-    _buttonTexture = {{"single", CREATE_TEXTURE((_dir + buttonSingle_path).c_str(), renderer)}, {"multi", CREATE_TEXTURE((_dir + buttonMulti_path).c_str(), renderer)},
-                      {"continue", CREATE_TEXTURE((_dir + buttonContinue_path).c_str(), renderer)}, {"option", CREATE_TEXTURE((_dir + buttonOption_path).c_str(), renderer)},
-                      {"exit", CREATE_TEXTURE((_dir + buttonExit_path).c_str(), renderer)}};
+    _buttonTexture = {{"single", CREATE_TEXTURE((_dir + buttonSingle_path).c_str())}, {"multi", CREATE_TEXTURE((_dir + buttonMulti_path).c_str())},
+                      {"continue", CREATE_TEXTURE((_dir + buttonContinue_path).c_str())}, {"option", CREATE_TEXTURE((_dir + buttonOption_path).c_str())},
+                      {"exit", CREATE_TEXTURE((_dir + buttonExit_path).c_str())}};
     if (_buttonTexture.empty()){
         std::cerr << "textureButton not exist" << std::endl;
         exit(1);
     }
     /************INIT TEXTURE FOR ARROW************/
-    _textureArrow = CREATE_TEXTURE((_dir + arrow_path).c_str(), renderer);
+    _textureArrow = CREATE_TEXTURE((_dir + arrow_path).c_str());
     if (!_textureArrow){
         std::cerr << "textureArrow not exist" << std::endl;
         exit(1);
     }
     /************INIT TEXTURE FOR MAP**************/
-    _textureMap = CREATE_TEXTURE((_dir + map_1).c_str(), renderer);
+    _textureMap = CREATE_TEXTURE((_dir + map_1).c_str());
     if (!_textureMap){
         std::cerr << "textuteMap not exist" << std::endl;
         exit(1);
     }
     /************INIT TEXTURE FOR SNAKE************/
-    _snakeTexture = {{0, CREATE_TEXTURE((_dir + tail_path).c_str(), renderer)}, {1, CREATE_TEXTURE((_dir + body_path).c_str(), renderer)},
-                     {2, CREATE_TEXTURE((_dir + head_path).c_str(), renderer)}};
+    _snakeTexture = {{0, CREATE_TEXTURE((_dir + tail_path).c_str())}, {1, CREATE_TEXTURE((_dir + body_path).c_str())},
+                     {2, CREATE_TEXTURE((_dir + head_path).c_str())}};
     if (_snakeTexture.empty()){
         std::cerr << "textureSnake not exist" << std::endl;
         exit(1);
     }
     /************INIT TEXTURE FOR FOOD************/
-    _textureFood = CREATE_TEXTURE((_dir + lilFood).c_str(), renderer);
+    _textureFood = CREATE_TEXTURE((_dir + lilFood).c_str());
     if (!_textureFood){
         std::cerr << "textuteFood not exist" << std::endl;
         exit(1);
@@ -112,6 +119,7 @@ void SDL_lib::init() {
     _textColor = {255, 0, 0, 0};//color red
     _isInit = true;
 }
+
 
 int SDL_lib::catchHook(){
 //    SDL_PollEvent(&_event);
@@ -200,7 +208,7 @@ void SDL_lib::drawMenu(void* rectA, void* rectB, int typeMenu) {
 
 void SDL_lib::drawMap() {
      _scrR.y = HEIGHT_SCOREBOARD;
-    _scrR.x = WEIGHT_SCOREBOARD;
+    _scrR.x = 0;
     _scrR.w = g_weight;
     _scrR.h = g_height;
     SDL_RenderCopy(renderer, _textureMap, nullptr, &_scrR);
@@ -218,12 +226,12 @@ void SDL_lib::drawFood(void* rect) {
 
 void SDL_lib::drawInterface(std::string clock, int score) {
     /***************DRAW CLOCK****************/
-    _textureText = CREATE_TEXTURETEXT(clock.c_str(), _textColor, _tcrR, renderer);
+    _textureText = CREATE_TEXTURETEXT(clock.c_str(), _textColor, _tcrR);
     _tcrR.x = 50;
     _tcrR.y = HEIGHT_SCOREBOARD/2;
     SDL_RenderCopy(renderer, _textureText, nullptr, &_tcrR);
     /***************DRAW SCORE****************/
-    _textureText = CREATE_TEXTURETEXT(("Score:   " + std::to_string(score)).c_str(), _textColor, _tcrR, renderer);
+    _textureText = CREATE_TEXTURETEXT(("Score:   " + std::to_string(score)).c_str(), _textColor, _tcrR);
     _tcrR.x = g_weight/3;
     _tcrR.y = HEIGHT_SCOREBOARD/2;
     SDL_RenderCopy(renderer, _textureText, nullptr, &_tcrR);
@@ -238,6 +246,7 @@ void SDL_lib::renderClear() {
 }
 
 void SDL_lib::hideWindow() {
+//    SDL_RenderClear(renderer);
 //    SDL_HideWindow(_window);
     SDL_DestroyWindow(_window);
     SDL_DestroyRenderer(renderer);
@@ -246,26 +255,23 @@ void SDL_lib::hideWindow() {
 
 void SDL_lib::showWindow() {
 //    if (!_isInit){
-////        g_weight /= 2;
-////        g_height /= 2;
-////        HEIGHT_SCOREBOARD = g_weight / 14;
-////        SizeFont = HEIGHT_SCOREBOARD / 4;
+//
 //        init();
-//    }else{
-////        g_weight /= 2;
-////        g_height /= 2;
-////        HEIGHT_SCOREBOARD = g_weight / 14;
-////        SizeFont = HEIGHT_SCOREBOARD / 4;
+//  }else {
+//
+//        SDL_ShowWindow(_window);
 //    }
-
     init();
-//    SDL_ShowWindow(_window);
-//    init();
-//    renderClear();
+
 }
 
 void SDL_lib::cleanWindow() {
     SDL_DestroyWindow(_window);
     SDL_DestroyRenderer(renderer);
     SDL_Quit();
+}
+
+extern "C"  AView* getInstance(int weight, int height) {
+
+    return new SDL_lib(weight, height);
 }
