@@ -78,6 +78,8 @@ int Logic::getNumberSprite(int itr) {
 }
 
 void Logic::setKey(int key) {
+
+    std::cout << "2222222222" << g_lib << std::endl;
     if (key >= 123 && key <= 126 && _pl == 2){
         if (key == 126 || key == 125){
             _key = (key == 126) ? 'w' : 's';
@@ -116,7 +118,7 @@ void Logic::move() {
     updateHead(head);
     int ch = Mmap::getInstance().getValueFromMap(head.y_arr, head.x_arr);
     if (ch > 0 || ch == -1){
-//        Mmap::getInstance().printMmap();
+        Mmap::getInstance().printMmap();
         crash();
         return;
     }

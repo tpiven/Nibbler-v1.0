@@ -9,9 +9,6 @@
 #include <ctime>
 #include <thread>
 #include <chrono>
-//#include "SDL_lib.hpp"
-//#include "SFML_lib.hpp"
-//#include "Allegra_lib.hpp"
 #include <vector>
 #include "global.h"
 #include <ctime>
@@ -27,10 +24,15 @@ Game_Obj::Game_Obj() {}
 
 Game_Obj::~Game_Obj() {
     std::cout << "!!!" << std::endl;
+    if (this->dl_lib != NULL) {
+        dlclose(this->dl_lib);
+
+    }
     delete _inst;
 }
 
 Game_Obj* Game_Obj::_inst = nullptr;
+void *Game_Obj:: dl_lib = NULL;
 
 
 bool Game_Obj::menu(AView* lib) {//draw menu for select map, and number of player
@@ -64,12 +66,17 @@ Game_Obj* Game_Obj::getInstance() {
 void Game_Obj::addNewSharedLib() {
 
     AView*		(*getInstance)(int, int);
-    AView*      (*getlib)(int, int);
+    void	(*destroy_gui)(AView *);
+
 
     if (this->dl_lib != NULL) {
+        destroy_gui = (void (*)(AView *))dlsym(dl_lib, "destroy_object");
+        destroy_gui(viev);
         dlclose(this->dl_lib);
+        this->dl_lib = NULL;
+
     }
-    this->dl_lib = dlopen(library[g_lib - 1].c_str(), RTLD_LAZY | RTLD_LOCAL);
+    this->dl_lib = dlopen(library[g_lib - 1].c_str(), RTLD_LAZY);
     if (!this->dl_lib)
         throw std::logic_error( dlerror() );
 
@@ -82,8 +89,8 @@ void Game_Obj::addNewSharedLib() {
 }
 
 void Game_Obj::init() {
-    library[0] = "../libSDL.so";
-    library[1] = "../libSFML.so";
+    library[0] = "../libSDL.dylib";
+    library[1] = "../libSFML.dylib";
     library[2] = "../libAllegro.so";
    // _libs = {&SDL_lib::getInstance(), &SFML_lib::getInstance(), &Allegra_lib::getInstance()};
     addNewSharedLib();
@@ -119,10 +126,12 @@ void Game_Obj::main_loop() {
         else if (!action(viev)){
                 break;
         }
+
         frameTime = viev->getTicks() - frameStart;
-        if (frameDealy > frameTime){
+        if (frameDealy > frameTime && frameTime >= 0){
             viev->delay(frameDealy - frameTime);
         }
+
     }
     clean(viev);
 }
@@ -166,9 +175,23 @@ void Game_Obj::switchLib(int symb, AView*& lib) {
     std::cout << "G_WEIGHT: " << g_weight << std::endl;
     std::cout << "HEIGHT_BOARD: " << HEIGHT_SCOREBOARD << std::endl;
     viev->hideWindow();
+//    if (symb == 2 && g_lib == 1) {
+//        g_height *=2;
+//        g_weight *=2;
+//        HEIGHT_SCOREBOARD = g_weight / 14;
+//
+//    }
+//    if (g_lib == 2 && symb == 1)
+//    {
+//        g_height /=2;
+//        g_weight /=2;
+//        HEIGHT_SCOREBOARD = g_weight / 14;
+//
+//    }
     g_lib = symb;
     addNewSharedLib();
     viev->showWindow();
+    //render(viev);
     std::cout << "-------------------" << std::endl;
     std::cout << "G_HEIGHT: " << g_height << std::endl;
     std::cout << "G_WEIGHT: " << g_weight << std::endl;
@@ -176,6 +199,7 @@ void Game_Obj::switchLib(int symb, AView*& lib) {
 
     lib = viev;
 }
+
 
 int Game_Obj::handleEvent(AView*& lib) {
     int symb = lib->catchHook();
@@ -192,14 +216,17 @@ int Game_Obj::handleEvent(AView*& lib) {
     else if (symb != 0) {
         (!_menu.runningMenu() && symb != ' ') ? _logic.setKey(symb) : _menu.setKey(symb);
     }
+
     return symb;
 }
 
 void Game_Obj::update(AView* lib) {
+
     lib->drawMap();
     _logic.move();
    _interface->changeTimeAndScore();
    _food.updateFood();
+
 }
 
 void Game_Obj::render(AView* lib) {

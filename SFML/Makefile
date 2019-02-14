@@ -1,5 +1,5 @@
 
-NAME = libSFML.so
+NAME = libSFML.dylib
 
 SRC = SFML_lib.cpp
 
@@ -7,10 +7,9 @@ FLAGS = -Wall -Wextra -Werror -std=c++11
 
 all: $(NAME)
 
-$(NAME): 
-	g++ $(FLAGS) -shared -fPIC -o $(NAME) $(SRC) -I ~/.brew/include -L ~/.brew/lib -lsfml-system -lsfml-window -lsfml-graphics -lsfml-network -lsfml-audio -rpath ~/.brew/lib
+$(NAME):
+	g++ $(FLAGS) -dynamiclib -fPIC -o $(NAME) $(SRC) -I ~/.brew/include -L ~/.brew/lib -lsfml-system -lsfml-window -lsfml-graphics -lsfml-network -lsfml-audio -rpath ~/.brew/lib
 	mv $(NAME) ..
-	
 clean:
 	rm -f $(OBJ)
 

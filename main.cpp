@@ -63,7 +63,7 @@ int main(int argc, char **argv){
 //        g_height *= 2;
 //    }
     HEIGHT_SCOREBOARD = g_weight / 14;
-    SizeFont = HEIGHT_SCOREBOARD / 4;
+    //SizeFont = HEIGHT_SCOREBOARD / 4;
     Game_Obj *obj = Game_Obj::getInstance();
     obj->init();
     return 0;

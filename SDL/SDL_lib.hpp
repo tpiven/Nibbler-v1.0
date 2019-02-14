@@ -13,7 +13,7 @@ class SDL_lib : public AView{
 public:
     SDL_lib();
     SDL_lib(int weight, int height);
-    ~SDL_lib();
+    virtual ~SDL_lib();
     void    init() override;
     int     catchHook() override;
     void    render() override;

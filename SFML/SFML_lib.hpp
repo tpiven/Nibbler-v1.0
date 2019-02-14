@@ -13,7 +13,7 @@ class SFML_lib: public AView{
 public:
     SFML_lib();
     SFML_lib(int g_weight, int g_height);
-    ~SFML_lib();
+    virtual ~SFML_lib();
 
 void    init() override;
 int     catchHook() override;

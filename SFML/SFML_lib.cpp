@@ -34,7 +34,7 @@ SFML_lib::~SFML_lib() {}
 void SFML_lib::init() {
     _window = new sf::RenderWindow(sf::VideoMode(weight, height + height_scoreboard, 32), "Nibbler");
      _textureMap.loadFromFile("Picture/map_1.png");
-    _snakeTexture[0].loadFromFile("Picture/dirt.png");
+    _snakeTexture[0].loadFromFile("Picture/dirt_1.png");
     _snakeTexture[1].loadFromFile("Picture/grass_bloc_mod.png");
     _snakeTexture[2].loadFromFile("Picture/dirt_1.png");
     _textureFood.loadFromFile("Picture/solid.png");
@@ -258,4 +258,9 @@ void SFML_lib::cleanWindow() {
 extern "C"  AView* getInstance(int weight, int height) {
     // static SFML_lib instance;
     return new SFML_lib(weight, height);
+}
+
+extern "C" void		destroy_object(SFML_lib *gui)
+{
+    delete gui;
 }

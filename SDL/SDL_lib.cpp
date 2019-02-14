@@ -275,3 +275,8 @@ extern "C"  AView* getInstance(int weight, int height) {
 
     return new SDL_lib(weight, height);
 }
+
+extern "C" void		destroy_object(SDL_lib *gui)
+{
+    delete gui;
+}
