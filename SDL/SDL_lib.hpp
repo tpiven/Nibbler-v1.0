@@ -37,6 +37,7 @@ private:
     static SDL_Texture *_textureMap;
     static SDL_Texture *_textureFood;
     static SDL_Texture  *_textureArrow;
+    static SDL_Texture  *_textureLine;
 
     static SDL_Texture  *_textureText;
     static TTF_Font     *_font;
@@ -45,6 +46,7 @@ private:
     SDL_Rect    _scrR;//snake
     SDL_Rect    _fcrR;//food
     SDL_Rect    _tcrR;//text
+    SDL_Rect    _lcrR;
     bool        _isInit;
     int g_weight;
     int g_height;

@@ -16,6 +16,9 @@ const char map_1[] = "/Picture/map_1.png";
 const char lilFood[] = "/Picture/solid.png";
 const char buttonSingle_path[] = "/Picture/button1.png";
 const char buttonMulti_path[] = "/Picture/button2.png";
+
+const char lineFood_path[] = "/Picture/lineTimeFood.png";
+
 extern const char buttonOption_path[] = "/Picture/options.png";
 extern const char buttonContinue_path[] = "/Picture/continue.png";
 extern const char buttonExit_path[] = "/Picture/exit.png";
@@ -28,6 +31,7 @@ SDL_Texture*    SDL_lib::_textureMap = nullptr;
 SDL_Texture*    SDL_lib::_textureFood = nullptr;
 SDL_Texture*    SDL_lib::_textureArrow = nullptr;
 SDL_Texture*    SDL_lib::_textureText = nullptr;
+SDL_Texture*     SDL_lib::_textureLine = nullptr;
 TTF_Font*       SDL_lib::_font = nullptr;
 
 SDL_lib::SDL_lib() {}
@@ -105,6 +109,12 @@ void SDL_lib::init() {
         std::cerr << "textuteFood not exist" << std::endl;
         exit(1);
     }
+    /************INIT TEXTURE FOR LINE TIME OF SURP FOOD************/
+    _textureLine = CREATE_TEXTURE((_dir + lineFood_path).c_str());
+    if (!_textureLine){
+        std::cerr << "textureLine not exist" << std::endl;
+        exit(1);
+    }
     /************INIT TEXTURE FOR FONT************/
     if (TTF_Init() < 0){
         std::cout << TTF_GetError() << std::endl;
@@ -122,7 +132,6 @@ void SDL_lib::init() {
 
 
 int SDL_lib::catchHook(){
-//    SDL_PollEvent(&_event);
     SDL_PollEvent(&_event);
     if (_event.type == SDL_QUIT){
         std::cout << "EXIT" << std::endl;
@@ -237,8 +246,10 @@ void SDL_lib::drawInterface(std::string clock, int score) {
     SDL_RenderCopy(renderer, _textureText, nullptr, &_tcrR);
 }
 
-void SDL_lib::drawTimeBigFood(int) {
-
+void SDL_lib::drawTimeBigFood(int time) {
+    /***************DRAW LINE TIME FOR SURP FOOD****************/
+    _lcrR = {(g_weight / 3) * 2, HEIGHT_SCOREBOARD / 2, time, SizeFont - 10};
+    SDL_RenderCopy(renderer, _textureLine, nullptr, &_lcrR);
 }
 
 void SDL_lib::renderClear() {
