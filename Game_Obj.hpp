@@ -16,7 +16,7 @@ public:
     int     handleEvent(AView*&);
     void    update(AView*);
     void    render(AView*);
-    AView * viev;
+    static AView * viev;
 
 private:
     static Game_Obj *_inst;

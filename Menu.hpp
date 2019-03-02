@@ -26,4 +26,3 @@ private:
     int  _typeMenu;//flag for 1 is Start_menu, 2 is Escape_Menu, 3 is Pause_menu
     void moveArrow();
 };
-

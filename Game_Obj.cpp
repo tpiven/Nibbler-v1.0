@@ -23,7 +23,6 @@ int frameTime;
 Game_Obj::Game_Obj() {}
 
 Game_Obj::~Game_Obj() {
-    std::cout << "!!!" << std::endl;
     if (this->dl_lib != NULL) {
         dlclose(this->dl_lib);
 
@@ -33,6 +32,7 @@ Game_Obj::~Game_Obj() {
 
 Game_Obj* Game_Obj::_inst = nullptr;
 void *Game_Obj:: dl_lib = NULL;
+AView*  Game_Obj::viev = nullptr;
 
 
 bool Game_Obj::menu(AView* lib) {//draw menu for select map, and number of player
@@ -89,9 +89,9 @@ void Game_Obj::addNewSharedLib() {
 }
 
 void Game_Obj::init() {
-    library[0] = "../libSDL.dylib";
-    library[1] = "../libSFML.dylib";
-    library[2] = "../libAllegro.so";
+    library[0] = "libSDL.dylib";
+    library[1] = "libSFML.dylib";
+    library[2] = "libAllegro.so";
    // _libs = {&SDL_lib::getInstance(), &SFML_lib::getInstance(), &Allegra_lib::getInstance()};
     addNewSharedLib();
     _interface = Interface::getInstance();
@@ -115,7 +115,6 @@ void Game_Obj::init() {
 void Game_Obj::main_loop() {
     int const frameDealy = 6000 / FPS;
     while(1){
-        std::cout << "G_LIB: " << g_lib << std::endl;
         viev->renderClear();
         frameStart = viev->getTicks();
         if (!_logic.runningGame()){
@@ -171,9 +170,9 @@ void Game_Obj::clean(AView * lib) {
 }
 
 void Game_Obj::switchLib(int symb, AView*& lib) {
-    std::cout << "G_HEIGHT: " << g_height << std::endl;
-    std::cout << "G_WEIGHT: " << g_weight << std::endl;
-    std::cout << "HEIGHT_BOARD: " << HEIGHT_SCOREBOARD << std::endl;
+//    std::cout << "G_HEIGHT: " << g_height << std::endl;
+//    std::cout << "G_WEIGHT: " << g_weight << std::endl;
+//    std::cout << "HEIGHT_BOARD: " << HEIGHT_SCOREBOARD << std::endl;
     viev->hideWindow();
 //    if (symb == 2 && g_lib == 1) {
 //        g_height *=2;
@@ -192,10 +191,10 @@ void Game_Obj::switchLib(int symb, AView*& lib) {
     addNewSharedLib();
     viev->showWindow();
     //render(viev);
-    std::cout << "-------------------" << std::endl;
-    std::cout << "G_HEIGHT: " << g_height << std::endl;
-    std::cout << "G_WEIGHT: " << g_weight << std::endl;
-    std::cout << "HEIGHT_BOARD: " << HEIGHT_SCOREBOARD << std::endl;
+//    std::cout << "-------------------" << std::endl;
+//    std::cout << "G_HEIGHT: " << g_height << std::endl;
+//    std::cout << "G_WEIGHT: " << g_weight << std::endl;
+//    std::cout << "HEIGHT_BOARD: " << HEIGHT_SCOREBOARD << std::endl;
 
     lib = viev;
 }
@@ -209,7 +208,6 @@ int Game_Obj::handleEvent(AView*& lib) {
     if ((symb == 1 || symb == 2 || symb == 3) && symb != g_lib){
         if (g_lib == 2){
             int a = 10;
-            std::cout << "QWERTY" << std::endl;
         }
         switchLib(symb, lib);
     }

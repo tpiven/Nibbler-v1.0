@@ -29,29 +29,8 @@ void Menu::initMenu() {
     _rectB.x = g_weight / 2 - (_size_block * 2) - 10;
     _rectB.y = _rectA.y; //button must be on the same level with arrow
     _numButton = 1;
-    Game_Obj *q = Game_Obj::getInstance();
-    q->viev->drawMenu(&_rectA, &_rectB, _typeMenu);
-    q->viev->render();
-//    switch (g_lib){
-//        case 1:
-//           Game_Obj *liba = Game_Obj::getInstance();
-//           Game_Obj::_libs[0]->drawMenu(&_rectA, &_rectB, _typeMenu);
-//           Game_Obj::_libs[0]->render();
-//            break;
-//        case 2:
-//            Game_Obj *q = Game_Obj::getInstance();
-//            q->_libs[2]->drawMenu(&_rectA, &_rectB, _typeMenu);
-//            q->_libs[2]->render();
-//            SFML_lib::getInstance().drawMenu(&_rectA, &_rectB, _typeMenu);
-//            SFML_lib::getInstance().render();
-//            break;
-//        case 3:
-//           Allegra_lib::getInstance().drawMenu(&_rectA, &_rectB, _typeMenu);
-//          Allegra_lib::getInstance().render();
-//            break;
-//        default:
-//            break;
-//    }
+    Game_Obj::viev->drawMenu(&_rectA, &_rectB, _typeMenu);
+    Game_Obj::viev->render();
 }
 
 bool Menu::changebutton() {
@@ -71,23 +50,7 @@ bool Menu::changebutton() {
         return true;
     }
     moveArrow();
-    Game_Obj *r = Game_Obj::getInstance();
-    r->viev->drawMenu(&_rectA, &_rectB, _typeMenu);
-    //    switch (g_lib){
-//        case 1:
-//         Game_Obj::_libs[0]->drawMenu(&_rectA, &_rectB, _typeMenu);
-//         break;
-//
-//       // case 2:
-//            Game_Obj *qw = Game_Obj::getInstance();
-//            qw->_libs[2]->drawMenu(&_rectA, &_rectB, _typeMenu);
-//            break;
-//       // case 3:
-//        //    Allegra_lib::getInstance().drawMenu(&_rectA, &_rectB, _typeMenu);
-//            break;
-//    //    default:
-//            break;
-//    }
+    Game_Obj::viev->drawMenu(&_rectA, &_rectB, _typeMenu);
     _key = 0;
     return true;
 }
@@ -105,7 +68,9 @@ void Menu::moveArrow() {
 
 void Menu::escapeDialog() {
     _typeMenu = 2;
-    _select = true;}
+    _select = true;
+}
+
 void Menu::pauseDialog() {
     _typeMenu = 3;
     _select = true;

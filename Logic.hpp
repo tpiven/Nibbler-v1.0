@@ -31,7 +31,7 @@ private:
     bool _playGame;//flag for finish game
     void    updateHead(t_coor&);
     void    crash();
-    void    grow();
+    void    grow(int typeFood);
     int    getNumberSprite(int itr);
 };
 
