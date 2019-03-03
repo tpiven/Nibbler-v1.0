@@ -6,6 +6,9 @@ add_custom_target(SDL_lib
 add_custom_target(SFML_lib
                   COMMAND make -C ${CMAKE_CURRENT_SOURCE_DIR}/SFML)
 
+add_custom_target(Allegro_lib
+        COMMAND make -C ${CMAKE_CURRENT_SOURCE_DIR}/Allegro)
+
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 
 set(SOURCE_FILES main.cpp Menu.cpp Game_Obj.cpp Logic.cpp Mmap.cpp AView.cpp Food.cpp Interface.cpp Interface.hpp)
@@ -20,4 +23,4 @@ message(STATUS "dir = '${CMAKE_CURRENT_SOURCE_DIR}'")
 
 add_executable(Nibbler_v1.1 ${SOURCE_FILES})
 
-target_link_libraries(Nibbler_v1.1 )
+target_link_libraries(Nibbler_v1.1)
