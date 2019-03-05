@@ -91,7 +91,7 @@ void Game_Obj::addNewSharedLib() {
 void Game_Obj::init() {
     library[0] = "../libSDL.dylib";
     library[1] = "../libSFML.dylib";
-    library[2] = "../libAllegro.so";
+    library[2] = "../libAllegro.dylib";
    // _libs = {&SDL_lib::getInstance(), &SFML_lib::getInstance(), &Allegra_lib::getInstance()};
     addNewSharedLib();
     _interface = Interface::getInstance();
