@@ -16,6 +16,7 @@ public:
     bool    changebutton();
     void    escapeDialog();
     void    pauseDialog();
+    void    changeSize();
 private:
     int _numButton;//number of button
     char _key;//w,a,s,d
@@ -26,4 +27,3 @@ private:
     int  _typeMenu;//flag for 1 is Start_menu, 2 is Escape_Menu, 3 is Pause_menu
     void moveArrow();
 };
-

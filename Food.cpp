@@ -29,9 +29,6 @@ Food::~Food() {
 }
 
 void Food::mandatoryFood() {
-    _size_block = (g_weight / 90) / 2;
-    _rectLil.w = _rectLil.h = _size_block;
-
     if (GET_VALUE_FROM_MAP(_coorLilFood.y_arr, _coorLilFood.x_arr) != -2){//-2 on array is food
         if (_coorLilFood.y_arr != 0 & _coorLilFood.x_arr != 0) {
            Interface *qw = Interface::getInstance();
@@ -54,28 +51,11 @@ void Food::mandatoryFood() {
         _rectLil.y = _coorLilFood.y_dis = (y * g_height / 67) + HEIGHT_SCOREBOARD + _size_block/2;
         _rectLil.x = _coorLilFood.x_dis = (x * g_weight / 90) + _size_block/2;
     }
-    Game_Obj *b = Game_Obj::getInstance();
-    b->viev->drawFood(&_rectLil);
-//    switch (g_lib){
-//        case 1:
-//            SDL_lib::getInstance().drawFood(&_rectLil);
-//            break;
-//        case 2:
-//            SFML_lib::getInstance().drawFood(&_rectLil);
-//               break;
-//        case 3:
-//            Allegra_lib::getInstance().drawFood(&_rectLil);
-//            break;
-//        default:
-//            break;
-//    }
+    Game_Obj::viev->drawFood(&_rectLil);
 }
 
 void Food::surpriseFood() {
-    _size_block = (g_weight / 90) / 2;
-    _rectBig.w = _rectBig.h = _size_block * 2;
-
-    if (GET_VALUE_FROM_MAP(_coorBigFood.y_arr, _coorBigFood.x_arr) != -2) {
+    if (GET_VALUE_FROM_MAP(_coorBigFood.y_arr, _coorBigFood.x_arr) != -3) {
         if(_drawBig == true) {
             Interface *qw =  Interface::getInstance();
             qw->setScore(50);
@@ -90,14 +70,13 @@ void Food::surpriseFood() {
             int y = 0;
             _drawBig = true;
             startBig = std::chrono::system_clock::now();
-
             do {
                 std::uniform_int_distribution<> dis_x(0, 89);
                 std::uniform_int_distribution<> dis_y(0, 66);
                 x = dis_x(gen);
                 y = dis_y(gen);
             } while (GET_VALUE_FROM_MAP(y, x) != 0);
-            SET_VALUE_IN_MAP(-2, y, x);
+            SET_VALUE_IN_MAP(-3, y, x);
             _coorBigFood.y_arr = y;
             _coorBigFood.x_arr = x;
             _rectBig.y = _coorBigFood.y_dis = (_coorBigFood.y_arr * g_height / 67) + HEIGHT_SCOREBOARD;
@@ -107,31 +86,13 @@ void Food::surpriseFood() {
     }
     auto t = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now() - startBig);
     if (t.count() >= 8000){
-
         _drawBig = false;
         SET_VALUE_IN_MAP(0, _coorBigFood.y_arr, _coorBigFood.x_arr);
     }
     if (_drawBig){
-        Game_Obj *a = Game_Obj::getInstance();
-        a->viev->drawFood(&_rectBig);
-        a->viev->drawTimeBigFood(static_cast<int>((8000 - t.count())/100));
-//            switch (g_lib){
-//                case 1:
-//                    SDL_lib::getInstance().drawFood(&_rectBig);
-//                    SDL_lib::getInstance().drawTimeBigFood(static_cast<int>((8000 - t.count())/100));
-//                    break;
-//                case 2:
-//                    SFML_lib::getInstance().drawFood(&_rectBig);
-//                    SFML_lib::getInstance().drawTimeBigFood(static_cast<int>((8000 - t.count())/100));
-//                    break;
-//                case 3:
-//                    Allegra_lib::getInstance().drawFood(&_rectBig);
-//                    Allegra_lib::getInstance().drawTimeBigFood(static_cast<int>((8000 - t.count())/100));
-//                    break;
-//                default:
-//                    break;
-//            }
-       }
+        Game_Obj::viev->drawFood(&_rectBig);
+        Game_Obj::viev->drawTimeBigFood(static_cast<int>((8000 - t.count())/100));
+   }
 }
 
 
@@ -147,4 +108,21 @@ void Food::restart() {
     _coorLilFood.y_arr = 0;
     _coorLilFood.x_arr = 0;
     _drawBig = false;
+}
+
+void Food::changeSize(int n) {
+    _size_block = (g_weight / 90) / 2;
+    _rectLil.w = _rectLil.h = _size_block;
+    _rectBig.w = _rectBig.h = _size_block * 2;
+    _rectLil.x = (n > 0) ? (_rectLil.x * 2) : (_rectLil.x / 2);
+    _rectLil.y = (n > 0) ? (_rectLil.y * 2) : (_rectLil.y / 2);
+    _coorLilFood.x_dis = (n > 0) ? ( _coorLilFood.x_dis * 2) : (_coorLilFood.x_dis / 2);
+    _coorLilFood.y_dis = (n > 0) ? ( _coorLilFood.y_dis * 2) : (_coorLilFood.y_dis / 2);
+    if (_drawBig == true) {
+        _rectBig.x = (n > 0) ? (_rectBig.x * 2) : (_rectBig.x / 2);
+        _rectBig.y = (n > 0) ? (_rectBig.y * 2) : (_rectBig.y / 2);
+        _coorBigFood.x_dis = (n > 0) ? ( _coorBigFood.x_dis * 2) : (_coorBigFood.x_dis / 2);
+        _coorBigFood.y_dis = (n > 0) ? ( _coorBigFood.y_dis * 2) : (_coorBigFood.y_dis / 2);
+    }
+
 }

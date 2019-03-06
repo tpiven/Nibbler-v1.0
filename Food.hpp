@@ -17,6 +17,7 @@ public:
     ~Food();
     void    updateFood();
     void    restart();
+    void    changeSize(int);
 private:
     void    mandatoryFood();
     void    surpriseFood();

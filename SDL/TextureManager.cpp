@@ -15,6 +15,9 @@ TextureManager& TextureManager::getInstance() {
 
 SDL_Texture* TextureManager::LoadTexture(const char *filename) {
     SDL_Surface *tmp_surface = IMG_Load(filename);
+    if (!tmp_surface){
+        std::cout << "FUCK" << std::endl;
+    }
     SDL_Texture * texture = SDL_CreateTextureFromSurface(SDL_lib::renderer, tmp_surface);
     SDL_FreeSurface(tmp_surface);
     return  texture;

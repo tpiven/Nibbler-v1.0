@@ -20,6 +20,7 @@ public:
     int     getkey() const;
     void    init(int);
     void    restart();
+    void    changeSize(int);
 private:
     lst _cors;
     lst _corsCopy;
@@ -31,7 +32,8 @@ private:
     bool _playGame;//flag for finish game
     void    updateHead(t_coor&);
     void    crash();
-    void    grow();
-    int    getNumberSprite(int itr);
+    void    grow(int typeFood);
+    int    getNumberSprite(int);
+
 };
 

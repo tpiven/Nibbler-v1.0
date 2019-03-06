@@ -5,9 +5,7 @@
 #include "Menu.hpp"
 #include "global.h"
 #include "Game_Obj.hpp"
-//#include "SDL_lib.hpp"
-//#include "SFML_lib.hpp"
-//#include "Allegra_lib.hpp"
+
 
 Menu::Menu() noexcept {
     _size_block = g_weight / 90 + 20;//50 is scale for arrow
@@ -29,38 +27,12 @@ void Menu::initMenu() {
     _rectB.x = g_weight / 2 - (_size_block * 2) - 10;
     _rectB.y = _rectA.y; //button must be on the same level with arrow
     _numButton = 1;
-    Game_Obj *q = Game_Obj::getInstance();
-    q->viev->drawMenu(&_rectA, &_rectB, _typeMenu);
-    q->viev->render();
-//    switch (g_lib){
-//        case 1:
-//           Game_Obj *liba = Game_Obj::getInstance();
-//           Game_Obj::_libs[0]->drawMenu(&_rectA, &_rectB, _typeMenu);
-//           Game_Obj::_libs[0]->render();
-//            break;
-//        case 2:
-//            Game_Obj *q = Game_Obj::getInstance();
-//            q->_libs[2]->drawMenu(&_rectA, &_rectB, _typeMenu);
-//            q->_libs[2]->render();
-//            SFML_lib::getInstance().drawMenu(&_rectA, &_rectB, _typeMenu);
-//            SFML_lib::getInstance().render();
-//            break;
-//        case 3:
-//           Allegra_lib::getInstance().drawMenu(&_rectA, &_rectB, _typeMenu);
-//          Allegra_lib::getInstance().render();
-//            break;
-//        default:
-//            break;
-//    }
+    Game_Obj::viev->drawMenu(&_rectA, &_rectB, _typeMenu);
+    Game_Obj::viev->render();
 }
 
 bool Menu::changebutton() {
-    _size_block = g_weight / 90 + 20;//50 is scale for arrow
-    _rectA.w = _rectA.h = _size_block;//rect for Arrow
-    _rectB.h = _size_block;
-    _rectB.w = _size_block * 4;
-
-    if (_key == 36){//enter, which mean that player chosed number of players
+      if (_key == 36){//enter, which mean that player chosed number of players
         _key = 0;
         _select = false;
         if ((_typeMenu == 3 && _numButton == 3) || (_typeMenu != 3 && _numButton == 4)){
@@ -71,23 +43,7 @@ bool Menu::changebutton() {
         return true;
     }
     moveArrow();
-    Game_Obj *r = Game_Obj::getInstance();
-    r->viev->drawMenu(&_rectA, &_rectB, _typeMenu);
-    //    switch (g_lib){
-//        case 1:
-//         Game_Obj::_libs[0]->drawMenu(&_rectA, &_rectB, _typeMenu);
-//         break;
-//
-//       // case 2:
-//            Game_Obj *qw = Game_Obj::getInstance();
-//            qw->_libs[2]->drawMenu(&_rectA, &_rectB, _typeMenu);
-//            break;
-//       // case 3:
-//        //    Allegra_lib::getInstance().drawMenu(&_rectA, &_rectB, _typeMenu);
-//            break;
-//    //    default:
-//            break;
-//    }
+    Game_Obj::viev->drawMenu(&_rectA, &_rectB, _typeMenu);
     _key = 0;
     return true;
 }
@@ -105,7 +61,9 @@ void Menu::moveArrow() {
 
 void Menu::escapeDialog() {
     _typeMenu = 2;
-    _select = true;}
+    _select = true;
+}
+
 void Menu::pauseDialog() {
     _typeMenu = 3;
     _select = true;
@@ -113,5 +71,21 @@ void Menu::pauseDialog() {
 
 bool Menu::runningMenu() const { return _select;}
 void Menu::setKey(int key) {_key = key;}
+
+void Menu::changeSize() {
+    _size_block = g_weight / 90 + 20;
+    _rectA.w = _rectA.h = _size_block;
+
+    /**********RECT FOR BUTTON********/
+    _rectB.h = _size_block;
+    _rectB.w = _size_block * 4;
+    _rectA.x = g_weight / 2 - (_size_block * 4) - 10;// position of arrow x
+    _rectA.y = g_height / 2 - (_size_block * 3) - 10;// position of arrow y
+
+    _rectB.x = g_weight / 2 - (_size_block * 2) - 10;
+    _rectB.y = _rectA.y; //button must be on the same level with arrow
+
+
+}
 
 Menu::~Menu() {}

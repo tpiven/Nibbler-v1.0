@@ -42,43 +42,25 @@ void Interface::changeTimeAndScore() {
     auto t = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now() - start);
     time = static_cast<int>(t.count() / 1000);
     std::string clock;
-    int minutes = time/60;
+    int minutes = time / 60;
     int seconds = time - minutes * 60;
     if (minutes == 0) {
         clock = "00:";
-    }
-    else if (minutes < 10) {
+    } else if (minutes < 10) {
         clock = "0" + std::to_string(minutes) + ":";
-    }
-    else {
+    } else {
         clock = std::to_string(minutes) + ":";
     }
-    if (seconds == 0){
+    if (seconds == 0) {
         clock = clock + "00";
-    }
-    else if (seconds < 10) {
+    } else if (seconds < 10) {
         clock = clock + "0" + std::to_string(seconds);
-    }
-    else {
+    } else {
         clock = clock + std::to_string(seconds);
     }
-    Game_Obj *o = Game_Obj::getInstance();
-    o->viev->drawInterface(clock, score);
-
-//    switch (g_lib){
-//        case 1:
-//            SDL_lib::getInstance().drawInterface(clock, score);
-//            break;
-//        case 2:
-//            SFML_lib::getInstance().drawInterface(clock, score);
-//            break;
-//        case 3:
-//            Allegra_lib::getInstance().drawInterface(clock, score);
-//            break;
-//        default:
-//            break;
-//    }
+    Game_Obj::viev->drawInterface(clock, score);
 }
+
 
 void Interface::restart() {
     time = 0;

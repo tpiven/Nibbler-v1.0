@@ -8,9 +8,6 @@
 #include <iostream>
 #include "Mmap.hpp"
 #include "Game_Obj.hpp"
-//#include "SDL_lib.hpp"
-//#include "SFML_lib.hpp"
-//#include "Allegra_lib.hpp"
 
 Logic::Logic() noexcept {
     _size_block = g_weight / 90;
@@ -49,21 +46,7 @@ void Logic::init(int n_pl) {
         _rect.x = _cors.back().x_dis;
         _rectCopy = _rect;
         _corsCopy = _cors;
-        Game_Obj *t = Game_Obj::getInstance();
-        t->viev->drawSnake(&_rect, j);
-//        switch (g_lib){
-//            case 1:
-//                SDL_lib::getInstance().drawSnake(&_rect, j);
-//                    break;
-//            case 2:
-//                SFML_lib::getInstance().drawSnake(&_rect, j);
-//                break;
-//            case 3:
-//                Allegra_lib::getInstance().drawSnake(&_rect, j);
-//                break;
-//            default:
-//                break;
-//        }
+        Game_Obj::viev->drawSnake(&_rect, j);
     }
 }
 
@@ -78,8 +61,6 @@ int Logic::getNumberSprite(int itr) {
 }
 
 void Logic::setKey(int key) {
-
-    std::cout << "2222222222" << g_lib << std::endl;
     if (key >= 123 && key <= 126 && _pl == 2){
         if (key == 126 || key == 125){
             _key = (key == 126) ? 'w' : 's';
@@ -122,8 +103,8 @@ void Logic::move() {
         crash();
         return;
     }
-    else if (ch == -2){
-        grow();
+    else if (ch == -2 || ch == -3){ //-2 small food and -3 big food
+        grow(ch);
     }
     else if (ch == -5) {
         head.x_arr = (head.x_arr == 0) ? 88 : 1;
@@ -153,23 +134,9 @@ void Logic::move() {
                 Mmap::getInstance().setValueInMap(-1, it->y_arr, it->x_arr);
             }
         }
-         _rect.y = it->y_dis;
+        _rect.y = it->y_dis;
         _rect.x = it->x_dis;
-        Game_Obj *r = Game_Obj::getInstance();
-        r->viev->drawSnake(&_rect, j);
-//        switch (g_lib){
-//            case 1:
-//                SDL_lib::getInstance().drawSnake(&_rect, j);
-//                break;
-//            case 2:
-//                SFML_lib::getInstance().drawSnake(&_rect, j);
-//                break;
-//            case 3:
-//                Allegra_lib::getInstance().drawSnake(&_rect, j);
-//                break;
-//            default:
-//                break;
-//        }
+        Game_Obj::viev->drawSnake(&_rect, j);
     }
 }
 
@@ -178,8 +145,9 @@ void Logic::restart() {
         Mmap::getInstance().setValueInMap(0, it.y_arr, it.x_arr);
     }
     _cors.erase(_cors.begin(), _cors.end());
-    _cors = _corsCopy;
-    _rect = _rectCopy;
+//    _cors = _corsCopy;
+//    _rect = _rectCopy;
+    init(1);
     _playGame = true;
     _key = (_pl == 1) ? 'd' : 'a';
 }
@@ -190,14 +158,25 @@ void Logic::crash() {
     _playGame = false;
 }
 
-void Logic::grow() {
-    auto tail = _cors.front();
+void Logic::grow(int typeFood) {
+    int cell = (typeFood == -2) ? 1 : 2;
     int fg = (_key == 'd' || _key == 's') ? -1 : 1;
-    if (_key == 'a' || _key == 'd'){
-        _cors.push_front({tail.y_dis, tail.x_dis + (_size_block * fg), tail.y_arr, tail.x_arr + fg});
+    for (int i = 0; i < cell; ++i) {
+        auto tail = _cors.front();
+        if (_key == 'a' || _key == 'd') {
+            _cors.push_front({tail.y_dis, tail.x_dis + (_size_block * fg), tail.y_arr, tail.x_arr + fg});
+        } else if (_key == 'w' || _key == 's') {
+            _cors.push_front({tail.y_dis + (_size_block * fg), tail.x_dis, tail.y_arr + fg, tail.x_arr});
+        }
     }
-    else if (_key == 'w' || _key == 's'){
-        _cors.push_front({tail.y_dis + (_size_block * fg), tail.x_dis, tail.y_arr + fg, tail.x_arr});
+}
+
+void Logic::changeSize(int n) {
+    _size_block = g_weight / 90;
+    _rect.w = _rect.h = _size_block;
+    for (auto it = _cors.begin(); it != _cors.end(); it++) {
+        (*it).x_dis = (n > 0) ? ((*it).x_dis * 2) : ((*it).x_dis / 2);
+        (*it).y_dis = (n > 0) ? ((*it).y_dis * 2) : ((*it).y_dis/ 2);
     }
 }
 
