@@ -28,8 +28,7 @@ void    drawFood(void*) override;
 void    drawInterface(std::string, int) override;
 void    drawTimeBigFood(int) override;
 void    renderClear() override;
-void    hideWindow() override;
-void    showWindow() override;
+void    drawGameOver(int) override;
 
 private:
     static sf::RenderWindow *_window;
@@ -39,10 +38,13 @@ private:
     sf::Texture  _textureFood;
     sf::Texture _textureArrow;
     sf::Texture timeBigFood;
+    sf::Texture _gameOver;
+    sf::Sprite GameOver;
     std::map<int, sf::Texture> _snakeTexture;
     std::map<int, sf::Texture> _buttonTexture;
     sf::Font font;
     sf::Text text;
+    sf::Text over;
     int weight;
     int height;
     int height_scoreboard;

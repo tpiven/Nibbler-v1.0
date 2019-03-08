@@ -13,6 +13,7 @@ public:
     void initInterface();
     void changeTimeAndScore();
     void setScore(int plus);
+    int getScore();
     void restart();
 private:
     static Interface *_inst;

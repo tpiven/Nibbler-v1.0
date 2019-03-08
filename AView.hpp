@@ -43,7 +43,7 @@ public:
     ~AView(){}
     virtual void    init() = 0;//инит окна и прочего
     virtual int     catchHook() = 0; //ловим хуки от клавиш
-    virtual void    render() = 0;//рисуем
+    virtual void     render() = 0;//рисуем
     virtual void    drawMenu(void*, void*, int) = 0;
     virtual void    renderClear() = 0;
     virtual void    drawMap() = 0;
@@ -54,7 +54,8 @@ public:
     virtual uint32_t     getTicks() = 0;
     virtual void    delay(int) = 0;
     virtual void    cleanWindow() = 0;
-    virtual void    hideWindow() = 0;
-    virtual void    showWindow() = 0;
+    virtual void    drawGameOver(int) = 0;
+//    virtual void    hideWindow() = 0;
+//    virtual void    showWindow() = 0;
 //    bool            _isInit;
 };

@@ -44,10 +44,15 @@ void SFML_lib::init() {
     _buttonTexture[2].loadFromFile("Picture/options.png");
     _buttonTexture[3].loadFromFile("Picture/continue.png");
     _buttonTexture[4].loadFromFile("Picture/exit.png");
+    _gameover.loadFromFile("Picture/over.png");
+    GameOver.setTexture(_gameOver);
     font.loadFromFile("Picture/ArialItalic.ttf");
     text.setFont(font);
     text.setCharacterSize(sizeFont);
     text.setFillColor(sf::Color::Red);
+    over.setFont(font);
+    over.setCharacterSize(40);
+    over.setFillColor(sf::Color::Green);
     timeBigFood.loadFromFile("Picture/map_1.png", sf::IntRect(10, 10, 5, sizeFont - 10));
     _isInit = true;
 }
@@ -233,34 +238,28 @@ void SFML_lib::renderClear() {
 
 }
 
-void SFML_lib::hideWindow() {
-    _window->clear();
-    _window->close();
-}
-
-void SFML_lib::showWindow() {
-//    if (!_isInit){
-//        init();
-//    }
-//    else {
-//
-//        _window->setVisible(true);
-//    }
-    init();
-}
-
 void SFML_lib::cleanWindow() {
     _window->clear();
     _window->close();
 
 }
 
+void SFML_lib::drawGameOver(int score) {
+    _window->pollEvent(_event);
+    _window->clear();
+    auto size = GameOver.getTexture()->getSize();
+    //GameOver.setScale(500/size.x, 250/size.y);
+    GameOver.setPosition((weight / 3) , (height / 3));
+    _window->draw(GameOver);
+    over.setString("SCORE:    " + std::to_string(score));
+    over.setPosition( (weight / 3) + 100, (height / 3) * 2);
+    _window->draw(over);
+}
+
 extern "C"  AView* getInstance(int weight, int height) {
-    // static SFML_lib instance;
     return new SFML_lib(weight, height);
 }
 
-extern "C" void		destroy_object(SFML_lib *gui)
-{
+extern "C" void		destroy_object(SFML_lib *gui) {
     delete gui;
 }

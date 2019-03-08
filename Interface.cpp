@@ -34,6 +34,10 @@ void Interface::setScore(int plus) {
     score = score + plus;
 }
 
+int Interface::getScore() {
+    return score;
+}
+
 void Interface:: initInterface() {
     start = std::chrono::system_clock::now();
 }
