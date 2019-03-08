@@ -27,8 +27,7 @@ public:
     void    drawFood(void*) override;
     void    drawInterface(std::string, int) override;
     void    drawTimeBigFood(int) override;
-    void    hideWindow() override;
-    void    showWindow() override;
+    void    drawGameOver(int) override;
 private:
     friend class TextureManager;
     static SDL_Renderer * renderer;

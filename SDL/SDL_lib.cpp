@@ -256,23 +256,7 @@ void SDL_lib::renderClear() {
     SDL_RenderClear(renderer);
 }
 
-void SDL_lib::hideWindow() {
-//    SDL_RenderClear(renderer);
-//    SDL_HideWindow(_window);
-    SDL_DestroyWindow(_window);
-    SDL_DestroyRenderer(renderer);
-    SDL_Quit();
-}
-
-void SDL_lib::showWindow() {
-//    if (!_isInit){
-//
-//        init();
-//  }else {
-//
-//        SDL_ShowWindow(_window);
-//    }
-    init();
+void SDL_lib::drawGameOver(int) {
 
 }
 

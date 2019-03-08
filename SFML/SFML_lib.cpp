@@ -44,7 +44,7 @@ void SFML_lib::init() {
     _buttonTexture[2].loadFromFile("Picture/options.png");
     _buttonTexture[3].loadFromFile("Picture/continue.png");
     _buttonTexture[4].loadFromFile("Picture/exit.png");
-    _gameover.loadFromFile("Picture/over.png");
+    _gameOver.loadFromFile("Picture/over.png");
     GameOver.setTexture(_gameOver);
     font.loadFromFile("Picture/ArialItalic.ttf");
     text.setFont(font);
@@ -247,7 +247,7 @@ void SFML_lib::cleanWindow() {
 void SFML_lib::drawGameOver(int score) {
     _window->pollEvent(_event);
     _window->clear();
-    auto size = GameOver.getTexture()->getSize();
+   // auto size = GameOver.getTexture()->getSize();
     //GameOver.setScale(500/size.x, 250/size.y);
     GameOver.setPosition((weight / 3) , (height / 3));
     _window->draw(GameOver);
