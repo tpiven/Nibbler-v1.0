@@ -17,7 +17,7 @@ class Allegra_lib: public AView{
 public:
     Allegra_lib();
     Allegra_lib(int, int);
-    ~Allegra_lib();
+    virtual ~Allegra_lib();
     void    init() override;
     int     catchHook() override;
     void    render() override;
@@ -31,7 +31,7 @@ public:
     void    drawFood(void*) override;
     void    drawInterface(std::string, int) override;
     void    drawTimeBigFood(int) override;
-    void    drawGameOver(int) {}
+    void    drawGameOver(int) override;
 private:
     ALLEGRO_DISPLAY             *display;
     ALLEGRO_EVENT_QUEUE         *event_queue;

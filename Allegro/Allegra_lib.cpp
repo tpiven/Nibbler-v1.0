@@ -143,9 +143,6 @@ void Allegra_lib::drawTimeBigFood(int) {
 
 }
 
-void Allegra_lib::hideWindow() {}
-void Allegra_lib::showWindow() {}
-
 
 
 void Allegra_lib::renderClear() {
@@ -156,7 +153,14 @@ void Allegra_lib::cleanWindow() {
 
 }
 
+void Allegra_lib::drawGameOver(int) {
+
+}
+
 extern "C"  AView* getInstance(int weight, int height) {
-    // static SFML_lib instance;
-    return new Allegra_lib(weight, height);
+        return new Allegra_lib(weight, height);
+}
+
+extern "C" void		destroy_object(Allegra_lib *gui) {
+    delete gui;
 }

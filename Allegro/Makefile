@@ -1,5 +1,5 @@
 
-NAME = libAllegro.so
+NAME = libAllegro.dylib
 
 SRC =  Allegra_lib.cpp 
 
@@ -8,7 +8,7 @@ FLAGS = -Wall -Wextra -Werror -std=c++11
 all: $(NAME)
 
 $(NAME): 
-	g++ $(FLAGS) -shared -fPIC -o $(NAME) $(SRC) -I ~/.brew/include -L ~/.brew/lib -lallegro -lallegro_image  -rpath ~/.brew/lib
+	g++ $(FLAGS) -dynamiclib -fPIC -o $(NAME) $(SRC) -I ~/.brew/include -L ~/.brew/lib -lallegro -lallegro_image  -rpath ~/.brew/lib
 	mv $(NAME) ..
 	
 clean:
