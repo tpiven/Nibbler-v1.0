@@ -46,7 +46,6 @@ private:
     SDL_Rect    _fcrR;//food
     SDL_Rect    _tcrR;//text
     SDL_Rect    _lcrR;
-    bool        _isInit;
     int g_weight;
     int g_height;
     int HEIGHT_SCOREBOARD;

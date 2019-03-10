@@ -48,7 +48,7 @@ bool Game_Obj::menu(AView* lib) {//draw menu for select map, and number of playe
             return false;
         }
         frameTime = lib->getTicks() - frameStart;
-        if (frameDealy > frameTime){
+        if (frameDealy > frameTime && frameTime >= 0){
             lib->delay(frameDealy - frameTime);
         }
         render(lib);
@@ -136,7 +136,17 @@ void Game_Obj::main_loop() {
 }
 
 bool Game_Obj::escapeLogic() {
+    int const frameDealy = 4000 / FPS;
     _menu.escapeDialog();
+    while(handleEvent(viev) == 0){
+        viev->renderClear();
+        viev->drawGameOver(_interface->getScore());
+        frameTime = viev->getTicks() - frameStart;
+        if (frameDealy > frameTime && frameTime >= 0){
+            viev->delay(frameDealy - frameTime);
+        }
+        viev->render();
+    }
     if (!menu(viev)){
         return false;
     }

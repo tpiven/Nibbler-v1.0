@@ -31,9 +31,7 @@ public:
     void    drawFood(void*) override;
     void    drawInterface(std::string, int) override;
     void    drawTimeBigFood(int) override;
-    void    hideWindow() override;
-    void    showWindow() override;
-
+    void    drawGameOver(int) {}
 private:
     ALLEGRO_DISPLAY             *display;
     ALLEGRO_EVENT_QUEUE         *event_queue;

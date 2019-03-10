@@ -26,7 +26,7 @@ SFML_lib::SFML_lib(int g_weight, int g_height) {
     height = g_height;
     height_scoreboard = g_weight / 14;
     sizeFont = height_scoreboard / 4;
-    _isInit = false;
+
 }
 
 SFML_lib::~SFML_lib() {}
@@ -44,14 +44,14 @@ void SFML_lib::init() {
     _buttonTexture[2].loadFromFile("Picture/options.png");
     _buttonTexture[3].loadFromFile("Picture/continue.png");
     _buttonTexture[4].loadFromFile("Picture/exit.png");
-    _gameOver.loadFromFile("Picture/over.png");
+    _gameOver.loadFromFile("Picture/gameOver.png");
     GameOver.setTexture(_gameOver);
     font.loadFromFile("Picture/ArialItalic.ttf");
     text.setFont(font);
     text.setCharacterSize(sizeFont);
     text.setFillColor(sf::Color::Red);
     over.setFont(font);
-    over.setCharacterSize(40);
+    over.setCharacterSize(height_scoreboard / 3);
     over.setFillColor(sf::Color::Green);
     timeBigFood.loadFromFile("Picture/map_1.png", sf::IntRect(10, 10, 5, sizeFont - 10));
     _isInit = true;
@@ -247,12 +247,15 @@ void SFML_lib::cleanWindow() {
 void SFML_lib::drawGameOver(int score) {
     _window->pollEvent(_event);
     _window->clear();
-   // auto size = GameOver.getTexture()->getSize();
-    //GameOver.setScale(500/size.x, 250/size.y);
+    auto size = GameOver.getTexture()->getSize();
+    GameOver.setScale((weight/3)/size.x, (height/3)/size.y);
     GameOver.setPosition((weight / 3) , (height / 3));
     _window->draw(GameOver);
     over.setString("SCORE:    " + std::to_string(score));
-    over.setPosition( (weight / 3) + 100, (height / 3) * 2);
+    over.setPosition( (weight / 2) - height_scoreboard , (height / 3) * 2);
+    _window->draw(over);
+    over.setString("Please, press space key");
+    over.setPosition((weight / 2 - height_scoreboard * 2), (height - height_scoreboard));
     _window->draw(over);
 }
 

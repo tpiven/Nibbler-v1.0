@@ -39,7 +39,7 @@
 
 class AView {
 public:
-//    AView() : _isInit(false){}
+    AView()  {}
     ~AView(){}
     virtual void    init() = 0;//инит окна и прочего
     virtual int     catchHook() = 0; //ловим хуки от клавиш
@@ -55,7 +55,4 @@ public:
     virtual void    delay(int) = 0;
     virtual void    cleanWindow() = 0;
     virtual void    drawGameOver(int) = 0;
-//    virtual void    hideWindow() = 0;
-//    virtual void    showWindow() = 0;
-//    bool            _isInit;
 };

@@ -42,7 +42,7 @@ SDL_lib::SDL_lib(int weight, int height) {
     g_height = height;
     HEIGHT_SCOREBOARD = g_weight / 14;
     SizeFont = HEIGHT_SCOREBOARD / 4;
-    _isInit = false;
+
 }
 
 SDL_lib::~SDL_lib() {}

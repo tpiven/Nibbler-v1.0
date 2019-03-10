@@ -2,6 +2,7 @@
 #include "Game_Obj.hpp"
 #include "global.h"
 
+
 int g_weight;
 int g_height;
 int g_lib;

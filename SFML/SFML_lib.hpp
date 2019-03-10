@@ -49,8 +49,5 @@ private:
     int height;
     int height_scoreboard;
     int sizeFont;
-    bool _isInit;
-
-
 };
 
