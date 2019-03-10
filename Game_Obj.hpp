@@ -13,19 +13,17 @@ class Game_Obj {
 public:
     static Game_Obj* getInstance();
     void    init();
-    int     handleEvent(AView*&);
-    void    update(AView*);
-    void    render(AView*);
+    int     handleEvent();
+    void    update();
     static AView * viev;
 
 private:
     static Game_Obj *_inst;
-    bool    menu(AView*);
-    void    clean(AView*);
-    bool    action(AView*);
+    bool    menu();
+    bool    action();
     void    main_loop();
     void    addNewSharedLib();
-    void    switchLib(int, AView*&);
+    void    switchLib(int);
     bool    escapeLogic();
     bool    pauseLogic();
 

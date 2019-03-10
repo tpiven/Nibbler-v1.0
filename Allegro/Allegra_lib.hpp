@@ -55,4 +55,3 @@ private:
     Allegra_lib &operator=(Allegra_lib&&) = delete;
 };
 
-

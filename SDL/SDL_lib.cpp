@@ -23,6 +23,7 @@ extern const char buttonOption_path[] = "/Picture/options.png";
 extern const char buttonContinue_path[] = "/Picture/continue.png";
 extern const char buttonExit_path[] = "/Picture/exit.png";
 const char arrow_path[] = "/Picture/arrow_path.png";
+const char gameOver_path[] = "/Picture/gameOver.png";
 const char font_path[] = "/Picture/ArialItalic.ttf";
 
 SDL_Renderer* SDL_lib::renderer = nullptr;
@@ -32,7 +33,11 @@ SDL_Texture*    SDL_lib::_textureFood = nullptr;
 SDL_Texture*    SDL_lib::_textureArrow = nullptr;
 SDL_Texture*    SDL_lib::_textureText = nullptr;
 SDL_Texture*     SDL_lib::_textureLine = nullptr;
+SDL_Texture*    SDL_lib::_textureGameOver = nullptr;
+SDL_Texture*    SDL_lib::_textureScore = nullptr;
 TTF_Font*       SDL_lib::_font = nullptr;
+TTF_Font*       SDL_lib::_game_over = nullptr;
+
 
 SDL_lib::SDL_lib() {}
 
@@ -115,19 +120,29 @@ void SDL_lib::init() {
         std::cerr << "textureLine not exist" << std::endl;
         exit(1);
     }
+    _textureGameOver = CREATE_TEXTURE((_dir + gameOver_path).c_str());
+    if (!_textureGameOver){
+        std::cerr << "textureGameOver not exist" << std::endl;
+        exit(1);
+    }
     /************INIT TEXTURE FOR FONT************/
     if (TTF_Init() < 0){
         std::cout << TTF_GetError() << std::endl;
         exit(-1);
     }
-    std::cout << "FONT_PATH: " << _dir + font_path << std::endl;
+   // std::cout << "FONT_PATH: " << _dir + font_path << std::endl;
 
     if (!(_font = TTF_OpenFont((_dir + font_path).c_str(), SizeFont))){//TODO change size font on variable
         std::cerr << "textureText not exist" << std::endl;
         exit(1);
     }
     _textColor = {255, 0, 0, 0};//color red
-    _isInit = true;
+    if (!(_game_over = TTF_OpenFont((_dir + font_path).c_str(), (HEIGHT_SCOREBOARD/ 3)))){
+        std::cerr << "text Game Over not exist" << std::endl;
+        exit(1);
+    }
+    _tColor = {107,142,35, 0};
+
 }
 
 
@@ -256,7 +271,21 @@ void SDL_lib::renderClear() {
     SDL_RenderClear(renderer);
 }
 
-void SDL_lib::drawGameOver(int) {
+void SDL_lib::drawGameOver(int score) {
+    _gcrR = {(g_weight / 3), g_height / 3, g_weight / 3, g_height / 3};
+    SDL_RenderCopy(renderer, _textureGameOver, nullptr, &_gcrR);
+    _textureScore = CREATE_TEXTURETEXT(("SCORE   " + std::to_string(score)).c_str(), _tColor, _tcrR);
+    _tcrR.x = g_weight/2 - HEIGHT_SCOREBOARD;
+    _tcrR.y = (g_height / 3) * 2;
+    SDL_RenderCopy(renderer, _textureScore, nullptr, &_tcrR);
+
+    _textureScore = CREATE_TEXTURETEXT("Please, press space key", _tColor, _tcrR);
+    _tcrR.x = g_weight / 2 - HEIGHT_SCOREBOARD;
+    _tcrR.y = g_height - HEIGHT_SCOREBOARD;
+    SDL_RenderCopy(renderer, _textureScore, nullptr, &_tcrR);
+
+
+
 
 }
 

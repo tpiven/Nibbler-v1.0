@@ -39,13 +39,18 @@ private:
     static SDL_Texture  *_textureLine;
 
     static SDL_Texture  *_textureText;
+    static SDL_Texture  *_textureScore;
+    static SDL_Texture *_textureGameOver;
     static TTF_Font     *_font;
+    static TTF_Font *_game_over;
     SDL_Color           _textColor;
+    SDL_Color           _tColor;
     SDL_Rect    _mcrR;//menu
     SDL_Rect    _scrR;//snake
     SDL_Rect    _fcrR;//food
     SDL_Rect    _tcrR;//text
     SDL_Rect    _lcrR;
+    SDL_Rect    _gcrR;// game over
     int g_weight;
     int g_height;
     int HEIGHT_SCOREBOARD;

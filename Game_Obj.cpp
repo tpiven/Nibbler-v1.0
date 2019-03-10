@@ -35,23 +35,23 @@ void *Game_Obj:: dl_lib = NULL;
 AView*  Game_Obj::viev = nullptr;
 
 
-bool Game_Obj::menu(AView* lib) {//draw menu for select map, and number of player
+bool Game_Obj::menu() {//draw menu for select map, and number of player
     int const frameDealy = 4000 / FPS;
     while(_menu.runningMenu()){
-        lib->renderClear();
+        viev->renderClear();
 
-        frameStart = lib->getTicks();
-        if (handleEvent(lib) == -1){
+        frameStart = viev->getTicks();
+        if (handleEvent() == -1){
             return false;
         }
         if (!_menu.changebutton()){
             return false;
         }
-        frameTime = lib->getTicks() - frameStart;
+        frameTime = viev->getTicks() - frameStart;
         if (frameDealy > frameTime && frameTime >= 0){
-            lib->delay(frameDealy - frameTime);
+            viev->delay(frameDealy - frameTime);
         }
-        render(lib);
+        viev->render();
     }
     return true;
 }
@@ -92,23 +92,20 @@ void Game_Obj::init() {
     library[0] = "../libSDL.dylib";
     library[1] = "../libSFML.dylib";
     library[2] = "../libAllegro.dylib";
-   // _libs = {&SDL_lib::getInstance(), &SFML_lib::getInstance(), &Allegra_lib::getInstance()};
     addNewSharedLib();
     _interface = Interface::getInstance();
     viev->init();
-    //_libs[g_lib - 1]->init();//draw map, load picture
     _menu.initMenu();
-    if (!menu(viev)){
-        clean(viev);
+    if (!menu()){
+        viev->cleanWindow();
         return;
     }
     _interface->initInterface();
-    //_libs[g_lib - 1]->drawMap();
-    viev->drawMap();
+     viev->drawMap();
     _logic.init(1);
     _interface->changeTimeAndScore();
     _food.updateFood();
-    render(viev);//pre drawning before moving
+    viev->render();//pre drawning before moving
     main_loop();
 }
 
@@ -122,7 +119,7 @@ void Game_Obj::main_loop() {
                 break;
             }
         }
-        else if (!action(viev)){
+        else if (!action()){
                 break;
         }
 
@@ -132,13 +129,13 @@ void Game_Obj::main_loop() {
         }
 
     }
-    clean(viev);
+    viev->cleanWindow();
 }
 
 bool Game_Obj::escapeLogic() {
     int const frameDealy = 4000 / FPS;
     _menu.escapeDialog();
-    while(handleEvent(viev) == 0){
+    while(handleEvent() == 0){
         viev->renderClear();
         viev->drawGameOver(_interface->getScore());
         frameTime = viev->getTicks() - frameStart;
@@ -147,7 +144,7 @@ bool Game_Obj::escapeLogic() {
         }
         viev->render();
     }
-    if (!menu(viev)){
+    if (!menu()){
         return false;
     }
     _logic.restart();
@@ -158,28 +155,24 @@ bool Game_Obj::escapeLogic() {
 
 bool Game_Obj::pauseLogic() {
     _menu.pauseDialog();
-    return menu(viev);
+    return menu();
 }
 
-bool Game_Obj::action(AView *lib) {
-    int key = handleEvent(lib);
+bool Game_Obj::action() {
+    int key = handleEvent();
     if (key == -1 || (key == ' ' && !pauseLogic())){
         return false;
     }
-    update(lib);
-    render(lib);
-    key = handleEvent(lib);
+    update();
+    viev->render();
+    key = handleEvent();
     if (key == -1 || (key == ' ' && !pauseLogic())){
         return false;
     }
     return true;
 }
 
-void Game_Obj::clean(AView * lib) {
-    lib->cleanWindow();
-}
-
-void Game_Obj::switchLib(int symb, AView*& lib) {
+void Game_Obj::switchLib(int symb) {
 //    std::cout << "G_HEIGHT: " << g_height << std::endl;
 //    std::cout << "G_WEIGHT: " << g_weight << std::endl;
 //    std::cout << "HEIGHT_BOARD: " << HEIGHT_SCOREBOARD << std::endl;
@@ -212,12 +205,12 @@ void Game_Obj::switchLib(int symb, AView*& lib) {
 //    std::cout << "G_WEIGHT: " << g_weight << std::endl;
 //    std::cout << "HEIGHT_BOARD: " << HEIGHT_SCOREBOARD << std::endl;
 
-    lib = viev;
+   // lib = viev;
 }
 
 
-int Game_Obj::handleEvent(AView*& lib) {
-    int symb = lib->catchHook();
+int Game_Obj::handleEvent() {
+    int symb = viev->catchHook();
     if (symb == -1) {
         return symb;
     }
@@ -225,7 +218,7 @@ int Game_Obj::handleEvent(AView*& lib) {
         if (g_lib == 2){
             int a = 10;
         }
-        switchLib(symb, lib);
+        switchLib(symb);
     }
     else if (symb != 0) {
         (!_menu.runningMenu() && symb != ' ') ? _logic.setKey(symb) : _menu.setKey(symb);
@@ -234,15 +227,11 @@ int Game_Obj::handleEvent(AView*& lib) {
     return symb;
 }
 
-void Game_Obj::update(AView* lib) {
+void Game_Obj::update() {
 
-    lib->drawMap();
+    viev->drawMap();
     _logic.move();
    _interface->changeTimeAndScore();
    _food.updateFood();
 
-}
-
-void Game_Obj::render(AView* lib) {
-    lib->render();
 }
