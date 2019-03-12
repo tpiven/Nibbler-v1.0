@@ -54,7 +54,7 @@ void SFML_lib::init() {
     over.setCharacterSize(height_scoreboard / 3);
     over.setFillColor(sf::Color::Green);
     timeBigFood.loadFromFile("Picture/map_1.png", sf::IntRect(10, 10, 5, sizeFont - 10));
-    _isInit = true;
+
 }
 
 int SFML_lib::catchHook(){

@@ -275,12 +275,12 @@ void SDL_lib::drawGameOver(int score) {
     _gcrR = {(g_weight / 3), g_height / 3, g_weight / 3, g_height / 3};
     SDL_RenderCopy(renderer, _textureGameOver, nullptr, &_gcrR);
     _textureScore = CREATE_TEXTURETEXT(("SCORE   " + std::to_string(score)).c_str(), _tColor, _tcrR);
-    _tcrR.x = g_weight/2 - HEIGHT_SCOREBOARD;
+    _tcrR.x = g_weight/2 - (HEIGHT_SCOREBOARD / 3) * 2;
     _tcrR.y = (g_height / 3) * 2;
     SDL_RenderCopy(renderer, _textureScore, nullptr, &_tcrR);
 
     _textureScore = CREATE_TEXTURETEXT("Please, press space key", _tColor, _tcrR);
-    _tcrR.x = g_weight / 2 - HEIGHT_SCOREBOARD;
+    _tcrR.x = g_weight / 2 - (HEIGHT_SCOREBOARD + (HEIGHT_SCOREBOARD / 3));
     _tcrR.y = g_height - HEIGHT_SCOREBOARD;
     SDL_RenderCopy(renderer, _textureScore, nullptr, &_tcrR);
 
