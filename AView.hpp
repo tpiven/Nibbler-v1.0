@@ -49,6 +49,7 @@ public:
     virtual void    drawMap() = 0;
     virtual void    drawSnake(void*, int) = 0;
     virtual void    drawFood(void*) = 0;
+    virtual void    drawBigFood(void*) = 0;
     virtual void    drawInterface(std::string, int) = 0;
     virtual void    drawTimeBigFood(int) = 0;
     virtual uint32_t     getTicks() = 0;

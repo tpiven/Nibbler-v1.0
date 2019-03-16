@@ -90,7 +90,7 @@ void Food::surpriseFood() {
         SET_VALUE_IN_MAP(0, _coorBigFood.y_arr, _coorBigFood.x_arr);
     }
     if (_drawBig){
-        Game_Obj::viev->drawFood(&_rectBig);
+        Game_Obj::viev->drawBigFood(&_rectBig);
         Game_Obj::viev->drawTimeBigFood(static_cast<int>((8000 - t.count())/100));
    }
 }

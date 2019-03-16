@@ -9,11 +9,13 @@
 #define CREATE_TEXTURE(str) TextureManager::getInstance().LoadTexture(str)
 #define CREATE_TEXTURETEXT(str, color, tcrR) TextureManager::getInstance().LoadTextureText(str, color, tcrR)
 
-const char tail_path[] = "/Picture/dirt.png";//TODO create many picture like: tail_16x16, tail_8x8
-const char body_path[] = "/Picture/grass_bloc_mod.png";
-const char head_path[] = "/Picture/dirt_1.png";
+const char tail_path[] = "/Picture/snake_tails.png";
+const char body_path[] = "/Picture/snake_body.png";
+const char head_path[] = "/Picture/snake_head.png";
 const char map_1[] = "/Picture/map_1.png";
-const char lilFood[] = "/Picture/solid.png";
+//const char map_2[] = "/Picture/map_2.png"
+const char lilFood[] = "/Picture/lilfood.png";
+const char bigFood[] = "/Picture/bigfood.png";
 const char buttonSingle_path[] = "/Picture/button1.png";
 const char buttonMulti_path[] = "/Picture/button2.png";
 
@@ -30,6 +32,7 @@ SDL_Renderer* SDL_lib::renderer = nullptr;
 SDL_Window*     SDL_lib::_window = nullptr;
 SDL_Texture*    SDL_lib::_textureMap = nullptr;
 SDL_Texture*    SDL_lib::_textureFood = nullptr;
+SDL_Texture*    SDL_lib::_textureBigFood = nullptr;
 SDL_Texture*    SDL_lib::_textureArrow = nullptr;
 SDL_Texture*    SDL_lib::_textureText = nullptr;
 SDL_Texture*     SDL_lib::_textureLine = nullptr;
@@ -60,7 +63,7 @@ void SDL_lib::init() {
         exit(-1);
     }
     _window = SDL_CreateWindow(
-            "Jörmungandr",
+            "Nibbler",
             SDL_WINDOWPOS_CENTERED,
             SDL_WINDOWPOS_CENTERED,
             g_weight,
@@ -112,6 +115,12 @@ void SDL_lib::init() {
     _textureFood = CREATE_TEXTURE((_dir + lilFood).c_str());
     if (!_textureFood){
         std::cerr << "textuteFood not exist" << std::endl;
+        exit(1);
+    }
+
+    _textureBigFood = CREATE_TEXTURE((_dir + bigFood).c_str());
+    if (!_textureBigFood){
+        std::cerr << "textuteBigFood not exist" << std::endl;
         exit(1);
     }
     /************INIT TEXTURE FOR LINE TIME OF SURP FOOD************/
@@ -247,6 +256,12 @@ void SDL_lib::drawFood(void* rect) {
     _fcrR = *reinterpret_cast<SDL_Rect*>(rect);
     SDL_RenderCopy(renderer, _textureFood, nullptr, &_fcrR);
 }
+
+void SDL_lib::drawBigFood(void* rect) {
+    _fcrR = *reinterpret_cast<SDL_Rect *>(rect);
+    SDL_RenderCopy(renderer, _textureBigFood, nullptr, &_fcrR);
+}
+
 
 void SDL_lib::drawInterface(std::string clock, int score) {
     /***************DRAW CLOCK****************/

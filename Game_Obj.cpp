@@ -135,7 +135,7 @@ void Game_Obj::main_loop() {
 bool Game_Obj::escapeLogic() {
     int const frameDealy = 4000 / FPS;
     _menu.escapeDialog();
-    while(handleEvent() == 0){
+    while(handleEvent() != 32 ){
         viev->renderClear();
         viev->drawGameOver(_interface->getScore());
         frameTime = viev->getTicks() - frameStart;
@@ -215,9 +215,9 @@ int Game_Obj::handleEvent() {
         return symb;
     }
     if ((symb == 1 || symb == 2 || symb == 3) && symb != g_lib){
-        if (g_lib == 2){
-            int a = 10;
-        }
+//        if (g_lib == 2){
+//            int a = 10;
+//        }
         switchLib(symb);
     }
     else if (symb != 0) {

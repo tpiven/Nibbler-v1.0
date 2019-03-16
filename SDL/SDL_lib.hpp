@@ -25,6 +25,7 @@ public:
     void    delay(int) override;
     void    cleanWindow() override;
     void    drawFood(void*) override;
+    void    drawBigFood(void*) override;
     void    drawInterface(std::string, int) override;
     void    drawTimeBigFood(int) override;
     void    drawGameOver(int) override;
@@ -35,9 +36,9 @@ private:
     SDL_Event   _event;
     static SDL_Texture *_textureMap;
     static SDL_Texture *_textureFood;
+    static SDL_Texture *_textureBigFood;
     static SDL_Texture  *_textureArrow;
     static SDL_Texture  *_textureLine;
-
     static SDL_Texture  *_textureText;
     static SDL_Texture  *_textureScore;
     static SDL_Texture *_textureGameOver;

@@ -8,12 +8,21 @@
 #include "../Mmap.hpp"
 #include "../header.h"
 
-//const char tail_path[] = "/Picture/dirt.png";//TODO create many picture like: tail_16x16, tail_8x8
-//const char body_path[] = "/Picture/grass_bloc_mod.png";
-//const char head_path[] = "/Picture/dirt_1.png";
-//const char map_1[] = "/Picture/map_1.png";
-//const char lilFood[] = "/Picture/solid.png";
-
+const char tail_path[] = "/Picture/snake_tails.png";
+const char body_path[] = "/Picture/snake_body.png";
+const char head_path[] = "/Picture/snake_head.png";
+const char map_1[] = "/Picture/map_1.png";
+//const char map_2[] = "/Picture/map_2.png";
+const char lilFood[] = "/Picture/f.png";
+const char bigFood[] = "/Picture/bigfood.png";
+const char buttonSingle_path[] = "/Picture/button1.png";
+const char buttonMulti_path[] = "/Picture/button2.png";
+extern const char buttonOption_path[] = "/Picture/options.png";
+extern const char buttonContinue_path[] = "/Picture/continue.png";
+extern const char buttonExit_path[] = "/Picture/exit.png";
+const char arrow_path[] = "/Picture/arrow_path.png";
+const char gameOver_path[] = "/Picture/gameOver.png";
+const char font_path[] = "/Picture/ArialItalic.ttf";
 
 sf::RenderWindow* SFML_lib::_window = nullptr;
 
@@ -33,34 +42,40 @@ SFML_lib::~SFML_lib() {}
 
 void SFML_lib::init() {
     _window = new sf::RenderWindow(sf::VideoMode(weight, height + height_scoreboard, 32), "Nibbler");
-     _textureMap.loadFromFile("Picture/map_1.png");
-    _snakeTexture[0].loadFromFile("Picture/dirt_1.png");
-    _snakeTexture[1].loadFromFile("Picture/grass_bloc_mod.png");
-    _snakeTexture[2].loadFromFile("Picture/dirt_1.png");
-    _textureFood.loadFromFile("Picture/solid.png");
-    _textureArrow.loadFromFile("Picture/arrow_path.png");
-    _buttonTexture[0].loadFromFile("Picture/button1.png");
-    _buttonTexture[1].loadFromFile("Picture/button2.png");
-    _buttonTexture[2].loadFromFile("Picture/options.png");
-    _buttonTexture[3].loadFromFile("Picture/continue.png");
-    _buttonTexture[4].loadFromFile("Picture/exit.png");
-    _gameOver.loadFromFile("Picture/gameOver.png");
+    char path[4096];
+    _dir = getwd(path);
+
+    _textureMap.loadFromFile((_dir + map_1).c_str());
+    map.setTexture(_textureMap);
+    _snakeTexture[0].loadFromFile((_dir + tail_path).c_str());
+    _snakeTexture[1].loadFromFile((_dir + body_path).c_str());
+    _snakeTexture[2].loadFromFile((_dir + head_path).c_str());
+    _textureFood.loadFromFile((_dir + lilFood).c_str());
+    _textureBigFood.loadFromFile((_dir + bigFood).c_str());
+    _textureArrow.loadFromFile((_dir + arrow_path).c_str());
+    arrow.setTexture(_textureArrow);
+    _buttonTexture["single"].loadFromFile((_dir + buttonSingle_path).c_str());
+    _buttonTexture["multi"].loadFromFile((_dir + buttonMulti_path).c_str());
+    _buttonTexture["option"].loadFromFile((_dir + buttonOption_path).c_str());
+    _buttonTexture["continue"].loadFromFile((_dir + buttonContinue_path).c_str());
+    _buttonTexture["exit"].loadFromFile((_dir + buttonExit_path).c_str());
+    _gameOver.loadFromFile((_dir + gameOver_path).c_str());
+
     GameOver.setTexture(_gameOver);
-    font.loadFromFile("Picture/ArialItalic.ttf");
+    font.loadFromFile((_dir + font_path).c_str());
     text.setFont(font);
     text.setCharacterSize(sizeFont);
     text.setFillColor(sf::Color::Red);
     over.setFont(font);
     over.setCharacterSize(height_scoreboard / 3);
     over.setFillColor(sf::Color::Green);
-    timeBigFood.loadFromFile("Picture/map_1.png", sf::IntRect(10, 10, 5, sizeFont - 10));
+    timeBigFood.loadFromFile((_dir + map_1).c_str(), sf::IntRect(10, 10, 5, sizeFont - 10));
 
 }
 
 int SFML_lib::catchHook(){
     while(_window->pollEvent(_event)) {
         if (_event.type == sf::Event::Closed) {
-            std::cout << "EXIT" << std::endl;
             return -1;
         }
         if (_event.type == sf::Event::KeyPressed) {
@@ -68,16 +83,12 @@ int SFML_lib::catchHook(){
                 case sf::Keyboard::Escape:
                     return ' ';
                 case sf::Keyboard::W:
-                    std::cout << "w" << std::endl;
                     return 'w';
                 case sf::Keyboard::S:
-                    std::cout << "s" << std::endl;
                     return 's';
                 case sf::Keyboard::D:
-                    std::cout << "d" << std::endl;
                     return 'd';
                 case sf::Keyboard::A:
-                    std::cout << "a" << std::endl;
                     return 'a';
                 case sf::Keyboard::Space:
                     return ' ';
@@ -122,28 +133,25 @@ void SFML_lib::render() {
 void SFML_lib::drawMenu(void* rectA, void* rectB, int typeMenu) {
     _window->pollEvent(_event);
     _window->clear();
-    sf::Sprite arrow;
     t_scr A = *reinterpret_cast<t_scr*>(rectA);
     t_scr B = *reinterpret_cast<t_scr*>(rectB);
-    arrow.setTexture(_textureArrow);
     arrow.setPosition(A.x, A.y);
     auto size = arrow.getTexture()->getSize();
     arrow.setScale(float(A.w)/size.x, float(A.h)/size.y);
     _window->draw(arrow);
     if (typeMenu == 3) {
-        sf::Sprite button;
-        button.setTexture(_buttonTexture[3]);
+        button.setTexture(_buttonTexture["continue"]);
         size = button.getTexture()->getSize();
         button.setScale(float(B.w) / size.x, float(B.h) / size.y);
         button.setPosition(B.x, B.y);
         _window->draw(button);
-        button.setTexture(_buttonTexture[2]);
+        button.setTexture(_buttonTexture["option"]);
         size = button.getTexture()->getSize();
         button.setScale(float(B.w) / size.x, float(B.h) / size.y);
         B.y += B.h + 10;
         button.setPosition(B.x, B.y);
         _window->draw(button);
-        button.setTexture(_buttonTexture[4]);
+        button.setTexture(_buttonTexture["exit"]);
         size = button.getTexture()->getSize();
         button.setScale(float(B.w) / size.x, float(B.h) / size.y);
         B.y += B.h + 10;
@@ -152,25 +160,24 @@ void SFML_lib::drawMenu(void* rectA, void* rectB, int typeMenu) {
     }
 
     else {
-            sf::Sprite button;
-            button.setTexture(_buttonTexture[0]);
+            button.setTexture(_buttonTexture["single"]);
             size = button.getTexture()->getSize();
             button.setScale(float(B.w)/size.x, float(B.h)/size.y);
             button.setPosition(B.x, B.y);
             _window->draw(button);
-            button.setTexture(_buttonTexture[1]);
-            size = button.getTexture()->getSize();
-            button.setScale(float(B.w)/size.x, float(B.h)/size.y);
-            B.y += B.h + 10;
-            button.setPosition(B.x, B.y);
-            _window->draw(button);
-            button.setTexture(_buttonTexture[2]);
+            button.setTexture(_buttonTexture["multi"]);
             size = button.getTexture()->getSize();
             button.setScale(float(B.w)/size.x, float(B.h)/size.y);
             B.y += B.h + 10;
             button.setPosition(B.x, B.y);
             _window->draw(button);
-            button.setTexture(_buttonTexture[4]);
+            button.setTexture(_buttonTexture["option"]);
+            size = button.getTexture()->getSize();
+            button.setScale(float(B.w)/size.x, float(B.h)/size.y);
+            B.y += B.h + 10;
+            button.setPosition(B.x, B.y);
+            _window->draw(button);
+            button.setTexture(_buttonTexture["exit"]);
             size = button.getTexture()->getSize();
             button.setScale(float(B.w)/size.x, float(B.h)/size.y);
             B.y += B.h + 10;
@@ -184,8 +191,6 @@ void SFML_lib::drawMenu(void* rectA, void* rectB, int typeMenu) {
 void SFML_lib::drawMap() {
     _window->pollEvent(_event);
     _window->clear();
-    sf::Sprite map;
-    map.setTexture(_textureMap);
     map.setPosition(0, height_scoreboard);
     auto size = map.getTexture()->getSize();
     map.setScale(float(weight)/size.x, float(height)/size.y);
@@ -195,7 +200,6 @@ void SFML_lib::drawMap() {
 }
 
 void SFML_lib::drawSnake(void* rect, int b_block) {//b_block - wich texture render: tail, body, head
-    sf::Sprite snake;
     t_scr _fcrR = *reinterpret_cast<t_scr*>(rect);
     snake.setTexture(_snakeTexture[b_block]);
     auto size = snake.getTexture()->getSize();
@@ -208,6 +212,16 @@ void SFML_lib::drawFood(void* rect) {
     sf::Sprite food;
     t_scr _fcrR = *reinterpret_cast<t_scr*>(rect);
     food.setTexture(_textureFood);
+    auto size = food.getTexture()->getSize();
+    food.scale(float(_fcrR.w)/size.x, float(_fcrR.h)/size.y);
+    food.setPosition(_fcrR.x, _fcrR.y);
+    _window->draw(food);
+}
+
+void SFML_lib::drawBigFood(void* rect) {
+    sf::Sprite food;
+    t_scr _fcrR = *reinterpret_cast<t_scr*>(rect);
+    food.setTexture(_textureBigFood);
     auto size = food.getTexture()->getSize();
     food.scale(float(_fcrR.w)/size.x, float(_fcrR.h)/size.y);
     food.setPosition(_fcrR.x, _fcrR.y);

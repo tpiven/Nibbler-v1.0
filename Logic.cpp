@@ -35,30 +35,28 @@ void Logic::init(int n_pl) {
             j = (i > 0 && i < 3) ? 1 : 2;
         }
         if (_key == 'd') {
-            _cors.push_back({y + HEIGHT_SCOREBOARD, x + (_size_block * i), y * 67 / g_height, (x * 90 / g_weight) + i, false});
+            _cors.push_back({y + HEIGHT_SCOREBOARD, x + (_size_block * i), y * 67 / g_height, (x * 90 / g_weight) + i});
             Mmap::getInstance().setValueInMap(-1, y * 67 / g_height, (x * 90 / g_weight) + i);
         }
         else if (_key == 'a'){
-            _cors.push_back({y + HEIGHT_SCOREBOARD, x - (_size_block * i), y * 67 / g_height - 1, (x * 90 / g_weight - 1) - i, false});
+            _cors.push_back({y + HEIGHT_SCOREBOARD, x - (_size_block * i), y * 67 / g_height - 1, (x * 90 / g_weight - 1) - i});
             Mmap::getInstance().setValueInMap(-1, (y * 67 / g_height - 1), ((x * 90 / g_weight) - 1) - i);
         }
         _rect.y = _cors.back().y_dis;
         _rect.x = _cors.back().x_dis;
-        _rectCopy = _rect;
-        _corsCopy = _cors;
-        Game_Obj::viev->drawSnake(&_rect, j);
+         Game_Obj::viev->drawSnake(&_rect, j);
     }
 }
 
-int Logic::getNumberSprite(int itr) {
-    if (!itr){
-        return 0;
-    }
-    else if (itr < _cors.size() - 1){
-        return 1;
-    }
-    return 2;
-}
+//int Logic::getNumberSprite(int itr) {
+//    if (!itr){
+//        return 0;
+//    }
+//    else if (itr < _cors.size() - 1){
+//        return 1;
+//    }
+//    return 2;
+//}
 
 void Logic::setKey(int key) {
     if (key >= 123 && key <= 126 && _pl == 2){
@@ -79,7 +77,7 @@ void Logic::setKey(int key) {
     }
 }
 
-int Logic::getkey() const { return _key;}
+//int Logic::getkey() const { return _key;}
 
 void Logic::updateHead(t_coor& head) {
     if (_key == 'a' || _key == 'd'){
@@ -121,7 +119,7 @@ void Logic::move() {
             j = 2;
         }
 
-        if (it == _cors.begin() && !it->inPortal){
+        if (it == _cors.begin()){
             Mmap::getInstance().setValueInMap(0, it->y_arr, it->x_arr);
         }
         if (it_c != _cors.end()) {
@@ -130,9 +128,7 @@ void Logic::move() {
         }
         else if(it_c == _cors.end()){
             *it = head;
-            if (!it_c->inPortal) {
-                Mmap::getInstance().setValueInMap(-1, it->y_arr, it->x_arr);
-            }
+            Mmap::getInstance().setValueInMap(-1, it->y_arr, it->x_arr);
         }
         _rect.y = it->y_dis;
         _rect.x = it->x_dis;
@@ -145,8 +141,6 @@ void Logic::restart() {
         Mmap::getInstance().setValueInMap(0, it.y_arr, it.x_arr);
     }
     _cors.erase(_cors.begin(), _cors.end());
-//    _cors = _corsCopy;
-//    _rect = _rectCopy;
     init(1);
     _playGame = true;
     _key = (_pl == 1) ? 'd' : 'a';
