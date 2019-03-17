@@ -110,7 +110,7 @@ void Game_Obj::init() {
 }
 
 void Game_Obj::main_loop() {
-    int const frameDealy = 6000 / FPS;
+    int const frameDealy = 4000 / FPS;
     while(1){
         viev->renderClear();
         frameStart = viev->getTicks();

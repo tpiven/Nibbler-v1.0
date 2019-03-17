@@ -17,9 +17,9 @@
 static int cntCreateFood = 0;
 
 Food::Food() noexcept {
-    _size_block = (g_weight / 90) / 2;
+    _size_block = (g_weight / 90);// / 2;
     _rectLil.w = _rectLil.h = _size_block;
-    _rectBig.w = _rectBig.h = _size_block * 2;
+    _rectBig.w = _rectBig.h = _size_block + _size_block/2;
     _coorLilFood.x_arr = _coorLilFood.y_arr = _coorLilFood.y_dis = _coorLilFood.x_dis = 0;
     _coorBigFood.x_arr = _coorBigFood.y_arr = _coorBigFood.y_dis = _coorBigFood.x_dis = 0;
     _drawBig = false;
@@ -48,8 +48,8 @@ void Food::mandatoryFood() {
         SET_VALUE_IN_MAP(-2, y, x);
         _coorLilFood.y_arr = y;
         _coorLilFood.x_arr = x;
-        _rectLil.y = _coorLilFood.y_dis = (y * g_height / 67) + HEIGHT_SCOREBOARD + _size_block/2;
-        _rectLil.x = _coorLilFood.x_dis = (x * g_weight / 90) + _size_block/2;
+        _rectLil.y = _coorLilFood.y_dis = (y * g_height / 67) + HEIGHT_SCOREBOARD; // + _size_block/2;
+        _rectLil.x = _coorLilFood.x_dis = (x * g_weight / 90); // + _size_block/2;
     }
     Game_Obj::viev->drawFood(&_rectLil);
 }
@@ -79,8 +79,8 @@ void Food::surpriseFood() {
             SET_VALUE_IN_MAP(-3, y, x);
             _coorBigFood.y_arr = y;
             _coorBigFood.x_arr = x;
-            _rectBig.y = _coorBigFood.y_dis = (_coorBigFood.y_arr * g_height / 67) + HEIGHT_SCOREBOARD;
-            _rectBig.x = _coorBigFood.x_dis = (_coorBigFood.x_arr * g_weight / 90);
+            _rectBig.y = _coorBigFood.y_dis = (_coorBigFood.y_arr * g_height / 67) + HEIGHT_SCOREBOARD - _size_block/2;
+            _rectBig.x = _coorBigFood.x_dis = (_coorBigFood.x_arr * g_weight / 90) - _size_block/2;
          //   Mmap::getInstance().printMmap();
         }
     }
