@@ -17,6 +17,7 @@ public:
     void    escapeDialog();
     void    pauseDialog();
     void    changeSize();
+    void    changeMap();
 private:
     int _numButton;//number of button
     char _key;//w,a,s,d

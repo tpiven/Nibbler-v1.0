@@ -12,7 +12,7 @@ const char tail_path[] = "/Picture/snake_tails.png";
 const char body_path[] = "/Picture/snake_body.png";
 const char head_path[] = "/Picture/snake_head.png";
 const char map_1[] = "/Picture/map_1.png";
-//const char map_2[] = "/Picture/map_2.png";
+const char map_2[] = "/Picture/map_2.png";
 const char lilFood[] = "/Picture/f.png";
 const char bigFood[] = "/Picture/bigfood.png";
 const char buttonSingle_path[] = "/Picture/button1.png";
@@ -44,9 +44,8 @@ void SFML_lib::init() {
     _window = new sf::RenderWindow(sf::VideoMode(weight, height + height_scoreboard, 32), "Nibbler");
     char path[4096];
     _dir = getwd(path);
-
-    _textureMap.loadFromFile((_dir + map_1).c_str());
-    map.setTexture(_textureMap);
+    _textureMap1.loadFromFile((_dir + map_1).c_str());
+    _textureMap2.loadFromFile((_dir + map_2).c_str());
     _snakeTexture[0].loadFromFile((_dir + tail_path).c_str());
     _snakeTexture[1].loadFromFile((_dir + body_path).c_str());
     _snakeTexture[2].loadFromFile((_dir + head_path).c_str());
@@ -60,7 +59,6 @@ void SFML_lib::init() {
     _buttonTexture["continue"].loadFromFile((_dir + buttonContinue_path).c_str());
     _buttonTexture["exit"].loadFromFile((_dir + buttonExit_path).c_str());
     _gameOver.loadFromFile((_dir + gameOver_path).c_str());
-
     GameOver.setTexture(_gameOver);
     font.loadFromFile((_dir + font_path).c_str());
     text.setFont(font);
@@ -71,6 +69,15 @@ void SFML_lib::init() {
     over.setFillColor(sf::Color::Green);
     timeBigFood.loadFromFile((_dir + map_1).c_str(), sf::IntRect(10, 10, 5, sizeFont - 10));
 
+}
+
+void SFML_lib::initMap(int n) {
+    if (n == 1){
+        map.setTexture(_textureMap1);
+    }
+    else if(n == 2) {
+        map.setTexture(_textureMap2);
+    }
 }
 
 int SFML_lib::catchHook(){
@@ -189,13 +196,20 @@ void SFML_lib::drawMenu(void* rectA, void* rectB, int typeMenu) {
 
 
 void SFML_lib::drawMap() {
+    std::cout << "F1" << std::endl;
     _window->pollEvent(_event);
+    std::cout << "F2" << std::endl;
     _window->clear();
+    std::cout << "F3" << std::endl;
     map.setPosition(0, height_scoreboard);
+    std::cout << "F4" << std::endl;
     auto size = map.getTexture()->getSize();
+    std::cout << "F5" << std::endl;
     map.setScale(float(weight)/size.x, float(height)/size.y);
+    std::cout << "F6" << std::endl;
 
     _window->draw(map);
+    std::cout << "F7" << std::endl;
 
 }
 
@@ -213,7 +227,7 @@ void SFML_lib::drawFood(void* rect) {
     t_scr _fcrR = *reinterpret_cast<t_scr*>(rect);
     food.setTexture(_textureFood);
     auto size = food.getTexture()->getSize();
-    food.scale(float(_fcrR.w)/size.x, float(_fcrR.h)/size.y);
+    food.setScale(float(_fcrR.w)/size.x, float(_fcrR.h)/size.y);
     food.setPosition(_fcrR.x, _fcrR.y);
     _window->draw(food);
 }
@@ -223,7 +237,7 @@ void SFML_lib::drawBigFood(void* rect) {
     t_scr _fcrR = *reinterpret_cast<t_scr*>(rect);
     food.setTexture(_textureBigFood);
     auto size = food.getTexture()->getSize();
-    food.scale(float(_fcrR.w)/size.x, float(_fcrR.h)/size.y);
+    food.setScale(float(_fcrR.w)/size.x, float(_fcrR.h)/size.y);
     food.setPosition(_fcrR.x, _fcrR.y);
     _window->draw(food);
 }
@@ -246,6 +260,36 @@ void SFML_lib::drawTimeBigFood(int time) {
         sprite.setPosition((weight / 3) * 2 + (3 * i), height_scoreboard / 2);
         _window->draw(sprite);
     }
+}
+
+void SFML_lib::drawChangeMap(int n) {
+     _window->pollEvent(_event);
+    _window->clear();
+    _map = &_textureMap1;
+    auto size = _textureMap1.getSize();
+    sf::RectangleShape t1(sf::Vector2f(360, 268));
+    t1.setTexture(_map);
+    t1.setTextureRect(sf::IntRect(0, 0, size.x, size.y));
+   t1.setPosition(weight / 3, height / 3);
+
+    _map = &_textureMap2;
+    size = _textureMap2.getSize();
+    sf::RectangleShape t2(sf::Vector2f(360, 268));
+    t2.setTexture(_map);
+    t2.setTextureRect(sf::IntRect(0, 0, size.x, size.y));
+    t2.setPosition((weight / 3) + (90 * 4) +height_scoreboard, height / 3);
+    if (n == 1) {
+        t1.setOutlineThickness(10.f);
+        t1.setOutlineColor(sf::Color(250, 150, 100));
+    }
+    else if( n == 2) {
+        t2.setOutlineThickness(10.f);
+        t2.setOutlineColor(sf::Color(250, 150, 100));
+    }
+    _window->draw(t1);
+    _window->draw(t2);
+
+
 }
 
 void SFML_lib::renderClear() {

@@ -13,7 +13,7 @@ const char tail_path[] = "/Picture/snake_tails.png";
 const char body_path[] = "/Picture/snake_body.png";
 const char head_path[] = "/Picture/snake_head.png";
 const char map_1[] = "/Picture/map_1.png";
-//const char map_2[] = "/Picture/map_2.png";
+const char map_2[] = "/Picture/map_2.png";
 const char lilFood[] = "/Picture/lilfood.png";
 const char bigFood[] = "/Picture/bigfood.png";
 const char buttonSingle_path[] = "/Picture/button1.png";
@@ -31,6 +31,8 @@ const char font_path[] = "/Picture/ArialItalic.ttf";
 SDL_Renderer* SDL_lib::renderer = nullptr;
 SDL_Window*     SDL_lib::_window = nullptr;
 SDL_Texture*    SDL_lib::_textureMap = nullptr;
+SDL_Texture*    SDL_lib::_map1 = nullptr;
+SDL_Texture*    SDL_lib::_map2 = nullptr;
 SDL_Texture*    SDL_lib::_textureFood = nullptr;
 SDL_Texture*    SDL_lib::_textureBigFood = nullptr;
 SDL_Texture*    SDL_lib::_textureArrow = nullptr;
@@ -79,7 +81,8 @@ void SDL_lib::init() {
         std::cerr << "Trouble wih render" << std::endl;
         return;
     }
-    SDL_SetRenderDrawColor(renderer, 0, 0, 0, 0);//BAG NOT WORKING
+    SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);//BAG NOT WORKING
+    SDL_RenderClear(renderer);
     char path[4096];
     _dir = getwd(path);
    // size_t  n = _dir.rfind('/');
@@ -99,12 +102,20 @@ void SDL_lib::init() {
         exit(1);
     }
     /************INIT TEXTURE FOR MAP**************/
-    _textureMap = CREATE_TEXTURE((_dir + map_1).c_str());
-    if (!_textureMap){
-        std::cerr << "textuteMap not exist" << std::endl;
+
+    _map1 = CREATE_TEXTURE((_dir + map_1).c_str());
+    if (!_map1){
+        std::cout << "Path: " << _dir + map_1 << std::endl;
+        std::cerr << "textuteMap1 not exist" << std::endl;
         exit(1);
     }
-    /************INIT TEXTURE FOR SNAKE************/
+    _map2 = CREATE_TEXTURE((_dir + map_2).c_str());
+    if (!_map2){
+    std::cerr << "textuteMap2 not exist" << std::endl;
+    exit(1);
+    }
+
+/************INIT TEXTURE FOR SNAKE************/
     _snakeTexture = {{0, CREATE_TEXTURE((_dir + tail_path).c_str())}, {1, CREATE_TEXTURE((_dir + body_path).c_str())},
                      {2, CREATE_TEXTURE((_dir + head_path).c_str())}};
     if (_snakeTexture.empty()){
@@ -154,50 +165,68 @@ void SDL_lib::init() {
 
 }
 
+void SDL_lib::initMap(int n) {
+    if (n == 1){
+        _textureMap = CREATE_TEXTURE((_dir + map_1).c_str());
+        if (!_textureMap){
+            std::cerr << "textuteMap not exist" << std::endl;
+            exit(1);
+        }
+    }
+    else if(n == 2) {
+        _textureMap = CREATE_TEXTURE((_dir + map_2).c_str());
+        if (!_textureMap){
+            std::cerr << "textuteMap not exist" << std::endl;
+            exit(1);
+        }       
+    }   
+}
+
 
 int SDL_lib::catchHook(){
-    SDL_PollEvent(&_event);
-    if (_event.type == SDL_QUIT){
-        std::cout << "EXIT" << std::endl;
-        return -1;
-    }
-    if (_event.type == SDL_KEYDOWN){
-        switch (_event.key.keysym.sym){
-            case SDLK_ESCAPE:
-                std::cout << "PAUSE" << std::endl;
-                return ' ';
-            case SDLK_w:
-                std::cout << "w" << std::endl;
-                return 'w';
-            case SDLK_s:
-                std::cout << "s" << std::endl;
-                return 's';
-            case SDLK_d:
-                std::cout << "d" << std::endl;
-                return 'd';
-            case SDLK_a:
-                std::cout << "a" << std::endl;
-                return 'a';
-            case SDLK_SPACE:
-                return ' ';
-            case SDLK_UP:
-                return 126;
-            case SDLK_DOWN:
-                return 125;
-            case SDLK_LEFT:
-                return 123;
-            case SDLK_RIGHT:
-                return 124;
-            case SDLK_RETURN:
-                return 36;//enter
-            case SDLK_1://change current lib on SDL
-                return 1;
-            case SDLK_2://change current lib on SFML
-                return 2;
-            case SDLK_3://change current lib on ALLEGRO
-                return 3;
-            default:
-                return 0;
+    while(SDL_PollEvent(&_event) != 0) {
+        if (_event.type == SDL_QUIT) {
+            std::cout << "EXIT" << std::endl;
+            return -1;
+        }
+        if (_event.type == SDL_KEYDOWN) {
+            switch (_event.key.keysym.sym) {
+                case SDLK_ESCAPE:
+                    std::cout << "PAUSE" << std::endl;
+                    return ' ';
+                case SDLK_w:
+                    std::cout << "w" << std::endl;
+                    return 'w';
+                case SDLK_s:
+                    std::cout << "s" << std::endl;
+                    return 's';
+                case SDLK_d:
+                    std::cout << "d" << std::endl;
+                    return 'd';
+                case SDLK_a:
+                    std::cout << "a" << std::endl;
+                    return 'a';
+                case SDLK_SPACE:
+                    return ' ';
+                case SDLK_UP:
+                    return 126;
+                case SDLK_DOWN:
+                    return 125;
+                case SDLK_LEFT:
+                    return 123;
+                case SDLK_RIGHT:
+                    return 124;
+                case SDLK_RETURN:
+                    return 36;//enter
+                case SDLK_1://change current lib on SDL
+                    return 1;
+                case SDLK_2://change current lib on SFML
+                    return 2;
+                case SDLK_3://change current lib on ALLEGRO
+                    return 3;
+                default:
+                    return 0;
+            }
         }
     }
     return 0;
@@ -240,6 +269,8 @@ void SDL_lib::drawMenu(void* rectA, void* rectB, int typeMenu) {
 }
 
 void SDL_lib::drawMap() {
+    SDL_SetRenderDrawColor( renderer, 0, 0, 0, 255 );
+    SDL_RenderClear(renderer);
      _scrR.y = HEIGHT_SCOREBOARD;
     _scrR.x = 0;
     _scrR.w = g_weight;
@@ -299,9 +330,26 @@ void SDL_lib::drawGameOver(int score) {
     _tcrR.y = g_height - HEIGHT_SCOREBOARD;
     SDL_RenderCopy(renderer, _textureScore, nullptr, &_tcrR);
 
+}
+void SDL_lib::drawChangeMap(int n) {
+    (void)n;
+    SDL_SetRenderDrawColor( renderer, 0, 0, 0, 255 );
+    SDL_RenderClear(renderer);
 
+   _gcrR = {g_weight / 3, g_height / 3, 180, 134};
+    SDL_RenderCopy(renderer, _map1, nullptr, &_gcrR);
+    _gcrR = {(g_weight / 3) + 180 + HEIGHT_SCOREBOARD, g_height / 3, 180, 134};
+    SDL_RenderCopy(renderer, _map2, nullptr, &_gcrR);
+    SDL_Rect r;
+    if (n == 1) {
+        r = {(g_weight / 3)  - 10, (g_height / 3) - 10, 200, 150};
+    } else if (n == 2) {
+        r = {(g_weight / 3) + (90 * 2) + HEIGHT_SCOREBOARD - 10, (g_height / 3) - 10, 200, 150};
+    }
+    SDL_SetRenderDrawColor( renderer, 0, 0, 255, 255);
+    SDL_RenderDrawRect(renderer, &r);
 
-
+    
 }
 
 void SDL_lib::cleanWindow() {

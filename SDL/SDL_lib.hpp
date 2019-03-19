@@ -15,6 +15,7 @@ public:
     SDL_lib(int weight, int height);
     virtual ~SDL_lib();
     void    init() override;
+    void    initMap(int) override;
     int     catchHook() override;
     void    render() override;
     void    drawMenu(void*, void*, int) override;
@@ -29,12 +30,15 @@ public:
     void    drawInterface(std::string, int) override;
     void    drawTimeBigFood(int) override;
     void    drawGameOver(int) override;
+    void    drawChangeMap(int)   override;
 private:
     friend class TextureManager;
     static SDL_Renderer * renderer;
     static SDL_Window *_window;
     SDL_Event   _event;
     static SDL_Texture *_textureMap;
+    static SDL_Texture *_map1;
+    static SDL_Texture *_map2;
     static SDL_Texture *_textureFood;
     static SDL_Texture *_textureBigFood;
     static SDL_Texture  *_textureArrow;

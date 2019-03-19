@@ -19,7 +19,6 @@ int const FPS = 60;
 uint32_t  frameStart;
 int frameTime;
 
-
 Game_Obj::Game_Obj() {}
 
 Game_Obj::~Game_Obj() {
@@ -198,6 +197,7 @@ void Game_Obj::switchLib(int symb) {
     g_lib = symb;
     addNewSharedLib();
     viev->init();
+    viev->initMap(_numMap);
 
     //render(viev);
 //    std::cout << "-------------------" << std::endl;

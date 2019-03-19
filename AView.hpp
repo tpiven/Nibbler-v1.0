@@ -42,6 +42,7 @@ public:
     AView()  {}
     ~AView(){}
     virtual void    init() = 0;//инит окна и прочего
+    virtual void    initMap(int) = 0;
     virtual int     catchHook() = 0; //ловим хуки от клавиш
     virtual void     render() = 0;//рисуем
     virtual void    drawMenu(void*, void*, int) = 0;
@@ -52,6 +53,7 @@ public:
     virtual void    drawBigFood(void*) = 0;
     virtual void    drawInterface(std::string, int) = 0;
     virtual void    drawTimeBigFood(int) = 0;
+    virtual void    drawChangeMap(int) = 0;
     virtual uint32_t     getTicks() = 0;
     virtual void    delay(int) = 0;
     virtual void    cleanWindow() = 0;

@@ -10,6 +10,7 @@ public:
     static Mmap & getInstance();
     void        setValueInMap(int val, const int y, const int x);
     int         getValueFromMap(const int y, const int x) const;
+    void        setMap(int n);
     void    printMmap() const;
 private:
     Mmap();
@@ -18,5 +19,8 @@ private:
     Mmap &operator=(const Mmap &) = delete;
     Mmap &operator=(Mmap &&) = delete;
     ~Mmap();
-    static int _mmap[67][90];//[67] - height, [90]- weight
+//    static  int **& (_mmap);//[67] - height, [90]- weight
+//    int** _mmap;
+    int (*_mmap)[67][90];
+
 };
