@@ -29,7 +29,7 @@ Game_Obj::~Game_Obj() {
         dlclose(this->dl_lib);
 
     }
-    delete _inst;
+//    delete _inst;
 }
 
 Game_Obj* Game_Obj::_inst = nullptr;
@@ -58,12 +58,12 @@ bool Game_Obj::menu() {//draw menu for select map, and number of player
     return true;
 }
 
-Game_Obj* Game_Obj::getInstance() {
-    if (!_inst){
-        _inst = new Game_Obj;
-    }
-    return _inst;
-}
+//Game_Obj* Game_Obj::getInstance() {
+//    if (!_inst){
+//        _inst = new Game_Obj;
+//    }
+//    return _inst;
+//}
 
 void Game_Obj::addNewSharedLib() {
 
@@ -113,17 +113,17 @@ void Game_Obj::init() {
 
 
 //FIX THIS CRAP WITH STATIC CLASS
-void Game_Obj::DeleteStaticGame() {
-    std::cout << "DELETE GAME" << std::endl;
-    void	(*destroy_gui)(AView *);
-    destroy_gui = (void (*)(AView *))dlsym(dl_lib, "destroy_object");
-    destroy_gui(viev);
-    if (this->dl_lib != NULL) {
-        dlclose(this->dl_lib);
-
-    }
-    delete _inst;
-}
+//void Game_Obj::DeleteStaticGame() {
+//    std::cout << "DELETE GAME" << std::endl;
+//    void	(*destroy_gui)(AView *);
+//    destroy_gui = (void (*)(AView *))dlsym(dl_lib, "destroy_object");
+//    destroy_gui(viev);
+//    if (this->dl_lib != NULL) {
+//        dlclose(this->dl_lib);
+//
+//    }
+//    delete _inst;
+//}
 
 void Game_Obj::main_loop() {
     int const frameDealy = 4000 / FPS;
@@ -146,12 +146,13 @@ void Game_Obj::main_loop() {
 
     }
     viev->cleanWindow();
-    DeleteStaticGame();
+ //   DeleteStaticGame();
 }
 
 bool Game_Obj::escapeLogic() {
     int const frameDealy = 4000 / FPS;
     _menu.escapeDialog();
+    _mapInit = false;
     while(handleEvent() != 32 ){
         viev->renderClear();
         viev->drawGameOver(_interface->getScore());
@@ -215,7 +216,10 @@ void Game_Obj::switchLib(int symb) {
     g_lib = symb;
     addNewSharedLib();
     viev->init();
-    viev->initMap(_numMap);
+    if (_mapInit == true) {
+        viev->initMap(_numMap);
+    }
+
 
     //render(viev);
 //    std::cout << "-------------------" << std::endl;
@@ -236,7 +240,8 @@ int Game_Obj::handleEvent() {
 //        if (g_lib == 2){
 //            int a = 10;
 //        }
-        switchLib(symb);
+          switchLib(symb);
+
     }
     else if (symb != 0) {
         (!_menu.runningMenu() && symb != ' ') ? _logic.setKey(symb) : _menu.setKey(symb);

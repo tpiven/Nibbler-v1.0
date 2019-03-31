@@ -6,6 +6,7 @@
 
 #include "header.h"
 
+
 class Menu {
 public:
     Menu() noexcept;
@@ -25,6 +26,7 @@ private:
     t_scr _rectA;//struct for render Arrow texture
     t_scr _rectB;//struct for render Button texture
     bool _select;//flag for select menu
+    bool _selectMap;
     int  _typeMenu;//flag for 1 is Start_menu, 2 is Escape_Menu, 3 is Pause_menu
     void moveArrow();
 };

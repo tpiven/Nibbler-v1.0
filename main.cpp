@@ -8,6 +8,7 @@ int g_height;
 int g_lib;
 int HEIGHT_SCOREBOARD;
 int SizeFont;
+bool _mapInit;
 
 
 int size(int n, int g){
@@ -63,8 +64,10 @@ int main(int argc, char **argv){
         g_height *= 2;
     }
     HEIGHT_SCOREBOARD = g_weight / 14;
+    _mapInit = false;
 
-    Game_Obj *obj = Game_Obj::getInstance();
+    Game_Obj *obj = new Game_Obj;  //::getInstance();
     obj->init();
+    delete obj;
     return 0;
 }

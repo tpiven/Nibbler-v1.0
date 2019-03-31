@@ -8,6 +8,7 @@ extern int g_height;
 extern int HEIGHT_SCOREBOARD;
 extern int _numMap;
 extern int g_lib;//1-SDL, 2-SFML, 3-allegro
+extern bool _mapInit;
 extern const char tail_path[];
 extern const char body_path[];
 extern const char head_path[];

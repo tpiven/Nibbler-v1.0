@@ -27,8 +27,6 @@ const char font_path[] = "/Picture/ArialItalic.ttf";
 sf::RenderWindow* SFML_lib::_window = nullptr;
 
 SFML_lib::SFML_lib() {
-    std::cout << "CLOSE LIB SDL" << std::endl;
-
 }
 
 SFML_lib::SFML_lib(int g_weight, int g_height) {
@@ -39,7 +37,9 @@ SFML_lib::SFML_lib(int g_weight, int g_height) {
 
 }
 
-SFML_lib::~SFML_lib() {}
+SFML_lib::~SFML_lib() {
+    std::cout << "CLOSE LIB SFML" << std::endl;
+}
 
 void SFML_lib::init() {
     _window = new sf::RenderWindow(sf::VideoMode(weight, height + height_scoreboard, 32), "Nibbler");

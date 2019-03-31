@@ -4,6 +4,7 @@
 
 #include <vector>
 #include <iostream>
+#include "global.h"
 
 class Mmap{
 public:

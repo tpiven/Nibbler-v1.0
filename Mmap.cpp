@@ -154,6 +154,7 @@ Mmap& Mmap::getInstance() {
 }
 
 void Mmap::setMap(int n) {
+    _mapInit = true;
     if (n == 1) {
         _mmap = &map1;
     }

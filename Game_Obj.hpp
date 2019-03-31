@@ -3,6 +3,7 @@
 //
 #pragma once
 #include <iostream>
+#include "global.h"
 #include "AView.hpp"
 #include "Logic.hpp"
 #include "Food.hpp"
@@ -11,8 +12,10 @@
 
 class Game_Obj {
 public:
-    static Game_Obj* getInstance();
-    void    DeleteStaticGame();
+    Game_Obj();
+    ~Game_Obj();
+   // static Game_Obj* getInstance();
+    //void    DeleteStaticGame();
     void    init();
     int     handleEvent();
     void    update();
@@ -40,8 +43,7 @@ private:
     friend class Menu;
     friend class Food;
     friend class Interface;
-    Game_Obj();
-    ~Game_Obj();
+
     Game_Obj(Game_Obj &&) = delete;
     Game_Obj(const Game_Obj &) = delete;
     Game_Obj& operator=(const Game_Obj &) = delete;
