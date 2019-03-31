@@ -22,6 +22,9 @@ int frameTime;
 Game_Obj::Game_Obj() {}
 
 Game_Obj::~Game_Obj() {
+    void	(*destroy_gui)(AView *);
+    destroy_gui = (void (*)(AView *))dlsym(dl_lib, "destroy_object");
+    destroy_gui(viev);
     if (this->dl_lib != NULL) {
         dlclose(this->dl_lib);
 
@@ -108,6 +111,20 @@ void Game_Obj::init() {
     main_loop();
 }
 
+
+//FIX THIS CRAP WITH STATIC CLASS
+void Game_Obj::DeleteStaticGame() {
+    std::cout << "DELETE GAME" << std::endl;
+    void	(*destroy_gui)(AView *);
+    destroy_gui = (void (*)(AView *))dlsym(dl_lib, "destroy_object");
+    destroy_gui(viev);
+    if (this->dl_lib != NULL) {
+        dlclose(this->dl_lib);
+
+    }
+    delete _inst;
+}
+
 void Game_Obj::main_loop() {
     int const frameDealy = 4000 / FPS;
     while(1){
@@ -129,6 +146,7 @@ void Game_Obj::main_loop() {
 
     }
     viev->cleanWindow();
+    DeleteStaticGame();
 }
 
 bool Game_Obj::escapeLogic() {

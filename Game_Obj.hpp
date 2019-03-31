@@ -12,6 +12,7 @@
 class Game_Obj {
 public:
     static Game_Obj* getInstance();
+    void    DeleteStaticGame();
     void    init();
     int     handleEvent();
     void    update();

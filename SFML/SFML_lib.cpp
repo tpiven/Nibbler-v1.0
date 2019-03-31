@@ -27,6 +27,7 @@ const char font_path[] = "/Picture/ArialItalic.ttf";
 sf::RenderWindow* SFML_lib::_window = nullptr;
 
 SFML_lib::SFML_lib() {
+    std::cout << "CLOSE LIB SDL" << std::endl;
 
 }
 
@@ -196,21 +197,13 @@ void SFML_lib::drawMenu(void* rectA, void* rectB, int typeMenu) {
 
 
 void SFML_lib::drawMap() {
-    std::cout << "F1" << std::endl;
+
     _window->pollEvent(_event);
-    std::cout << "F2" << std::endl;
     _window->clear();
-    std::cout << "F3" << std::endl;
     map.setPosition(0, height_scoreboard);
-    std::cout << "F4" << std::endl;
     auto size = map.getTexture()->getSize();
-    std::cout << "F5" << std::endl;
     map.setScale(float(weight)/size.x, float(height)/size.y);
-    std::cout << "F6" << std::endl;
-
     _window->draw(map);
-    std::cout << "F7" << std::endl;
-
 }
 
 void SFML_lib::drawSnake(void* rect, int b_block) {//b_block - wich texture render: tail, body, head
@@ -299,6 +292,8 @@ void SFML_lib::renderClear() {
 void SFML_lib::cleanWindow() {
     _window->clear();
     _window->close();
+    delete _window;
+    std::cout << "CLEAN WINDOW SFML" << std::endl;
 
 }
 

@@ -111,7 +111,7 @@ void Food::restart() {
 }
 
 void Food::changeSize(int n) {
-    _size_block = (g_weight / 90) / 2;
+    _size_block = (g_weight / 90);
     _rectLil.w = _rectLil.h = _size_block;
     _rectBig.w = _rectBig.h = _size_block * 2;
     _rectLil.x = (n > 0) ? (_rectLil.x * 2) : (_rectLil.x / 2);

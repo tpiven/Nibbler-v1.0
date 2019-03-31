@@ -6,6 +6,7 @@
 #include "../global.h"
 #include <unistd.h>
 #include "../Mmap.hpp"
+#include <stdio.h>
 #define CREATE_TEXTURE(str) TextureManager::getInstance().LoadTexture(str)
 #define CREATE_TEXTURETEXT(str, color, tcrR) TextureManager::getInstance().LoadTextureText(str, color, tcrR)
 
@@ -55,7 +56,10 @@ SDL_lib::SDL_lib(int weight, int height) {
 
 }
 
-SDL_lib::~SDL_lib() {}
+SDL_lib::~SDL_lib() {
+    std::cout << "CLOSE LIB SDL" << std::endl;
+
+}
 
 
 void SDL_lib::init() {
@@ -353,9 +357,32 @@ void SDL_lib::drawChangeMap(int n) {
 }
 
 void SDL_lib::cleanWindow() {
+    SDL_DestroyTexture(_textureMap);
+    SDL_DestroyTexture(_map1);
+    SDL_DestroyTexture(_map2);
+    SDL_DestroyTexture(_textureFood);
+    SDL_DestroyTexture(_textureBigFood);
+    SDL_DestroyTexture(_textureArrow);
+    SDL_DestroyTexture(_textureLine);
+    SDL_DestroyTexture(_textureText);
+    SDL_DestroyTexture(_textureScore);
+    SDL_DestroyTexture(_textureGameOver);
+    for(auto&& it : _snakeTexture){
+        SDL_DestroyTexture(it.second);
+    }
+
+    for(auto&& it : _buttonTexture){
+        SDL_DestroyTexture(it.second);
+    }
+    TTF_CloseFont(_font);
+    TTF_CloseFont(_game_over);
+    _font = nullptr;
+    _game_over = nullptr;
+
     SDL_DestroyWindow(_window);
     SDL_DestroyRenderer(renderer);
     SDL_Quit();
+    std::cout << "CLEAN WINDOW SDL" << std::endl;
 }
 
 extern "C"  AView* getInstance(int weight, int height) {
@@ -365,5 +392,6 @@ extern "C"  AView* getInstance(int weight, int height) {
 
 extern "C" void		destroy_object(SDL_lib *gui)
 {
+    printf("delete\n");
     delete gui;
 }

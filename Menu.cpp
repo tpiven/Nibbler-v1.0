@@ -111,6 +111,7 @@ void Menu::changeSize() {
 
     _rectB.x = g_weight / 2 - (_size_block * 2) - 10;
     _rectB.y = _rectA.y; //button must be on the same level with arrow
+    _numButton = 1;
 
 
 }
