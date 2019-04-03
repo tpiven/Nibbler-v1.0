@@ -161,6 +161,8 @@ void Mmap::setMap(int n) {
     else if( n == 2) {
         _mmap = &map2;
     }
+    std::cout << "NEW MAP" << std::endl;
+    printMmap();
 }
 
 void Mmap::setValueInMap(int val, const int y, const int x) { (*_mmap)[y][x] = val;

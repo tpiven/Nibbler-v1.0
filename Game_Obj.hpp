@@ -31,7 +31,7 @@ private:
     bool    escapeLogic();
     bool    pauseLogic();
 
-  std::string library[3];
+  std::string library[2];
 
     Logic   _logic;
     Menu    _menu;

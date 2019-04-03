@@ -37,7 +37,6 @@ void Menu::initMenu() {
 
 bool Menu::changebutton() {
     if (_selectMap == true) {
-        std::cout << "select map" << std::endl;
         changeMap();
         return true;
     }
@@ -47,7 +46,6 @@ bool Menu::changebutton() {
             return false;
         }
         if (_numButton == 1 && _typeMenu !=3){
-            std::cout << "change map" << std::endl;
             _numMap = 1;
             _selectMap = true;
             changeMap();
@@ -64,13 +62,12 @@ bool Menu::changebutton() {
 }
 
 void Menu::changeMap() {
-        std::cout << "////map////" << std::endl;
         Game_Obj::viev->renderClear();
         Game_Obj::viev->drawChangeMap(_numMap);
-        if (_key == 124 && _numMap != 2){//125 down
+        if (_key == 'd' && _numMap != 2){//125 down
             _numMap += 1;
         }
-        else if (_key == 123 && _numMap != 1){//126 up
+        else if (_key == 'a' && _numMap != 1){//126 up
            _numMap--;
         }
         if (_key == 36) {
@@ -81,11 +78,11 @@ void Menu::changeMap() {
    }
 }
 void Menu::moveArrow() {
-    if (_key == 125 && _numButton != 4){//125 down
+    if (_key == 's' && _numButton != 4){//125 down
         _rectA.y += (_typeMenu == 3 && _numButton == 3) ? 0 :  _rectA.h + 10;
         _numButton += (_typeMenu == 3 && _numButton == 3) ? 0 : 1;
     }
-    else if (_key == 126 && _numButton != 1){//126 up
+    else if (_key == 'w' && _numButton != 1){//126 up
         _rectA.y -=  _rectA.h + 10;
         _numButton--;
     }

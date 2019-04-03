@@ -25,8 +25,8 @@ Game_Obj::~Game_Obj() {
     void	(*destroy_gui)(AView *);
     destroy_gui = (void (*)(AView *))dlsym(dl_lib, "destroy_object");
     destroy_gui(viev);
-    if (this->dl_lib != NULL) {
-        dlclose(this->dl_lib);
+    if (dl_lib != NULL) {
+        dlclose(dl_lib);
 
     }
 //    delete _inst;
@@ -71,19 +71,19 @@ void Game_Obj::addNewSharedLib() {
     void	(*destroy_gui)(AView *);
 
 
-    if (this->dl_lib != NULL) {
+    if (dl_lib != NULL) {
         destroy_gui = (void (*)(AView *))dlsym(dl_lib, "destroy_object");
         destroy_gui(viev);
-        dlclose(this->dl_lib);
-        this->dl_lib = NULL;
+        dlclose(dl_lib);
+        dl_lib = NULL;
 
     }
-    this->dl_lib = dlopen(library[g_lib - 1].c_str(), RTLD_LAZY);
-    if (!this->dl_lib)
+    dl_lib = dlopen(library[g_lib - 1].c_str(), RTLD_LAZY);
+    if (!dl_lib)
         throw std::logic_error( dlerror() );
 
 
-    getInstance = reinterpret_cast<AView*(*)(int, int)> (dlsym(this->dl_lib, "getInstance"));
+    getInstance = reinterpret_cast<AView*(*)(int, int)> (dlsym(dl_lib, "getInstance"));
     if (!getInstance) {
         throw std::logic_error( dlerror()) ;
     }
@@ -93,7 +93,7 @@ void Game_Obj::addNewSharedLib() {
 void Game_Obj::init() {
     library[0] = "../libSDL.dylib";
     library[1] = "../libSFML.dylib";
-    library[2] = "../libAllegro.dylib";
+  //  library[2] = "../libAllegro.dylib";
     addNewSharedLib();
     _interface = Interface::getInstance();
     viev->init();
@@ -153,6 +153,8 @@ bool Game_Obj::escapeLogic() {
     int const frameDealy = 4000 / FPS;
     _menu.escapeDialog();
     _mapInit = false;
+    _logic.restart();
+    _food.restart();
     while(handleEvent() != 32 ){
         viev->renderClear();
         viev->drawGameOver(_interface->getScore());
@@ -165,9 +167,10 @@ bool Game_Obj::escapeLogic() {
     if (!menu()){
         return false;
     }
-    _logic.restart();
-    _food.restart();
     _interface->restart();
+//    _logic.restart();
+//    _food.restart();
+//    _interface->restart();
     return true;
 }
 

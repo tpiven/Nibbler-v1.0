@@ -140,6 +140,7 @@ void Logic::restart() {
     for(auto it : _cors){
         Mmap::getInstance().setValueInMap(0, it.y_arr, it.x_arr);
     }
+    std::cout << "RESTART LOGIC" << std::endl;
     _cors.erase(_cors.begin(), _cors.end());
     init(1);
     _playGame = true;
