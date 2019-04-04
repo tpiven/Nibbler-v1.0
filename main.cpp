@@ -63,6 +63,7 @@ int main(int argc, char **argv){
         g_weight *= 2;
         g_height *= 2;
     }
+
     HEIGHT_SCOREBOARD = g_weight / 14;
     _mapInit = false;
 

@@ -128,6 +128,7 @@ void SDL_lib::init() {
     }
     /************INIT TEXTURE FOR FOOD************/
     _textureFood = CREATE_TEXTURE((_dir + lilFood).c_str());
+    _textureFood = CREATE_TEXTURE((_dir + lilFood).c_str());
     if (!_textureFood){
         std::cerr << "textuteFood not exist" << std::endl;
         exit(1);
@@ -340,20 +341,21 @@ void SDL_lib::drawChangeMap(int n) {
     SDL_SetRenderDrawColor( renderer, 0, 0, 0, 255 );
     SDL_RenderClear(renderer);
 
-   _gcrR = {g_weight / 3, g_height / 3, 180, 134};
+    _gcrR = {g_weight / 3, g_height / 3, 180, 134};
     SDL_RenderCopy(renderer, _map1, nullptr, &_gcrR);
+
     _gcrR = {(g_weight / 3) + 180 + HEIGHT_SCOREBOARD, g_height / 3, 180, 134};
     SDL_RenderCopy(renderer, _map2, nullptr, &_gcrR);
+
     SDL_Rect r;
     if (n == 1) {
         r = {(g_weight / 3)  - 10, (g_height / 3) - 10, 200, 150};
     } else if (n == 2) {
         r = {(g_weight / 3) + (90 * 2) + HEIGHT_SCOREBOARD - 10, (g_height / 3) - 10, 200, 150};
     }
+
     SDL_SetRenderDrawColor( renderer, 0, 0, 255, 255);
     SDL_RenderDrawRect(renderer, &r);
-
-    
 }
 
 void SDL_lib::cleanWindow() {

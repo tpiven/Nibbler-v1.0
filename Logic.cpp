@@ -98,6 +98,7 @@ void Logic::move() {
     int ch = Mmap::getInstance().getValueFromMap(head.y_arr, head.x_arr);
     if (ch > 0 || ch == -1){
         Mmap::getInstance().printMmap();
+        std::cout << "CRASH" << std::endl;
         crash();
         return;
     }

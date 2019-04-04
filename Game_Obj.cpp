@@ -14,6 +14,7 @@
 #include <ctime>
 #include <unistd.h>
 #include <mutex>
+#include "GL/GL_lib.hpp"
 
 int const FPS = 60;
 uint32_t  frameStart;
@@ -41,29 +42,21 @@ bool Game_Obj::menu() {//draw menu for select map, and number of player
     int const frameDealy = 4000 / FPS;
     while(_menu.runningMenu()){
         viev->renderClear();
-
-        frameStart = viev->getTicks();
+//        frameStart = viev->getTicks();
         if (handleEvent() == -1){
             return false;
         }
         if (!_menu.changebutton()){
             return false;
         }
-        frameTime = viev->getTicks() - frameStart;
-        if (frameDealy > frameTime && frameTime >= 0){
-            viev->delay(frameDealy - frameTime);
-        }
+//        frameTime = viev->getTicks() - frameStart;
+//        if (frameDealy > frameTime && frameTime >= 0){
+//            viev->delay(frameDealy - frameTime);
+//        }
         viev->render();
     }
     return true;
 }
-
-//Game_Obj* Game_Obj::getInstance() {
-//    if (!_inst){
-//        _inst = new Game_Obj;
-//    }
-//    return _inst;
-//}
 
 void Game_Obj::addNewSharedLib() {
 
@@ -94,8 +87,10 @@ void Game_Obj::init() {
     library[0] = "../libSDL.dylib";
     library[1] = "../libSFML.dylib";
     library[2] = "../libAllegro.dylib";
-    addNewSharedLib();
+//    addNewSharedLib();
     _interface = Interface::getInstance();
+//    viev->init();
+    viev = new GL_lib(g_weight, g_height);
     viev->init();
     _menu.initMenu();
     if (!menu()){
@@ -103,27 +98,13 @@ void Game_Obj::init() {
         return;
     }
     _interface->initInterface();
-     viev->drawMap();
+    viev->drawMap();
     _logic.init(1);
     _interface->changeTimeAndScore();
     _food.updateFood();
     viev->render();//pre drawning before moving
     main_loop();
 }
-
-
-//FIX THIS CRAP WITH STATIC CLASS
-//void Game_Obj::DeleteStaticGame() {
-//    std::cout << "DELETE GAME" << std::endl;
-//    void	(*destroy_gui)(AView *);
-//    destroy_gui = (void (*)(AView *))dlsym(dl_lib, "destroy_object");
-//    destroy_gui(viev);
-//    if (this->dl_lib != NULL) {
-//        dlclose(this->dl_lib);
-//
-//    }
-//    delete _inst;
-//}
 
 void Game_Obj::main_loop() {
     int const frameDealy = 4000 / FPS;
@@ -138,15 +119,12 @@ void Game_Obj::main_loop() {
         else if (!action()){
                 break;
         }
-
         frameTime = viev->getTicks() - frameStart;
         if (frameDealy > frameTime && frameTime >= 0){
             viev->delay(frameDealy - frameTime);
         }
-
     }
     viev->cleanWindow();
- //   DeleteStaticGame();
 }
 
 bool Game_Obj::escapeLogic() {
@@ -183,10 +161,10 @@ bool Game_Obj::action() {
     }
     update();
     viev->render();
-    key = handleEvent();
-    if (key == -1 || (key == ' ' && !pauseLogic())){
-        return false;
-    }
+//    key = handleEvent();
+//    if (key == -1 || (key == ' ' && !pauseLogic())){
+//        return false;
+//    }
     return true;
 }
 
@@ -219,15 +197,6 @@ void Game_Obj::switchLib(int symb) {
     if (_mapInit == true) {
         viev->initMap(_numMap);
     }
-
-
-    //render(viev);
-//    std::cout << "-------------------" << std::endl;
-//    std::cout << "G_HEIGHT: " << g_height << std::endl;
-//    std::cout << "G_WEIGHT: " << g_weight << std::endl;
-//    std::cout << "HEIGHT_BOARD: " << HEIGHT_SCOREBOARD << std::endl;
-
-   // lib = viev;
 }
 
 
@@ -251,7 +220,6 @@ int Game_Obj::handleEvent() {
 }
 
 void Game_Obj::update() {
-
     viev->drawMap();
     _logic.move();
    _interface->changeTimeAndScore();

@@ -31,13 +31,13 @@ void Menu::initMenu() {
     _rectB.x = g_weight / 2 - (_size_block * 2) - 10;
     _rectB.y = _rectA.y; //button must be on the same level with arrow
     _numButton = 1;
+
     Game_Obj::viev->drawMenu(&_rectA, &_rectB, _typeMenu);
     Game_Obj::viev->render();
 }
 
 bool Menu::changebutton() {
     if (_selectMap == true) {
-        std::cout << "select map" << std::endl;
         changeMap();
         return true;
     }
@@ -64,7 +64,6 @@ bool Menu::changebutton() {
 }
 
 void Menu::changeMap() {
-        std::cout << "////map////" << std::endl;
         Game_Obj::viev->renderClear();
         Game_Obj::viev->drawChangeMap(_numMap);
         if (_key == 124 && _numMap != 2){//125 down
@@ -74,11 +73,11 @@ void Menu::changeMap() {
            _numMap--;
         }
         if (_key == 36) {
-        Mmap::getInstance().setMap(_numMap);
-        Game_Obj::viev->initMap(_numMap);
-        _selectMap = false;
-        _select = false;
-   }
+            Mmap::getInstance().setMap(_numMap);
+            Game_Obj::viev->initMap(_numMap);
+            _selectMap = false;
+            _select = false;
+        }
 }
 void Menu::moveArrow() {
     if (_key == 125 && _numButton != 4){//125 down
