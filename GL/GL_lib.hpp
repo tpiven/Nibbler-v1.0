@@ -128,6 +128,7 @@ private:
     t_glScr           _lcrR;//line time
     t_glScr           _mcrR;//menu
     t_glScr           _gcrR;//target map
+    int               _size_block;
 
     void LoadImage();
     void DrawEveryThing(t_glScr glScr, GLuint& drawThis);

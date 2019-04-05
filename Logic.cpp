@@ -105,6 +105,7 @@ void Logic::move() {
     else if (ch == -2 || ch == -3){ //-2 small food and -3 big food
         grow(ch);
     }
+    
     else if (ch == -5) {
         head.x_arr = (head.x_arr == 0) ? 88 : 1;
         head.x_dis = (head.x_arr *  g_weight) / 90;

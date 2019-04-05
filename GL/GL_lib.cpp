@@ -6,18 +6,16 @@
 #include <thread>
 #define CREATE_TEXTURE(str) SOIL_load_OGL_texture(str, SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, SOIL_FLAG_MIPMAPS | SOIL_FLAG_INVERT_Y | SOIL_FLAG_NTSC_SAFE_RGB | SOIL_FLAG_COMPRESS_TO_DXT)
 
-const char tail_path[] = "/Picture/dirt.png";//TODO create many picture like: tail_16x16, tail_8x8
-const char body_path[] = "/Picture/grass_bloc_mod.png";
-const char head_path[] = "/Picture/dirt_1.png";
+const char tail_path[] = "/Picture/snake_tails.png";
+const char body_path[] = "/Picture/snake_body.png";
+const char head_path[] = "/Picture/snake_head.png";
 const char map_1[] = "/Picture/map_1.png";
 const char map_2[] = "/Picture/map_2.png";
 const char lilFood[] = "/Picture/lilfood.png";
 const char bigFood[] = "/Picture/bigfood.png";
 const char buttonSingle_path[] = "/Picture/button1.png";
 const char buttonMulti_path[] = "/Picture/button2.png";
-
 const char lineFood_path[] = "/Picture/lineTimeFood.png";
-
 extern const char buttonOption_path[] = "/Picture/options.png";
 extern const char buttonContinue_path[] = "/Picture/continue.png";
 extern const char buttonExit_path[] = "/Picture/exit.png";
@@ -99,6 +97,7 @@ GL_lib::GL_lib(int weight, int height) {
     g_height = height;
     HEIGHT_SCOREBOARD = g_weight / 14;
     SizeFont = HEIGHT_SCOREBOARD / 4;
+    _size_block = (g_weight / 90);
 }
 
 GL_lib::~GL_lib() {
@@ -112,15 +111,15 @@ void GL_lib::init()
         exit(1);
     }
 
-    if (!(_window = glfwCreateWindow(g_weight, g_height, "Snake", nullptr, nullptr))){
+    if (!(_window = glfwCreateWindow(g_weight, g_height + HEIGHT_SCOREBOARD, "Snake", nullptr, nullptr))){
         std::cerr <<  "Error Create Window" << std::endl;
         exit(1);
     }
 
     glfwSetKeyCallback(_window, keyCallback);
 
-    glViewport(0.0f, 0.0f, g_weight, g_height + HEIGHT_SCOREBOARD);
     glfwMakeContextCurrent(_window);
+//    glViewport(0.0f, 0.0f, g_weight, g_height + HEIGHT_SCOREBOARD);
 
     if (!glfwGetCurrentContext()){
         std::cerr << "Couldn't create OpenGL context" << std::endl;
@@ -145,6 +144,7 @@ void GL_lib::init()
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
     LoadImage();
+
 }
 
 void GL_lib::LoadImage()
@@ -165,9 +165,9 @@ void GL_lib::LoadImage()
     }
     /*************LOAD SNAKE TEXTURE*************/
     _textureSnake = {
-                        {0, CREATE_TEXTURE((_dir + lilFood).c_str())},
-                        {1, CREATE_TEXTURE((_dir + lilFood).c_str())},
-                        {2, CREATE_TEXTURE((_dir + lilFood).c_str())}
+                        {0, CREATE_TEXTURE((_dir + tail_path).c_str())},
+                        {1, CREATE_TEXTURE((_dir + body_path).c_str())},
+                        {2, CREATE_TEXTURE((_dir + head_path).c_str())}
                     };
     if (_textureSnake.empty()){
         std::cerr << "Not load texture snake" << std::endl;
@@ -212,6 +212,36 @@ void GL_lib::LoadImage()
     glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR);
 //    glfwPollEvents();
+}
+
+void GL_lib::drawMap() {
+    glfwMakeContextCurrent(_window);
+    glViewport(0, 0, g_weight * 2, g_height * 2);
+    glClearColor(0.f, 0.f, 0.f, 1.0f);
+
+
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+
+    glEnable(GL_TEXTURE_2D);
+    glBindTexture(GL_TEXTURE_2D, _textureMap1);
+    glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
+
+    glBegin(GL_QUADS);
+
+    glTexCoord2f(0.f, 0.f);
+    glVertex2f(-1.f, -1.f);
+
+    glTexCoord2f(1.f, 0.f);
+    glVertex2f(1.f, -1.f);
+
+    glTexCoord2f(1.f, 1.f);
+    glVertex2f(1.f, 1.f);
+
+    glTexCoord2f(0.f, 1.f);
+    glVertex2f(-1.f, 1.f);
+
+    glEnd();
 }
 
 void GL_lib::initMap(int) {
@@ -329,35 +359,6 @@ void GL_lib::drawMenu(void* rectA, void* rectB, int typeMenu) {
     }
 }
 
-void GL_lib::drawMap() {
-    glfwMakeContextCurrent(_window);
-    glViewport(0, (HEIGHT_SCOREBOARD * 2)* -1, g_weight * 2  , g_height * 2);
-    glClearColor(0.f, 0.f, 0.f, 1.0f);
-
-
-    glMatrixMode(GL_PROJECTION);
-    glLoadIdentity();
-
-    glEnable(GL_TEXTURE_2D);
-    glBindTexture(GL_TEXTURE_2D, _textureMap1);
-    glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
-
-    glBegin(GL_QUADS);
-
-    glTexCoord2f(0.f, 0.f);
-    glVertex2f(-1.f, -1.f);
-
-    glTexCoord2f(1.f, 0.f);
-    glVertex2f(1.f, -1.f);
-
-    glTexCoord2f(1.f, 1.f);
-    glVertex2f(1.f, 1.f);
-
-    glTexCoord2f(0.f, 1.f);
-    glVertex2f(-1.f, 1.f);
-
-    glEnd();
-}
 
 
 void GL_lib::drawSnake(void* rect, int b_block) {
@@ -367,7 +368,7 @@ void GL_lib::drawSnake(void* rect, int b_block) {
     }
 
     _scrR = *reinterpret_cast<t_glScr*>(rect);
-    _scrR.y = g_height - _scrR.y;
+    _scrR.y = (g_height + HEIGHT_SCOREBOARD) - _scrR.y - _size_block;
 
     DrawEveryThing(_scrR, _textureSnake[b_block]);
 }
@@ -380,13 +381,13 @@ void GL_lib::drawFood(void *rect) {
     }
 
     _fcrR = *reinterpret_cast<t_glScr*>(rect);
-    _fcrR.y = g_height - _fcrR.y;
+    _fcrR.y = (g_height + HEIGHT_SCOREBOARD) - _fcrR.y - _size_block;
     DrawEveryThing(_fcrR, _textureFood);
 }
 
 void    GL_lib::drawBigFood(void *rect) {
     _fcrR = *reinterpret_cast<t_glScr*>(rect);
-    _fcrR.y = g_height - _fcrR.y;
+    _fcrR.y = (g_height + HEIGHT_SCOREBOARD) - _fcrR.y - _size_block;
 
     DrawEveryThing(_fcrR, _textureBigFood);
 }
