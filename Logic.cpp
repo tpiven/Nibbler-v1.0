@@ -44,7 +44,7 @@ void Logic::init(int n_pl) {
         }
         _rect.y = _cors.back().y_dis;
         _rect.x = _cors.back().x_dis;
-         Game_Obj::viev->drawSnake(&_rect, j);
+        Game_Obj::viev->drawSnake(&_rect, j);
     }
 }
 
@@ -77,8 +77,6 @@ void Logic::setKey(int key) {
     }
 }
 
-//int Logic::getkey() const { return _key;}
-
 void Logic::updateHead(t_coor& head) {
     if (_key == 'a' || _key == 'd'){
         head.x_dis += (_key == 'd') ? _size_block : -_size_block;
@@ -97,14 +95,15 @@ void Logic::move() {
     updateHead(head);
     int ch = Mmap::getInstance().getValueFromMap(head.y_arr, head.x_arr);
     if (ch > 0 || ch == -1){
-        Mmap::getInstance().printMmap();
+        std::cout << "CRASH" << std::endl;
         crash();
         return;
     }
     else if (ch == -2 || ch == -3){ //-2 small food and -3 big food
         grow(ch);
     }
-    else if (ch == -5) {
+
+    else if (ch == -5) { // portal
         head.x_arr = (head.x_arr == 0) ? 88 : 1;
         head.x_dis = (head.x_arr *  g_weight) / 90;
     }
@@ -140,9 +139,9 @@ void Logic::restart() {
     for(auto it : _cors){
         Mmap::getInstance().setValueInMap(0, it.y_arr, it.x_arr);
     }
-    std::cout << "RESTART LOGIC" << std::endl;
     _cors.erase(_cors.begin(), _cors.end());
     init(1);
+
     _playGame = true;
     _key = (_pl == 1) ? 'd' : 'a';
 }
@@ -163,6 +162,14 @@ void Logic::grow(int typeFood) {
         } else if (_key == 'w' || _key == 's') {
             _cors.push_front({tail.y_dis + (_size_block * fg), tail.x_dis, tail.y_arr + fg, tail.x_arr});
         }
+    }
+    for (auto fIt = Food::_coorOnMap.begin(); cell == 2  && fIt != Food::_coorOnMap.end(); fIt++){
+        Mmap::getInstance().printMmap();
+        if (Mmap::getInstance().getValueFromMap(fIt->first, fIt->second) != -1){
+            Mmap::getInstance().setValueInMap(0, fIt->first, fIt->second);
+        }
+        fIt->first = 0;
+        fIt->second = 0;
     }
 }
 
