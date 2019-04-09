@@ -4,6 +4,8 @@
 
 #include "GL_lib.hpp"
 #include <thread>
+#include <string.h>
+
 #define CREATE_TEXTURE(str) SOIL_load_OGL_texture(str, SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, SOIL_FLAG_MIPMAPS | SOIL_FLAG_INVERT_Y | SOIL_FLAG_NTSC_SAFE_RGB | SOIL_FLAG_COMPRESS_TO_DXT)
 
 const char tail_path[] = "/Picture/snake_tails.png";
@@ -27,9 +29,6 @@ typedef struct {
     GLfloat positionCoors[3];
     GLfloat textureCoors[2];
 }           VertexData;
-
-#define Square_Size 50
-
 
 int GL_lib::_buttonStatus = 0;
 
@@ -217,6 +216,7 @@ void GL_lib::LoadImage()
     /************INIT TEXTURE FOR FONT************/
     //TODO
 
+
     glBindTexture(GL_TEXTURE_2D, _textureMap1);
     glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR);
@@ -401,41 +401,44 @@ void    GL_lib::drawBigFood(void *rect) {
     DrawEveryThing(_fcrR, _textureBigFood);
 }
 
+//glfwMakeContextCurrent(_window);
+//    glViewport(glScr.x * 2, glScr.y * 2, glScr.w * 2, glScr.h * 2);
+//
+//    glClearColor(0.f, 0.f, 0.f, 1.0f);
+//
+//    glMatrixMode(GL_PROJECTION);
+//    glLoadIdentity();
+//
+//    if (drawThis != 0) {
+//        glEnable(GL_TEXTURE_2D);
+//        glBindTexture(GL_TEXTURE_2D, drawThis);
+//        glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
+//    }
+//    glBegin(GL_QUADS);
+//
+//    glTexCoord2f(0.f, 0.f);
+//    glVertex2f(-1.f, -1.f);
+//
+//    glTexCoord2f(1.f, 0.f);
+//    glVertex2f(1.f, -1.f);
+//
+//    glTexCoord2f(1.f, 1.f);
+//    glVertex2f(1.f, 1.f);
+//
+//    glTexCoord2f(0.f, 1.f);
+//    glVertex2f(-1.f, 1.f);
+//
+//    glEnd();
+
 void GL_lib::drawInterface(std::string clock, int score){
     //TODO
+
 }
 
 void GL_lib::drawTimeBigFood(int time) {
-//    time = 80;
-    /***************DRAW LINE TIME FOR SURP FOOD****************/
-    _lcrR = {(g_weight / 3) * 2, HEIGHT_SCOREBOARD / 2, time, SizeFont - 10};
-    glfwMakeContextCurrent(_window);
-    glViewport(_lcrR.x, _lcrR.y, _lcrR.w, _lcrR.h);
-
+    _lcrR = {(g_weight / 3) * 2, (g_height + HEIGHT_SCOREBOARD / 2), time, SizeFont - 10};
+    DrawEveryThing(_lcrR, _textureLine);
 //    glClearColor(0.f, 0.f, 0.f, 1.0f);
-
-    glMatrixMode(GL_PROJECTION);
-    glLoadIdentity();
-
-    glEnable(GL_TEXTURE_2D);
-    glBindTexture(GL_TEXTURE_2D, _textureLine);
-    glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
-
-    glBegin(GL_QUADS);
-
-    glTexCoord2f(0.f, 0.f);
-    glVertex2f(-1.f, -1.f);
-
-    glTexCoord2f(1.f, 0.f);
-    glVertex2f(1.f, -1.f);
-
-    glTexCoord2f(1.f, 1.f);
-    glVertex2f(1.f, 1.f);
-
-    glTexCoord2f(0.f, 1.f);
-    glVertex2f(-1.f, 1.f);
-
-    glEnd();
 }
 
 void GL_lib::renderClear() {
