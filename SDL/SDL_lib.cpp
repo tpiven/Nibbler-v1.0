@@ -145,6 +145,7 @@ void SDL_lib::init() {
         std::cerr << "textureLine not exist" << std::endl;
         exit(1);
     }
+    /************INIT TEXTURE GAME OVER************/
     _textureGameOver = CREATE_TEXTURE((_dir + gameOver_path).c_str());
     if (!_textureGameOver){
         std::cerr << "textureGameOver not exist" << std::endl;

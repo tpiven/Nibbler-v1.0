@@ -16,17 +16,18 @@
 
 static int cntCreateFood = 0;
 
+std::vector<std::pair<int, int>> Food::_coorOnMap(4, {0,0});
+
 Food::Food() noexcept {
     _size_block = (g_weight / 90);// / 2;
     _rectLil.w = _rectLil.h = _size_block;
-    _rectBig.w = _rectBig.h = _size_block + _size_block/2;
+    _rectBig.w = _rectBig.h = _size_block * 2;
     _coorLilFood.x_arr = _coorLilFood.y_arr = _coorLilFood.y_dis = _coorLilFood.x_dis = 0;
     _coorBigFood.x_arr = _coorBigFood.y_arr = _coorBigFood.y_dis = _coorBigFood.x_dis = 0;
     _drawBig = false;
 }
 
-Food::~Food() {
-}
+Food::~Food() {}
 
 void Food::mandatoryFood() {
     if (GET_VALUE_FROM_MAP(_coorLilFood.y_arr, _coorLilFood.x_arr) != -2){//-2 on array is food
@@ -71,27 +72,43 @@ void Food::surpriseFood() {
             _drawBig = true;
             startBig = std::chrono::system_clock::now();
             do {
-                std::uniform_int_distribution<> dis_x(0, 89);
-                std::uniform_int_distribution<> dis_y(0, 66);
+                std::uniform_int_distribution<> dis_x(0, 88);
+                std::uniform_int_distribution<> dis_y(0, 65);
                 x = dis_x(gen);
                 y = dis_y(gen);
-            } while (GET_VALUE_FROM_MAP(y, x) != 0);
-            SET_VALUE_IN_MAP(-3, y, x);
+            } while (GET_VALUE_FROM_MAP(y, x) != 0 ||
+                     GET_VALUE_FROM_MAP(y, x + 1) != 0 ||
+                     GET_VALUE_FROM_MAP(y + 1, x) != 0 ||
+                     GET_VALUE_FROM_MAP(y + 1, x + 1) != 0);
+
+            Mmap::getInstance().printMmap();
+            _coorOnMap[0] = {y, x};
+            _coorOnMap[1] = {y, x + 1};
+            _coorOnMap[2] = {y + 1, x};
+            _coorOnMap[3] = {y + 1, x + 1};
+
+            for (auto& it : _coorOnMap){
+                SET_VALUE_IN_MAP(-3, it.first, it.second);
+            }
+            Mmap::getInstance().printMmap();
             _coorBigFood.y_arr = y;
             _coorBigFood.x_arr = x;
-            _rectBig.y = _coorBigFood.y_dis = (_coorBigFood.y_arr * g_height / 67) + HEIGHT_SCOREBOARD - _size_block/2;
-            _rectBig.x = _coorBigFood.x_dis = (_coorBigFood.x_arr * g_weight / 90) - _size_block/2;
-         //   Mmap::getInstance().printMmap();
+            _rectBig.y = _coorBigFood.y_dis = (_coorBigFood.y_arr * g_height / 67) + HEIGHT_SCOREBOARD;//- _size_block/2;
+            _rectBig.x = _coorBigFood.x_dis = (_coorBigFood.x_arr * g_weight / 90);// - _size_block/2;
+            std::cout << "_RECT_Y: " << _rectBig.y << " _RECT_X: " << _rectBig.x << std::endl;
         }
     }
     auto t = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now() - startBig);
     if (t.count() >= 8000){
         _drawBig = false;
         SET_VALUE_IN_MAP(0, _coorBigFood.y_arr, _coorBigFood.x_arr);
+        for (auto& it : _coorOnMap){
+            SET_VALUE_IN_MAP(0, it.first, it.second);
+        }
     }
     if (_drawBig){
         Game_Obj::viev->drawBigFood(&_rectBig);
-        Game_Obj::viev->drawTimeBigFood(static_cast<int>((8000 - t.count())/100));
+        Game_Obj::viev->drawTimeBigFood(static_cast<int>((8000 - t.count())/100));//8000
    }
 }
 
@@ -104,6 +121,10 @@ void Food::updateFood() {
 void Food::restart() {
     SET_VALUE_IN_MAP(0, _coorLilFood.y_arr, _coorLilFood.x_arr);
     SET_VALUE_IN_MAP(0, _coorBigFood.y_arr, _coorBigFood.x_arr);
+
+    for(auto& it : _coorOnMap){
+        SET_VALUE_IN_MAP(0, it.first, it.second);
+    }
     cntCreateFood = 0;
     _coorLilFood.y_arr = 0;
     _coorLilFood.x_arr = 0;

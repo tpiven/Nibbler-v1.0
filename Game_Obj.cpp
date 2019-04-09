@@ -23,13 +23,12 @@ int frameTime;
 Game_Obj::Game_Obj() {}
 
 Game_Obj::~Game_Obj() {
-    void	(*destroy_gui)(AView *);
-    destroy_gui = (void (*)(AView *))dlsym(dl_lib, "destroy_object");
-    destroy_gui(viev);
-    if (this->dl_lib != NULL) {
-        dlclose(this->dl_lib);
-
-    }
+//    void	(*destroy_gui)(AView *);
+//    destroy_gui = (void (*)(AView *))dlsym(dl_lib, "destroy_object");
+//    destroy_gui(viev);
+//    if (this->dl_lib != NULL) {
+//        dlclose(this->dl_lib);
+//    }
 //    delete _inst;
 }
 
@@ -37,22 +36,21 @@ Game_Obj* Game_Obj::_inst = nullptr;
 void *Game_Obj:: dl_lib = NULL;
 AView*  Game_Obj::viev = nullptr;
 
-
 bool Game_Obj::menu() {//draw menu for select map, and number of player
     int const frameDealy = 4000 / FPS;
     while(_menu.runningMenu()){
         viev->renderClear();
-//        frameStart = viev->getTicks();
+        frameStart = viev->getTicks();
         if (handleEvent() == -1){
             return false;
         }
         if (!_menu.changebutton()){
             return false;
         }
-//        frameTime = viev->getTicks() - frameStart;
-//        if (frameDealy > frameTime && frameTime >= 0){
-//            viev->delay(frameDealy - frameTime);
-//        }
+        frameTime = viev->getTicks() - frameStart;
+        if (frameDealy > frameTime && frameTime >= 0){
+            viev->delay(frameDealy - frameTime);
+        }
         viev->render();
     }
     return true;
@@ -150,6 +148,7 @@ bool Game_Obj::escapeLogic() {
 }
 
 bool Game_Obj::pauseLogic() {
+    Mmap::getInstance().printMmap();
     _menu.pauseDialog();
     return menu();
 }
@@ -161,10 +160,10 @@ bool Game_Obj::action() {
     }
     update();
     viev->render();
-//    key = handleEvent();
-//    if (key == -1 || (key == ' ' && !pauseLogic())){
-//        return false;
-//    }
+    key = handleEvent();
+    if (key == -1 || (key == ' ' && !pauseLogic())){
+        return false;
+    }
     return true;
 }
 

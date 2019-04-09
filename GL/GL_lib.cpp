@@ -21,6 +21,7 @@ extern const char buttonContinue_path[] = "/Picture/continue.png";
 extern const char buttonExit_path[] = "/Picture/exit.png";
 const char arrow_path[] = "/Picture/arrow_path.png";
 const char font_path[] = "/Picture/ArialItalic.ttf";
+const char gameOver_path[] = "/Picture/gameOver.png";
 
 typedef struct {
     GLfloat positionCoors[3];
@@ -205,6 +206,14 @@ void GL_lib::LoadImage()
         std::cerr << "textureArrow not exist" << std::endl;
         exit(1);
     }
+    /************INIT TEXTURE GAME OVER************/
+    _textureGameOver = CREATE_TEXTURE((_dir + gameOver_path).c_str());
+    if (!_textureGameOver){
+        std::cerr << "textureGameOver not exist" << std::endl;
+        exit(1);
+    }
+    /************INIT TEXTURE GAME OVER************/
+    //TODO
     /************INIT TEXTURE FOR FONT************/
     //TODO
 
@@ -343,9 +352,9 @@ void GL_lib::drawMenu(void* rectA, void* rectB, int typeMenu) {
     _mcrR.y =  g_height - _mcrR.y;
     if (typeMenu == 3){
         DrawEveryThing(_mcrR, _textureButton["continue"]);
-        _mcrR.y += _mcrR.h + 10;
+        _mcrR.y += (_mcrR.h + 10) * -1;
         DrawEveryThing(_mcrR, _textureButton["option"]);
-        _mcrR.y += _mcrR.h + 10;
+        _mcrR.y += (_mcrR.h + 10) * -1;
         DrawEveryThing(_mcrR, _textureButton["exit"]);
     }
     else{
@@ -387,7 +396,7 @@ void GL_lib::drawFood(void *rect) {
 
 void    GL_lib::drawBigFood(void *rect) {
     _fcrR = *reinterpret_cast<t_glScr*>(rect);
-    _fcrR.y = (g_height + HEIGHT_SCOREBOARD) - _fcrR.y - _size_block;
+    _fcrR.y = (g_height + HEIGHT_SCOREBOARD) - _fcrR.y - (_size_block * 2);
 
     DrawEveryThing(_fcrR, _textureBigFood);
 }
@@ -434,7 +443,19 @@ void GL_lib::renderClear() {
 }
 
 void GL_lib::drawGameOver(int score) {
+    //TODO
     std::cout << "Game Over" << std::endl;
+//    _gcrR = {(g_weight / 3), g_height / 3, g_weight / 3, g_height / 3};
+//    SDL_RenderCopy(renderer, _textureGameOver, nullptr, &_gcrR);
+//    _textureScore = CREATE_TEXTURETEXT(("SCORE   " + std::to_string(score)).c_str(), _tColor, _tcrR);
+//    _tcrR.x = g_weight/2 - (HEIGHT_SCOREBOARD / 3) * 2;
+//    _tcrR.y = (g_height / 3) * 2;
+//    SDL_RenderCopy(renderer, _textureScore, nullptr, &_tcrR);
+//
+//    _textureScore = CREATE_TEXTURETEXT("Please, press space key", _tColor, _tcrR);
+//    _tcrR.x = g_weight / 2 - (HEIGHT_SCOREBOARD + (HEIGHT_SCOREBOARD / 3));
+//    _tcrR.y = g_height - HEIGHT_SCOREBOARD;
+//    SDL_RenderCopy(renderer, _textureScore, nullptr, &_tcrR);
 }
 
 void GL_lib::drawChangeMap(int n) {
@@ -456,8 +477,11 @@ void GL_lib::drawChangeMap(int n) {
 }
 
 void GL_lib::cleanWindow() {
-
+    //TODO DELETE THIS CODE
+    glfwDestroyWindow(_window);
+    glfwTerminate();
 }
+
 void GL_lib::DestroyWindow()
 {
     glfwDestroyWindow(_window);

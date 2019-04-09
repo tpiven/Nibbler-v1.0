@@ -24,7 +24,14 @@ int size(int n, int g){
     return 0;
 }
 
+struct s_tr{
+    int a;
+    int b;
+    double qw;
+};
+
 int main(int argc, char **argv){
+
     std::regex check("[\\s]*?\\d{3,4}[\\s]*?$");
     if (argc != 4){//TODO must change on exception
         std::cout << "usage: ???" << std::endl;
@@ -50,7 +57,7 @@ int main(int argc, char **argv){
             }
         }
         else if (i == 3){
-            g_lib = std::stoi(*(argv + i));
+            g_lib = std::stoi(*(argv + i));;
             if (g_lib > 3) {
                 {
                     std::cout << "Not valued number of libraries" << std::endl;
