@@ -1,0 +1,68 @@
+//
+// Created by Tetiana PIVEN on 2019-04-07.
+//
+
+#include "Music_lib.hpp"
+#include <thread>
+#include <chrono>
+
+Music_lib::Music_lib() {
+
+}
+
+Music_lib::~Music_lib() {
+
+}
+
+void Music_lib::init() {
+
+   if(!music.openFromFile("Picture/s.wav"))
+   {
+       std::cout << "ERRor" << std::endl;
+   }
+    if( !buffer.loadFromFile("Picture/eat.wav")){
+        std::cout << "ERRorghgh" << std::endl;
+    }
+    eating.setBuffer(buffer);
+    eating.setVolume(20);
+    if( !buffer2.loadFromFile("Picture/d.wav")){
+        std::cout << "ERRorghgh" << std::endl;
+    }
+    button.setBuffer(buffer2);
+    button.setVolume(20);
+
+    if( !buffer3.loadFromFile("Picture/t.wav")){
+        std::cout << "ERRorghgh" << std::endl;
+    }
+    crash.setBuffer(buffer3);
+    crash.setVolume(20);
+    if( !buffer4.loadFromFile("Picture/game_over2.wav")){
+        std::cout << "ERRorghgh" << std::endl;
+    }
+    game_over.setBuffer(buffer4);
+    game_over.setVolume(20);
+
+}
+
+void Music_lib::playMusic() {
+    music.setVolume(15);
+    music.play();
+    music.setLoop(true);
+}
+
+void Music_lib::playEat() {
+    eating.play();
+}
+
+void Music_lib::playGame_over() {
+    game_over.play();
+}
+
+void Music_lib::playButton() {
+    button.play();
+}
+
+void Music_lib::playCrash() {
+    crash.play();
+    std::this_thread::sleep_for(std::chrono::milliseconds(150));
+}

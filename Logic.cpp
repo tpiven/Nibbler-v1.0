@@ -96,11 +96,13 @@ void Logic::move() {
     int ch = Mmap::getInstance().getValueFromMap(head.y_arr, head.x_arr);
     if (ch > 0 || ch == -1){
         std::cout << "CRASH" << std::endl;
+        Game_Obj::music->playCrash();
         crash();
         return;
     }
     else if (ch == -2 || ch == -3){ //-2 small food and -3 big food
         grow(ch);
+        Game_Obj::music->playEat();
     }
 
     else if (ch == -5) { // portal

@@ -14,6 +14,7 @@
 #include <ctime>
 #include <unistd.h>
 #include <mutex>
+#include "Music/Music_lib.hpp"
 
 int const FPS = 60;
 uint32_t  frameStart;
@@ -35,6 +36,7 @@ Game_Obj::~Game_Obj() {
 Game_Obj* Game_Obj::_inst = nullptr;
 void *Game_Obj:: dl_lib = NULL;
 AView*  Game_Obj::viev = nullptr;
+Music*  Game_Obj::music = nullptr;
 
 
 bool Game_Obj::menu() {//draw menu for select map, and number of player
@@ -95,6 +97,8 @@ void Game_Obj::init() {
     library[1] = "../libSFML.dylib";
   //  library[2] = "../libAllegro.dylib";
     addNewSharedLib();
+    music = new Music_lib();
+    music->init();
     _interface = Interface::getInstance();
     viev->init();
     _menu.initMenu();
@@ -155,6 +159,7 @@ bool Game_Obj::escapeLogic() {
     _mapInit = false;
     _logic.restart();
     _food.restart();
+    music->playGame_over();
     while(handleEvent() != 32 ){
         viev->renderClear();
         viev->drawGameOver(_interface->getScore());

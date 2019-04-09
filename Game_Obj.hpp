@@ -9,6 +9,7 @@
 #include "Food.hpp"
 #include "Menu.hpp"
 #include "Interface.hpp"
+#include "Music.hpp"
 
 class Game_Obj {
 public:
@@ -20,6 +21,7 @@ public:
     int     handleEvent();
     void    update();
     static AView * viev;
+    static Music *music;
 
 private:
     static Game_Obj *_inst;
