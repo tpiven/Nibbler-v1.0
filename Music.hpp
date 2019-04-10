@@ -17,6 +17,7 @@ public:
     virtual void playGame_over() = 0;
     virtual void playCrash() = 0;
     virtual void playButton() = 0;
+    virtual void stopMusic() = 0;
 
 };
 

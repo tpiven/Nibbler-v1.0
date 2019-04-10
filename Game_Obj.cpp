@@ -131,10 +131,12 @@ void Game_Obj::init() {
 
 void Game_Obj::main_loop() {
     int const frameDealy = 4000 / FPS;
+    music->playMusic();
     while(1){
         viev->renderClear();
         frameStart = viev->getTicks();
         if (!_logic.runningGame()){
+            music->stopMusic();
             if (!escapeLogic()){
                 break;
             }
@@ -173,6 +175,7 @@ bool Game_Obj::escapeLogic() {
         return false;
     }
     _interface->restart();
+    music->playMusic();
 //    _logic.restart();
 //    _food.restart();
 //    _interface->restart();
