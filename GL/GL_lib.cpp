@@ -31,6 +31,9 @@ typedef struct {
 }           VertexData;
 
 int GL_lib::_buttonStatus = 0;
+//TTF_Font GL_lib::*_font = nullptr;
+
+static  TTF_Font* _font = nullptr;
 
 void keyCallback(GLFWwindow *window, int key, int scancode, int action, int mods) {
     if (action == GLFW_PRESS){
@@ -215,7 +218,15 @@ void GL_lib::LoadImage()
     //TODO
     /************INIT TEXTURE FOR FONT************/
     //TODO
-
+    if (TTF_Init() < 0){
+        std::cerr << TTF_GetError() << std::endl;
+        exit(-1);
+    }
+    if (!(_font = TTF_OpenFont((_dir + font_path).c_str(), (HEIGHT_SCOREBOARD / 3)))){
+        std::cerr << "text Game Over not exist" << std::endl;
+        exit(1);
+    }
+    _tColor = {107,142,35, 0};
 
     glBindTexture(GL_TEXTURE_2D, _textureMap1);
     glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR);
@@ -432,7 +443,45 @@ void    GL_lib::drawBigFood(void *rect) {
 
 void GL_lib::drawInterface(std::string clock, int score){
     //TODO
-
+//
+//    SDL_Surface* surface = TTF_RenderText_Blended(_font, "QQQQQ", _tColor);
+//    if (!surface){
+//        TTF_CloseFont(_font);
+//        std::cerr << TTF_GetError() << std::endl;
+//        exit(-1);
+//    }
+    glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+    glPixelStorei(GL_UNPACK_ROW_LENGTH, 0);
+    glPixelStorei(GL_UNPACK_SKIP_PIXELS, 0);
+    glPixelStorei(GL_UNPACK_SKIP_ROWS, 0);
+    SDL_Surface* sText = TTF_RenderText_Blended(_font, "QQQQ", _tColor);
+    if (!sText){
+        std::cerr << TTF_GetError() << std::endl;
+        exit(-1);
+    }
+    _area.x = 0;
+    _area.y = 0;
+    _area.w = sText->w;
+    _area.h = sText->h;
+//    SDL_Surface* temp = SDL_CreateRGBSurface(0, sText->w, sText->h, 32, 0x000000ff, 0x0000ff00, 0x00ff0000, 0x000000ff);
+//    if (!temp){
+//        std::cerr << TTF_GetError() << std::endl;
+//        exit(-1);
+//    }
+//    SDL_BlitSurface(sText, &_area, temp, NULL);
+//    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, sText->w, sText->h, 0, GL_RGBA, GL_UNSIGNED_BYTE, temp->pixels);
+    glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR);
+    glEnable(GL_TEXTURE_2D);
+    glBegin(GL_QUADS); {
+        glTexCoord2d(0, 0); glVertex3f(0, 0, 0);
+        glTexCoord2d(1, 0); glVertex3f(0 + sText->w, 0, 0);
+        glTexCoord2d(1, 1); glVertex3f(0 + sText->w, 0 + sText->h, 0);
+        glTexCoord2d(0, 1); glVertex3f(0, 0 + sText->h, 0);
+    } glEnd();
+    glDisable(GL_TEXTURE_2D);
+    SDL_FreeSurface( sText );
+//    SDL_FreeSurface( temp );
 }
 
 void GL_lib::drawTimeBigFood(int time) {

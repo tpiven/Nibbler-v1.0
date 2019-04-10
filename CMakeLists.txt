@@ -57,6 +57,12 @@ if (APPLE)
     include_directories(H_SOIL GL/SOIL/src)
     link_directories(${H_SOIL})
 
+    set(CMAKE_CXX_STANDARD 11)
+    set(SDL2_INCLUDE_DIR ~/.brew/include/SDL2/)
+    set(SDL2_LIBRARY ~/.brew/lib/)
+    include_directories(${SDL2_INCLUDE_DIR})
+    link_directories(${SDL2_LIBRARY})
+
     message("!!APPLE")
 
 endif(APPLE)
@@ -67,4 +73,4 @@ find_package(GLUT REQUIRED)
 add_executable(Nibbler_v1.1 ${SOURCE_FILES})
 
 #target_link_libraries(Nibbler_v1.1 -rdynamic -ldl)
-target_link_libraries(Nibbler_v1.1 ${CMAKE_BINARY_DIR}/../GL/SOIL/lib/libSOIL.a ${OPENGL_LIBRARY} ${GLUT_LIBRARY} -lGLEW -lglfw)
+target_link_libraries(Nibbler_v1.1 ${CMAKE_BINARY_DIR}/../GL/SOIL/lib/libSOIL.a ${OPENGL_LIBRARY} ${GLUT_LIBRARY} -lGLEW -lglfw -lSDL2 -lSDL2_image -lSDL2_ttf)

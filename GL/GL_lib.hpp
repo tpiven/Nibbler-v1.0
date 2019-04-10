@@ -22,7 +22,9 @@
 #include <string>
 #include <map>
 #include <unistd.h>
-
+#include "SDL2/SDL.h"
+#include "SDL2/SDL_ttf.h"
+#include <SDL2/SDL_image.h>
 
 #include <glm/glm.hpp>
 #include <glm/vec2.hpp>
@@ -163,6 +165,9 @@ public:
     void    updateInput();
 
     static int  _buttonStatus;
+//    static TTF_Font     *_font;
+    SDL_Color           _tColor;
+    SDL_Rect _area;
 };
 
 
