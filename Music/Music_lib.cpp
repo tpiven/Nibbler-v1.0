@@ -24,18 +24,18 @@ void Music_lib::init() {
         std::cout << "ERRorghgh" << std::endl;
     }
     eating.setBuffer(buffer);
-    eating.setVolume(20);
+    eating.setVolume(200);
     if( !buffer2.loadFromFile("Picture/d.wav")){
         std::cout << "ERRorghgh" << std::endl;
     }
     button.setBuffer(buffer2);
-    button.setVolume(20);
+    button.setVolume(40);
 
     if( !buffer3.loadFromFile("Picture/t.wav")){
         std::cout << "ERRorghgh" << std::endl;
     }
     crash.setBuffer(buffer3);
-    crash.setVolume(20);
+    crash.setVolume(200);
     if( !buffer4.loadFromFile("Picture/game_over2.wav")){
         std::cout << "ERRorghgh" << std::endl;
     }
@@ -45,7 +45,7 @@ void Music_lib::init() {
 }
 
 void Music_lib::playMusic() {
-    music.setVolume(15);
+    music.setVolume(10);
     music.play();
     music.setLoop(true);
 }
@@ -64,5 +64,9 @@ void Music_lib::playButton() {
 
 void Music_lib::playCrash() {
     crash.play();
-    std::this_thread::sleep_for(std::chrono::milliseconds(150));
+    std::this_thread::sleep_for(std::chrono::milliseconds(100));
+}
+
+void Music_lib::stopMusic() {
+    music.stop();
 }

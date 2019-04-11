@@ -18,6 +18,7 @@ public:
     void playGame_over() override;
     void playCrash() override;
     void playButton() override;
+    void stopMusic() override;
 
 private:
     sf::SoundBuffer buffer;
