@@ -11,7 +11,7 @@ add_custom_target(Allegro_lib
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 
-set(SOURCE_FILES main.cpp Menu.cpp Game_Obj.cpp Logic.cpp Mmap.cpp AView.cpp Food.cpp Interface.cpp Interface.hpp Music.cpp Music.hpp Music/Music_lib.cpp Music/Music_lib.hpp)
+set(SOURCE_FILES main.cpp Menu.cpp Game_Obj.cpp Logic.cpp Mmap.cpp AView.cpp Food.cpp Interface.cpp Interface.hpp Music.cpp Music.hpp)
 set(INCLUDE_DIR ~/.brew/include/)
 set(LIBRARY ~/.brew/lib/)
 
@@ -23,4 +23,4 @@ message(STATUS "dir = '${CMAKE_CURRENT_SOURCE_DIR}'")
 
 add_executable(Nibbler_v1.1 ${SOURCE_FILES})
 
-target_link_libraries(Nibbler_v1.1 -rdynamic -ldl -lsfml-audio)
+target_link_libraries(Nibbler_v1.1 -rdynamic -ldl )

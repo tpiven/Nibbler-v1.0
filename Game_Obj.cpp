@@ -14,7 +14,7 @@
 #include <ctime>
 #include <unistd.h>
 #include <mutex>
-#include "Music/Music_lib.hpp"
+//#include "Music/Music_lib.hpp"
 
 int const FPS = 60;
 uint32_t  frameStart;
@@ -24,17 +24,19 @@ Game_Obj::Game_Obj() {}
 
 Game_Obj::~Game_Obj() {
     void	(*destroy_gui)(AView *);
+    void     (*destroy_music)(Music*);
     destroy_gui = (void (*)(AView *))dlsym(dl_lib, "destroy_object");
     destroy_gui(viev);
     if (dl_lib != NULL) {
         dlclose(dl_lib);
 
     }
-//    delete _inst;
+    destroy_music = (void (*)(Music *))dlsym(dl_music, "destroy_object");
+    destroy_music(music);
 }
 
-Game_Obj* Game_Obj::_inst = nullptr;
-void *Game_Obj:: dl_lib = NULL;
+void *Game_Obj:: dl_lib = nullptr;
+void *Game_Obj:: dl_music = nullptr;
 AView*  Game_Obj::viev = nullptr;
 Music*  Game_Obj::music = nullptr;
 
@@ -92,12 +94,28 @@ void Game_Obj::addNewSharedLib() {
     viev = getInstance(g_weight, g_height);
 }
 
+void Game_Obj::addMusicLib() {
+    Music*		(*getInstance)();
+
+    dl_music = dlopen("../lib_Music.dylib", RTLD_LAZY);
+    if (!dl_music)
+        throw std::logic_error( dlerror() );
+
+
+    getInstance = reinterpret_cast<Music*(*)()> (dlsym(dl_music, "getInstance"));
+    if (!getInstance) {
+        throw std::logic_error( dlerror()) ;
+    }
+    music = getInstance();
+}
+
+
 void Game_Obj::init() {
     library[0] = "../libSDL.dylib";
     library[1] = "../libSFML.dylib";
   //  library[2] = "../libAllegro.dylib";
     addNewSharedLib();
-    music = new Music_lib();
+    addMusicLib();
     music->init();
     _interface = Interface::getInstance();
     viev->init();

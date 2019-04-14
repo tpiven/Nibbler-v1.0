@@ -29,6 +29,7 @@ private:
     bool    action();
     void    main_loop();
     void    addNewSharedLib();
+    void    addMusicLib();
     void    switchLib(int);
     bool    escapeLogic();
     bool    pauseLogic();
@@ -40,6 +41,7 @@ private:
     Food    _food;
     Interface  *_interface;
    static void *dl_lib;
+   static void *dl_music;
 
     friend class Logic;
     friend class Menu;

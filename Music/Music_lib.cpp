@@ -70,3 +70,12 @@ void Music_lib::playCrash() {
 void Music_lib::stopMusic() {
     music.stop();
 }
+
+
+extern "C"  Music* getInstance() {
+    return new Music_lib();
+}
+
+extern "C" void		destroy_object(Music_lib *gui) {
+    delete gui;
+}
