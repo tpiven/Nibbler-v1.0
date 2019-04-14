@@ -14,7 +14,7 @@ all: $(NAME)
 
 $(NAME):
 	g++ $(FLAGS) -dynamiclib -fPIC -o $(NAME) $(SRC) $(INC) $(LIBS) $(SOIL) -framework OpenGL -framework Appkit
-
+	mv $(NAME) ..
 clean:
 	rm -f $(OBJ)
 

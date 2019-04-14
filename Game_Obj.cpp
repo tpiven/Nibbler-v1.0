@@ -14,7 +14,6 @@
 #include <ctime>
 #include <unistd.h>
 #include <mutex>
-#include "GL/GL_lib.hpp"
 
 extern int const FPS = 60;
 uint32_t  frameStart;
@@ -24,12 +23,12 @@ unsigned Game_Obj::_frameDelay = 4000 / FPS;
 Game_Obj::Game_Obj() {}
 
 Game_Obj::~Game_Obj() {
-//    void	(*destroy_gui)(AView *);
-//    destroy_gui = (void (*)(AView *))dlsym(dl_lib, "destroy_object");
-//    destroy_gui(viev);
-//    if (this->dl_lib != NULL) {
-//        dlclose(this->dl_lib);
-//    }
+    void	(*destroy_gui)(AView *);
+    destroy_gui = (void (*)(AView *))dlsym(dl_lib, "destroy_object");
+    destroy_gui(viev);
+    if (this->dl_lib != NULL) {
+        dlclose(this->dl_lib);
+    }
 //    delete _inst;
 }
 
@@ -84,11 +83,9 @@ void Game_Obj::addNewSharedLib() {
 void Game_Obj::init() {
     library[0] = "../libSDL.dylib";
     library[1] = "../libSFML.dylib";
-    library[2] = "../libAllegro.dylib";
-//    addNewSharedLib();
+    library[2] = "../gl.dylib";
+    addNewSharedLib();
     _interface = Interface::getInstance();
-//    viev->init();
-    viev = new GL_lib(g_weight, g_height);
     viev->init();
     _menu.initMenu();
     if (!menu()){
@@ -200,11 +197,7 @@ int Game_Obj::handleEvent() {
         return symb;
     }
     if ((symb == 1 || symb == 2 || symb == 3) && symb != g_lib){
-//        if (g_lib == 2){
-//            int a = 10;
-//        }
           switchLib(symb);
-
     }
     else if (symb != 0) {
         (!_menu.runningMenu() && symb != ' ') ? _logic.setKey(symb) : _menu.setKey(symb);
