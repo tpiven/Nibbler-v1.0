@@ -2,16 +2,18 @@ NAME = gl.dylib
 
 SRC = GL_lib.cpp
 
-FLAGS = -Wall -Wextra -Werror -std=c++11
+FLAGS =  -std=c++11
 
-INC = -I ~/.brew/include SOIL/src
+INC = -I ~/.brew/include -I SOIL/src
 
-LIBS = -L ~/.brew/lib  -lGLEW -lglfw SOIL/lib/libSOIL.a 
+LIBS = -L ~/.brew/lib  -lGLEW -lglfw
+
+SOIL = SOIL/lib/libSOIL.a
 
 all: $(NAME)
 
 $(NAME):
-	g++ $(FLAGS) -dynamiclib -fPIC -o $(NAME) $(SRC) $(INC) $(LIBS) -framework OpenGL
+	g++ $(FLAGS) -dynamiclib -fPIC -o $(NAME) $(SRC) $(INC) $(LIBS) $(SOIL) -framework OpenGL -framework Appkit
 
 clean:
 	rm -f $(OBJ)
