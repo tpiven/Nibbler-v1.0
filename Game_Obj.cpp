@@ -16,9 +16,10 @@
 #include <mutex>
 #include "GL/GL_lib.hpp"
 
-int const FPS = 60;
+extern int const FPS = 60;
 uint32_t  frameStart;
 int frameTime;
+unsigned Game_Obj::_frameDelay = 4000 / FPS;
 
 Game_Obj::Game_Obj() {}
 
@@ -36,7 +37,7 @@ Game_Obj* Game_Obj::_inst = nullptr;
 void *Game_Obj:: dl_lib = NULL;
 AView*  Game_Obj::viev = nullptr;
 
-bool Game_Obj::menu() {//draw menu for select map, and number of player
+bool Game_Obj::menu() {
     int const frameDealy = 4000 / FPS;
     while(_menu.runningMenu()){
         viev->renderClear();
@@ -61,7 +62,6 @@ void Game_Obj::addNewSharedLib() {
     AView*		(*getInstance)(int, int);
     void	(*destroy_gui)(AView *);
 
-
     if (this->dl_lib != NULL) {
         destroy_gui = (void (*)(AView *))dlsym(dl_lib, "destroy_object");
         destroy_gui(viev);
@@ -69,10 +69,10 @@ void Game_Obj::addNewSharedLib() {
         this->dl_lib = NULL;
 
     }
+
     this->dl_lib = dlopen(library[g_lib - 1].c_str(), RTLD_LAZY);
     if (!this->dl_lib)
         throw std::logic_error( dlerror() );
-
 
     getInstance = reinterpret_cast<AView*(*)(int, int)> (dlsym(this->dl_lib, "getInstance"));
     if (!getInstance) {
@@ -105,7 +105,6 @@ void Game_Obj::init() {
 }
 
 void Game_Obj::main_loop() {
-    int const frameDealy = 4000 / FPS;
     while(1){
         viev->renderClear();
         frameStart = viev->getTicks();
@@ -118,8 +117,8 @@ void Game_Obj::main_loop() {
                 break;
         }
         frameTime = viev->getTicks() - frameStart;
-        if (frameDealy > frameTime && frameTime >= 0){
-            viev->delay(frameDealy - frameTime);
+        if (_frameDelay > frameTime && frameTime >= 0){
+            viev->delay(_frameDelay - frameTime);
         }
     }
     viev->cleanWindow();
@@ -148,7 +147,6 @@ bool Game_Obj::escapeLogic() {
 }
 
 bool Game_Obj::pauseLogic() {
-    Mmap::getInstance().printMmap();
     _menu.pauseDialog();
     return menu();
 }
@@ -168,9 +166,6 @@ bool Game_Obj::action() {
 }
 
 void Game_Obj::switchLib(int symb) {
-//    std::cout << "G_HEIGHT: " << g_height << std::endl;
-//    std::cout << "G_WEIGHT: " << g_weight << std::endl;
-//    std::cout << "HEIGHT_BOARD: " << HEIGHT_SCOREBOARD << std::endl;
     viev->cleanWindow();
     if (symb == 2) {
         g_height *=2;

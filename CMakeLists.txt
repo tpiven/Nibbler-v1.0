@@ -45,6 +45,11 @@ if (APPLE)
 #    set(SOIL_LIB /Users/kmykhail/OPENGL/OPEN/SOIL/lib)
     set(SOIL_LIB GL/SOIL/lib)
 
+    set(DRAW libdrawtext/src)
+
+    include_directories(${DRAW})
+    link_directories(${DRAW})
+
     include_directories(${INCLUDE_DIR})
     link_directories(${LIB})
 
@@ -52,6 +57,11 @@ if (APPLE)
 #    include_directories(SOIL_LIB /Users/kmykhail/OPENGL/OPEN/SOIL/lib)
     include_directories(SOIL_LIB GL/SOIL/lib)
     link_directories(${SOIL_LIB})
+
+    set (Free /Users/kmykhail/.brew/include/freetype2)
+    include_directories(${Free})
+    link_directories(${Free})
+
 
 #    include_directories(H_SOIL /Users/kmykhail/OPENGL/OPEN/SOIL/src)
     include_directories(H_SOIL GL/SOIL/src)
@@ -73,4 +83,4 @@ find_package(GLUT REQUIRED)
 add_executable(Nibbler_v1.1 ${SOURCE_FILES})
 
 #target_link_libraries(Nibbler_v1.1 -rdynamic -ldl)
-target_link_libraries(Nibbler_v1.1 ${CMAKE_BINARY_DIR}/../GL/SOIL/lib/libSOIL.a ${OPENGL_LIBRARY} ${GLUT_LIBRARY} -lGLEW -lglfw -lSDL2 -lSDL2_image -lSDL2_ttf)
+target_link_libraries(Nibbler_v1.1 ${CMAKE_BINARY_DIR}/../GL/SOIL/lib/libSOIL.a  ${OPENGL_LIBRARY} ${GLUT_LIBRARY} -lGLEW -lglfw -lSDL2 -lSDL2_ttf)

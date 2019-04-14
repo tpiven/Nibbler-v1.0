@@ -14,8 +14,6 @@ class Game_Obj {
 public:
     Game_Obj();
     ~Game_Obj();
-   // static Game_Obj* getInstance();
-    //void    DeleteStaticGame();
     void    init();
     int     handleEvent();
     void    update();
@@ -37,7 +35,8 @@ private:
     Menu    _menu;
     Food    _food;
     Interface  *_interface;
-   static void *dl_lib;
+    static void *dl_lib;
+    static unsigned _frameDelay;
 
     friend class Logic;
     friend class Menu;

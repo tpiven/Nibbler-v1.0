@@ -24,12 +24,6 @@ int size(int n, int g){
     return 0;
 }
 
-struct s_tr{
-    int a;
-    int b;
-    double qw;
-};
-
 int main(int argc, char **argv){
 
     std::regex check("[\\s]*?\\d{3,4}[\\s]*?$");

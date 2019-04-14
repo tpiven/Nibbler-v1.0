@@ -9,6 +9,8 @@
 #include "Mmap.hpp"
 #include "Game_Obj.hpp"
 
+int const FPS = 60;
+
 Logic::Logic() noexcept {
     _size_block = g_weight / 90;
     _rect.w = _rect.h = _size_block;
@@ -95,11 +97,12 @@ void Logic::move() {
     updateHead(head);
     int ch = Mmap::getInstance().getValueFromMap(head.y_arr, head.x_arr);
     if (ch > 0 || ch == -1){
-        std::cout << "CRASH" << std::endl;
+        Game_Obj::_frameDelay = 4000 / FPS;
         crash();
         return;
     }
     else if (ch == -2 || ch == -3){ //-2 small food and -3 big food
+        Game_Obj::_frameDelay -= (Game_Obj::_frameDelay > 20) ? 2 : 0;
         grow(ch);
     }
     
@@ -163,7 +166,6 @@ void Logic::grow(int typeFood) {
         }
     }
     for (auto fIt = Food::_coorOnMap.begin(); cell == 2  && fIt != Food::_coorOnMap.end(); fIt++){
-        Mmap::getInstance().printMmap();
         if (Mmap::getInstance().getValueFromMap(fIt->first, fIt->second) != -1){
             Mmap::getInstance().setValueInMap(0, fIt->first, fIt->second);
         }

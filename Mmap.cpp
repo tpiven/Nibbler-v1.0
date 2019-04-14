@@ -163,9 +163,7 @@ void Mmap::setMap(int n) {
     }
 }
 
-void Mmap::setValueInMap(int val, const int y, const int x) { (*_mmap)[y][x] = val;
-//std::cout << "::" << _mmap[y][x] << std::endl;
-}
+void Mmap::setValueInMap(int val, const int y, const int x) { (*_mmap)[y][x] = val;}
 
 int Mmap::getValueFromMap(const int y, const int x) const { return (*_mmap)[y][x]; }
 

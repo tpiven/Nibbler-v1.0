@@ -25,15 +25,7 @@ const char arrow_path[] = "/Picture/arrow_path.png";
 const char font_path[] = "/Picture/ArialItalic.ttf";
 const char gameOver_path[] = "/Picture/gameOver.png";
 
-typedef struct {
-    GLfloat positionCoors[3];
-    GLfloat textureCoors[2];
-}           VertexData;
-
 int GL_lib::_buttonStatus = 0;
-//TTF_Font GL_lib::*_font = nullptr;
-
-static  TTF_Font* _font = nullptr;
 
 void keyCallback(GLFWwindow *window, int key, int scancode, int action, int mods) {
     if (action == GLFW_PRESS){
@@ -120,9 +112,7 @@ void GL_lib::init()
     }
 
     glfwSetKeyCallback(_window, keyCallback);
-
     glfwMakeContextCurrent(_window);
-//    glViewport(0.0f, 0.0f, g_weight, g_height + HEIGHT_SCOREBOARD);
 
     if (!glfwGetCurrentContext()){
         std::cerr << "Couldn't create OpenGL context" << std::endl;
@@ -142,12 +132,11 @@ void GL_lib::init()
     glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
 
     glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
-//    glClearColor(57.0f/255.0f, 200.0f/255.0f, 12.0f/255.0f, 1.0f);
+
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
     LoadImage();
-
 }
 
 void GL_lib::LoadImage()
@@ -158,11 +147,11 @@ void GL_lib::LoadImage()
     _dir.resize(n);
 
     /*************LOAD MAP TEXTURE*************/
-    if (! (_textureMap1 = CREATE_TEXTURE((_dir + map_1).c_str()))) {
+    if (!(_map1 = CREATE_TEXTURE((_dir + map_1).c_str()))) {
         std::cerr << "Not load texture map" << std::endl;
         exit(1);
     }
-    if (! (_textureMap2 = CREATE_TEXTURE((_dir + map_2).c_str()))) {
+    if (!(_map2 = CREATE_TEXTURE((_dir + map_2).c_str()))) {
         std::cerr << "Not load texture map" << std::endl;
         exit(1);
     }
@@ -214,38 +203,26 @@ void GL_lib::LoadImage()
         std::cerr << "textureGameOver not exist" << std::endl;
         exit(1);
     }
-    /************INIT TEXTURE GAME OVER************/
-    //TODO
     /************INIT TEXTURE FOR FONT************/
-    //TODO
-    if (TTF_Init() < 0){
-        std::cerr << TTF_GetError() << std::endl;
-        exit(-1);
-    }
-    if (!(_font = TTF_OpenFont((_dir + font_path).c_str(), (HEIGHT_SCOREBOARD / 3)))){
-        std::cerr << "text Game Over not exist" << std::endl;
-        exit(1);
-    }
-    _tColor = {107,142,35, 0};
 
-    glBindTexture(GL_TEXTURE_2D, _textureMap1);
     glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR);
-//    glfwPollEvents();
 }
 
-void GL_lib::drawMap() {
+void GL_lib::DrawEveryThing(t_glScr glScr, GLuint &drawThis) {
     glfwMakeContextCurrent(_window);
-    glViewport(0, 0, g_weight * 2, g_height * 2);
-    glClearColor(0.f, 0.f, 0.f, 1.0f);
+    glViewport(glScr.x * 2, glScr.y * 2, glScr.w * 2, glScr.h * 2);
 
+    glClearColor(0.f, 0.f, 0.f, 1.0f);
 
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
 
-    glEnable(GL_TEXTURE_2D);
-    glBindTexture(GL_TEXTURE_2D, _textureMap1);
-    glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
+    if (drawThis != 0) {
+        glEnable(GL_TEXTURE_2D);
+        glBindTexture(GL_TEXTURE_2D, drawThis);
+        glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
+    }
 
     glBegin(GL_QUADS);
 
@@ -264,8 +241,25 @@ void GL_lib::drawMap() {
     glEnd();
 }
 
-void GL_lib::initMap(int) {
 
+void GL_lib::drawMap() {
+    t_glScr tmp = {0, 0, g_weight, g_height};
+    DrawEveryThing(tmp, _textureMap);
+}
+
+void GL_lib::initMap(int n) {
+    if (n == 1){
+        if (!(_textureMap = CREATE_TEXTURE((_dir + map_1).c_str()))){
+            std::cerr << "textuteMap1 not exist" << std::endl;
+            exit(1);
+        }
+    }
+    else if (n == 2){
+        if (!(_textureMap = CREATE_TEXTURE((_dir + map_2).c_str()))){
+            std::cerr << "textuteMap2 not exist" << std::endl;
+            exit(1);
+        }
+    }
 }
 
 int GL_lib::catchHook() {
@@ -286,69 +280,6 @@ void GL_lib::delay(int time) {
 void GL_lib::render()
 {
     glfwSwapBuffers(_window);
-}
-
-int GL_lib::CloseWindow() const
-{
-    return glfwWindowShouldClose(_window);
-}
-
-void GL_lib::updateInput()
-{
-    //FUCTION FOR ESCAPE HOOK
-    if (glfwGetKey(_window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
-    {
-        #ifdef __APPLE__
-            glfwSetWindowShouldClose(_window, GLFW_TRUE);
-        #endif
-
-        #ifdef __linux__
-            glfwSetWindowShouldClose(_window, 1);
-        #endif
-    }
-}
-
-void GL_lib::Update()
-{
-
-}
-
-void GL_lib::ScaleCoors(t_glScr& glScr) {
-    glScr.x *= 2;
-    glScr.w *= 2;
-    glScr.y = g_height - glScr.y;
-    glScr.h *= 2;
-}
-
-void GL_lib::DrawEveryThing(t_glScr glScr, GLuint &drawThis) {
-    glfwMakeContextCurrent(_window);
-    glViewport(glScr.x * 2, glScr.y * 2, glScr.w * 2, glScr.h * 2);
-
-    glClearColor(0.f, 0.f, 0.f, 1.0f);
-
-    glMatrixMode(GL_PROJECTION);
-    glLoadIdentity();
-
-    if (drawThis != 0) {
-        glEnable(GL_TEXTURE_2D);
-        glBindTexture(GL_TEXTURE_2D, drawThis);
-        glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
-    }
-    glBegin(GL_QUADS);
-
-    glTexCoord2f(0.f, 0.f);
-    glVertex2f(-1.f, -1.f);
-
-    glTexCoord2f(1.f, 0.f);
-    glVertex2f(1.f, -1.f);
-
-    glTexCoord2f(1.f, 1.f);
-    glVertex2f(1.f, 1.f);
-
-    glTexCoord2f(0.f, 1.f);
-    glVertex2f(-1.f, 1.f);
-
-    glEnd();
 }
 
 void GL_lib::drawMenu(void* rectA, void* rectB, int typeMenu) {
@@ -379,8 +310,6 @@ void GL_lib::drawMenu(void* rectA, void* rectB, int typeMenu) {
     }
 }
 
-
-
 void GL_lib::drawSnake(void* rect, int b_block) {
     if (!rect){
         std::cout << "Rect is NULL" << std::endl;
@@ -392,7 +321,6 @@ void GL_lib::drawSnake(void* rect, int b_block) {
 
     DrawEveryThing(_scrR, _textureSnake[b_block]);
 }
-
 
 void GL_lib::drawFood(void *rect) {
     if (!rect){
@@ -412,57 +340,19 @@ void    GL_lib::drawBigFood(void *rect) {
     DrawEveryThing(_fcrR, _textureBigFood);
 }
 
-//glfwMakeContextCurrent(_window);
-//    glViewport(glScr.x * 2, glScr.y * 2, glScr.w * 2, glScr.h * 2);
-//
-//    glClearColor(0.f, 0.f, 0.f, 1.0f);
-//
-//    glMatrixMode(GL_PROJECTION);
-//    glLoadIdentity();
-//
-//    if (drawThis != 0) {
-//        glEnable(GL_TEXTURE_2D);
-//        glBindTexture(GL_TEXTURE_2D, drawThis);
-//        glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
-//    }
-//    glBegin(GL_QUADS);
-//
-//    glTexCoord2f(0.f, 0.f);
-//    glVertex2f(-1.f, -1.f);
-//
-//    glTexCoord2f(1.f, 0.f);
-//    glVertex2f(1.f, -1.f);
-//
-//    glTexCoord2f(1.f, 1.f);
-//    glVertex2f(1.f, 1.f);
-//
-//    glTexCoord2f(0.f, 1.f);
-//    glVertex2f(-1.f, 1.f);
-//
-//    glEnd();
-
 void GL_lib::drawInterface(std::string clock, int score){
-    //TODO
-//
-//    SDL_Surface* surface = TTF_RenderText_Blended(_font, "QQQQQ", _tColor);
-//    if (!surface){
+
+//    SDL_Rect _area;
+//    SDL_Surface* sText = TTF_RenderText_Blended(_font, "QQQQQ", _tColor);
+//    if (!sText){
 //        TTF_CloseFont(_font);
 //        std::cerr << TTF_GetError() << std::endl;
 //        exit(-1);
 //    }
-    glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-    glPixelStorei(GL_UNPACK_ROW_LENGTH, 0);
-    glPixelStorei(GL_UNPACK_SKIP_PIXELS, 0);
-    glPixelStorei(GL_UNPACK_SKIP_ROWS, 0);
-    SDL_Surface* sText = TTF_RenderText_Blended(_font, "QQQQ", _tColor);
-    if (!sText){
-        std::cerr << TTF_GetError() << std::endl;
-        exit(-1);
-    }
-    _area.x = 0;
-    _area.y = 0;
-    _area.w = sText->w;
-    _area.h = sText->h;
+//    glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+//    glPixelStorei(GL_UNPACK_ROW_LENGTH, 0);
+//    glPixelStorei(GL_UNPACK_SKIP_PIXELS, 0);
+//    glPixelStorei(GL_UNPACK_SKIP_ROWS, 0);
 //    SDL_Surface* temp = SDL_CreateRGBSurface(0, sText->w, sText->h, 32, 0x000000ff, 0x0000ff00, 0x00ff0000, 0x000000ff);
 //    if (!temp){
 //        std::cerr << TTF_GetError() << std::endl;
@@ -470,24 +360,65 @@ void GL_lib::drawInterface(std::string clock, int score){
 //    }
 //    SDL_BlitSurface(sText, &_area, temp, NULL);
 //    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, sText->w, sText->h, 0, GL_RGBA, GL_UNSIGNED_BYTE, temp->pixels);
-    glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR);
-    glEnable(GL_TEXTURE_2D);
-    glBegin(GL_QUADS); {
-        glTexCoord2d(0, 0); glVertex3f(0, 0, 0);
-        glTexCoord2d(1, 0); glVertex3f(0 + sText->w, 0, 0);
-        glTexCoord2d(1, 1); glVertex3f(0 + sText->w, 0 + sText->h, 0);
-        glTexCoord2d(0, 1); glVertex3f(0, 0 + sText->h, 0);
-    } glEnd();
-    glDisable(GL_TEXTURE_2D);
-    SDL_FreeSurface( sText );
-//    SDL_FreeSurface( temp );
+//    glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR);
+//    glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR);
+//    glEnable(GL_TEXTURE_2D);
+//    glBegin(GL_QUADS); {
+//        glTexCoord2d(0, 0); glVertex3f(0, 0, 0);
+//        glTexCoord2d(1, 0); glVertex3f(0 + sText->w, 0, 0);
+//        glTexCoord2d(1, 1); glVertex3f(0 + sText->w, 0 + sText->h, 0);
+//        glTexCoord2d(0, 1); glVertex3f(0, 0 + sText->h, 0);
+//    } glEnd();
+//    glDisable(GL_TEXTURE_2D);
+//    SDL_FreeSurface( sText );
+
+
+//    glMatrixMode(GL_MODELVIEW);
+//    glPushMatrix();
+//    glLoadIdentity();
+//
+//    gluOrtho2D(0, g_weight, 0, g_height); // m_Width and m_Height is the resolution of window
+//    glMatrixMode(GL_PROJECTION);
+//    glPushMatrix();
+//    glLoadIdentity();
+//
+//    glDisable(GL_DEPTH_TEST);
+//    glEnable(GL_TEXTURE_2D);
+//    glEnable(GL_BLEND);
+//    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+//
+//    GLuint texture;
+//    glGenTextures(1, &texture);
+//    glBindTexture(GL_TEXTURE_2D, texture);
+//    SDL_Surface * sFont = TTF_RenderText_Blended(_font, "QQQQQQQQQQQQQQQ", _tColor);
+//
+//    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+//    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+//    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, sFont->w, sFont->h, 0, GL_BGRA, GL_UNSIGNED_BYTE, sFont->pixels);
+//
+//    glBegin(GL_QUADS);
+//    glTexCoord2f(0,0); glVertex2f(0, 0);
+//    glTexCoord2f(1,0); glVertex2f(0 + sFont->w, 0);
+//    glTexCoord2f(1,1); glVertex2f( + sFont->w, 0 + sFont->h);
+//    glTexCoord2f(0,1); glVertex2f(0, 0 + sFont->h);
+//    glEnd();
+//
+//    glDisable(GL_BLEND);
+//    glDisable(GL_TEXTURE_2D);
+//    glEnable(GL_DEPTH_TEST);
+//
+//    glMatrixMode(GL_PROJECTION);
+//    glPopMatrix();
+//    glMatrixMode(GL_PROJECTION);
+//    glPopMatrix();
+//
+//    glDeleteTextures(1, &texture);
+//    SDL_FreeSurface(sFont);
 }
 
 void GL_lib::drawTimeBigFood(int time) {
     _lcrR = {(g_weight / 3) * 2, (g_height + HEIGHT_SCOREBOARD / 2), time, SizeFont - 10};
     DrawEveryThing(_lcrR, _textureLine);
-//    glClearColor(0.f, 0.f, 0.f, 1.0f);
 }
 
 void GL_lib::renderClear() {
@@ -495,27 +426,15 @@ void GL_lib::renderClear() {
 }
 
 void GL_lib::drawGameOver(int score) {
-    //TODO
-    std::cout << "Game Over" << std::endl;
-//    _gcrR = {(g_weight / 3), g_height / 3, g_weight / 3, g_height / 3};
-//    SDL_RenderCopy(renderer, _textureGameOver, nullptr, &_gcrR);
-//    _textureScore = CREATE_TEXTURETEXT(("SCORE   " + std::to_string(score)).c_str(), _tColor, _tcrR);
-//    _tcrR.x = g_weight/2 - (HEIGHT_SCOREBOARD / 3) * 2;
-//    _tcrR.y = (g_height / 3) * 2;
-//    SDL_RenderCopy(renderer, _textureScore, nullptr, &_tcrR);
-//
-//    _textureScore = CREATE_TEXTURETEXT("Please, press space key", _tColor, _tcrR);
-//    _tcrR.x = g_weight / 2 - (HEIGHT_SCOREBOARD + (HEIGHT_SCOREBOARD / 3));
-//    _tcrR.y = g_height - HEIGHT_SCOREBOARD;
-//    SDL_RenderCopy(renderer, _textureScore, nullptr, &_tcrR);
+    _gcrR = {(g_weight / 3), g_height / 3, g_weight / 3, g_height / 3};
+    DrawEveryThing(_gcrR, _textureGameOver);
 }
 
 void GL_lib::drawChangeMap(int n) {
-    unsigned int qw = 0;
     _gcrR = {g_weight / 3, g_height / 3, 180, 134};
-    DrawEveryThing(_gcrR, _textureMap1);
+    DrawEveryThing(_gcrR, _map1);
     _gcrR = {(g_weight / 3) + 180 + HEIGHT_SCOREBOARD, g_height / 3, 180, 134};
-    DrawEveryThing(_gcrR, _textureMap2);
+    DrawEveryThing(_gcrR, _map2);
 
     t_glScr square;
     if (n == 1){
@@ -524,8 +443,7 @@ void GL_lib::drawChangeMap(int n) {
     else if (n == 2) {
         square = {(g_weight / 3) + (90 * 2) + HEIGHT_SCOREBOARD - 10, (g_height / 3) - 10, 200, 150};
     }
-    //TODO normal case with switch lib
-    DrawEveryThing(square, qw);
+    DrawEveryThing(square, (n == 1) ? _map1 : _map2);
 }
 
 void GL_lib::cleanWindow() {
@@ -534,8 +452,14 @@ void GL_lib::cleanWindow() {
     glfwTerminate();
 }
 
-void GL_lib::DestroyWindow()
-{
-    glfwDestroyWindow(_window);
-    glfwTerminate();
+extern "C"  AView* getInstance(int weight, int height) {
+    return new GL_lib(weight, height);
 }
+
+extern "C" void		destroy_object(GL_lib *gui)
+{
+    printf("delete\n");
+    delete gui;
+}
+
+

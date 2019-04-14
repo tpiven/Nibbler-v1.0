@@ -80,8 +80,6 @@ void Food::surpriseFood() {
                      GET_VALUE_FROM_MAP(y, x + 1) != 0 ||
                      GET_VALUE_FROM_MAP(y + 1, x) != 0 ||
                      GET_VALUE_FROM_MAP(y + 1, x + 1) != 0);
-
-            Mmap::getInstance().printMmap();
             _coorOnMap[0] = {y, x};
             _coorOnMap[1] = {y, x + 1};
             _coorOnMap[2] = {y + 1, x};
@@ -90,7 +88,6 @@ void Food::surpriseFood() {
             for (auto& it : _coorOnMap){
                 SET_VALUE_IN_MAP(-3, it.first, it.second);
             }
-            Mmap::getInstance().printMmap();
             _coorBigFood.y_arr = y;
             _coorBigFood.x_arr = x;
             _rectBig.y = _coorBigFood.y_dis = (_coorBigFood.y_arr * g_height / 67) + HEIGHT_SCOREBOARD;//- _size_block/2;

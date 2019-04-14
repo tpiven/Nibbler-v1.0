@@ -299,7 +299,6 @@ void SDL_lib::drawBigFood(void* rect) {
     SDL_RenderCopy(renderer, _textureBigFood, nullptr, &_fcrR);
 }
 
-
 void SDL_lib::drawInterface(std::string clock, int score) {
     /***************DRAW CLOCK****************/
     _textureText = CREATE_TEXTURETEXT(clock.c_str(), _textColor, _tcrR);
