@@ -24,17 +24,26 @@ Game_Obj::Game_Obj() {}
 
 Game_Obj::~Game_Obj() {
     void	(*destroy_gui)(AView *);
+    void     (*destroy_music)(Music*);
     destroy_gui = (void (*)(AView *))dlsym(dl_lib, "destroy_object");
     destroy_gui(viev);
     if (this->dl_lib != NULL) {
         dlclose(this->dl_lib);
     }
 //    delete _inst;
+    destroy_music = (void (*)(Music *))dlsym(dl_music, "destroy_object");
+    destroy_music(music);
+    if (this->dl_music != NULL) {
+        dlclose(this->dl_music);
+    }
 }
 
-Game_Obj* Game_Obj::_inst = nullptr;
-void *Game_Obj:: dl_lib = NULL;
+void *Game_Obj:: dl_lib = nullptr;
+void *Game_Obj:: dl_music = nullptr;
 AView*  Game_Obj::viev = nullptr;
+Music*  Game_Obj::music = nullptr;
+
+
 
 bool Game_Obj::menu() {
     int const frameDealy = 4000 / FPS;
@@ -54,6 +63,21 @@ bool Game_Obj::menu() {
         viev->render();
     }
     return true;
+}
+
+void Game_Obj::addMusicLib() {
+    Music*		(*getInstance)();
+
+    dl_music = dlopen("../lib_Music.dylib", RTLD_LAZY);
+    if (!dl_music) {
+        exit(1);
+        throw std::logic_error(dlerror());
+    }
+    getInstance = reinterpret_cast<Music*(*)()> (dlsym(dl_music, "getInstance"));
+    if (!getInstance) {
+        throw std::logic_error( dlerror()) ;
+    }
+    music = getInstance();
 }
 
 void Game_Obj::addNewSharedLib() {
@@ -85,6 +109,8 @@ void Game_Obj::init() {
     library[1] = "../libSFML.dylib";
     library[2] = "../gl.dylib";
     addNewSharedLib();
+    addMusicLib();
+    music->init();
     _interface = Interface::getInstance();
     viev->init();
     _menu.initMenu();
@@ -102,10 +128,12 @@ void Game_Obj::init() {
 }
 
 void Game_Obj::main_loop() {
+    music->playMusic();
     while(1){
         viev->renderClear();
         frameStart = viev->getTicks();
         if (!_logic.runningGame()){
+            music->stopMusic();
             if (!escapeLogic()){
                 break;
             }
@@ -125,6 +153,11 @@ bool Game_Obj::escapeLogic() {
     int const frameDealy = 4000 / FPS;
     _menu.escapeDialog();
     _mapInit = false;
+
+    _logic.restart();
+    _food.restart();
+    music->playGame_over();
+
     while(handleEvent() != 32 ){
         viev->renderClear();
         viev->drawGameOver(_interface->getScore());
@@ -137,9 +170,8 @@ bool Game_Obj::escapeLogic() {
     if (!menu()){
         return false;
     }
-    _logic.restart();
-    _food.restart();
     _interface->restart();
+    music->playMusic();
     return true;
 }
 

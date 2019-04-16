@@ -456,7 +456,7 @@ extern "C"  AView* getInstance(int weight, int height) {
     return new GL_lib(weight, height);
 }
 
-extern "C" void		destroy_object(GL_lib *gui)
+extern "C" void destroy_object(GL_lib *gui)
 {
     printf("delete\n");
     delete gui;

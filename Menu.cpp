@@ -83,10 +83,12 @@ void Menu::moveArrow() {
     if (_key == 125 && _numButton != 4){//125 down
         _rectA.y += (_typeMenu == 3 && _numButton == 3) ? 0 :  _rectA.h + 10;
         _numButton += (_typeMenu == 3 && _numButton == 3) ? 0 : 1;
+        Game_Obj::music->playButton();
     }
     else if (_key == 126 && _numButton != 1){//126 up
         _rectA.y -=  _rectA.h + 10;
         _numButton--;
+        Game_Obj::music->playButton();
     }
 }
 

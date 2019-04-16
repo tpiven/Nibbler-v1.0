@@ -7,9 +7,6 @@
 #include "global.h"
 #include "Mmap.hpp"
 #include "Game_Obj.hpp"
-//#include "SDL_lib.hpp"
-//#include "SFML_lib.hpp"
-//#include "Allegra_lib.hpp"
 #include <random>
 #define GET_VALUE_FROM_MAP(y,x) Mmap::getInstance().getValueFromMap(y, x)
 #define SET_VALUE_IN_MAP(v,y,x) Mmap::getInstance().setValueInMap(v,y,x)

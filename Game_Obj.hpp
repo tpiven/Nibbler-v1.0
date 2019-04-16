@@ -9,6 +9,7 @@
 #include "Food.hpp"
 #include "Menu.hpp"
 #include "Interface.hpp"
+#include "Music.hpp"
 
 class Game_Obj {
 public:
@@ -18,6 +19,7 @@ public:
     int     handleEvent();
     void    update();
     static AView * viev;
+    static Music *music;
 
 private:
     static Game_Obj *_inst;
@@ -25,6 +27,7 @@ private:
     bool    action();
     void    main_loop();
     void    addNewSharedLib();
+    void    addMusicLib();
     void    switchLib(int);
     bool    escapeLogic();
     bool    pauseLogic();
@@ -36,6 +39,7 @@ private:
     Food    _food;
     Interface  *_interface;
     static void *dl_lib;
+    static void *dl_music;
     static unsigned _frameDelay;
 
     friend class Logic;

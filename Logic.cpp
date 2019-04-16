@@ -98,12 +98,14 @@ void Logic::move() {
     int ch = Mmap::getInstance().getValueFromMap(head.y_arr, head.x_arr);
     if (ch > 0 || ch == -1){
         Game_Obj::_frameDelay = 4000 / FPS;
+        Game_Obj::music->playCrash();
         crash();
         return;
     }
     else if (ch == -2 || ch == -3){ //-2 small food and -3 big food
         Game_Obj::_frameDelay -= (Game_Obj::_frameDelay > 20) ? 2 : 0;
         grow(ch);
+        Game_Obj::music->playEat();
     }
     
     else if (ch == -5) { // portal

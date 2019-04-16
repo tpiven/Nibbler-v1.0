@@ -384,7 +384,6 @@ void SDL_lib::cleanWindow() {
     SDL_DestroyWindow(_window);
     SDL_DestroyRenderer(renderer);
     SDL_Quit();
-    std::cout << "CLEAN WINDOW SDL" << std::endl;
 }
 
 extern "C"  AView* getInstance(int weight, int height) {

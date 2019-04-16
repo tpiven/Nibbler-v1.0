@@ -38,7 +38,7 @@ SFML_lib::SFML_lib(int g_weight, int g_height) {
 }
 
 SFML_lib::~SFML_lib() {
-    std::cout << "CLOSE LIB SFML" << std::endl;
+
 }
 
 void SFML_lib::init() {
@@ -293,8 +293,6 @@ void SFML_lib::cleanWindow() {
     _window->clear();
     _window->close();
     delete _window;
-    std::cout << "CLEAN WINDOW SFML" << std::endl;
-
 }
 
 void SFML_lib::drawGameOver(int score) {

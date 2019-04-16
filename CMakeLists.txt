@@ -11,7 +11,7 @@ add_custom_target(GL
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 
-set(SOURCE_FILES main.cpp Menu.cpp Game_Obj.cpp Logic.cpp Mmap.cpp AView.cpp Food.cpp Interface.cpp Interface.hpp )
+set(SOURCE_FILES main.cpp Menu.cpp Game_Obj.cpp Logic.cpp Mmap.cpp AView.cpp Food.cpp Interface.cpp Interface.hpp Music.hpp)
 set(INCLUDE_DIR ~/.brew/include/)
 set(LIBRARY ~/.brew/lib/)
 
