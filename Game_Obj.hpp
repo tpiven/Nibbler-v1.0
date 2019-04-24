@@ -15,8 +15,6 @@ class Game_Obj {
 public:
     Game_Obj();
     ~Game_Obj();
-   // static Game_Obj* getInstance();
-    //void    DeleteStaticGame();
     void    init();
     int     handleEvent();
     void    update();
@@ -34,14 +32,15 @@ private:
     bool    escapeLogic();
     bool    pauseLogic();
 
-  std::string library[2];
+  std::string library[3];
 
     Logic   _logic;
     Menu    _menu;
     Food    _food;
     Interface  *_interface;
-   static void *dl_lib;
-   static void *dl_music;
+    static void *dl_lib;
+    static void *dl_music;
+    static unsigned _frameDelay;
 
     friend class Logic;
     friend class Menu;

@@ -25,6 +25,7 @@ int size(int n, int g){
 }
 
 int main(int argc, char **argv){
+
     std::regex check("[\\s]*?\\d{3,4}[\\s]*?$");
     if (argc != 4){//TODO must change on exception
         std::cout << "usage: ???" << std::endl;
@@ -50,7 +51,7 @@ int main(int argc, char **argv){
             }
         }
         else if (i == 3){
-            g_lib = std::stoi(*(argv + i));
+            g_lib = std::stoi(*(argv + i));;
             if (g_lib > 3) {
                 {
                     std::cout << "Not valued number of libraries" << std::endl;
@@ -63,6 +64,7 @@ int main(int argc, char **argv){
         g_weight *= 2;
         g_height *= 2;
     }
+
     HEIGHT_SCOREBOARD = g_weight / 14;
     _mapInit = false;
 

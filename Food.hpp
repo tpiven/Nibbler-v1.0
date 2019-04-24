@@ -4,8 +4,6 @@
 
 #pragma once
 
-#pragma once
-
 #include <vector>
 #include "header.h"
 #include "Interface.hpp"

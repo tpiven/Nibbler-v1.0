@@ -14,7 +14,7 @@ std::vector<std::pair<int, int>> Food::_coorOnMap(4, {0,0});
 Food::Food() noexcept {
     _size_block = (g_weight / 90);// / 2;
     _rectLil.w = _rectLil.h = _size_block;
-    _rectBig.w = _rectBig.h = _size_block * 2;//+ _size_block/2;
+    _rectBig.w = _rectBig.h = _size_block * 2;
     _coorLilFood.x_arr = _coorLilFood.y_arr = _coorLilFood.y_dis = _coorLilFood.x_dis = 0;
     _coorBigFood.x_arr = _coorBigFood.y_arr = _coorBigFood.y_dis = _coorBigFood.x_dis = 0;
     _drawBig = false;
@@ -73,7 +73,6 @@ void Food::surpriseFood() {
                      GET_VALUE_FROM_MAP(y, x + 1) != 0 ||
                      GET_VALUE_FROM_MAP(y + 1, x) != 0 ||
                      GET_VALUE_FROM_MAP(y + 1, x + 1) != 0);
-
             _coorOnMap[0] = {y, x};
             _coorOnMap[1] = {y, x + 1};
             _coorOnMap[2] = {y + 1, x};
@@ -82,7 +81,6 @@ void Food::surpriseFood() {
             for (auto& it : _coorOnMap){
                 SET_VALUE_IN_MAP(-3, it.first, it.second);
             }
-
             _coorBigFood.y_arr = y;
             _coorBigFood.x_arr = x;
             _rectBig.y = _coorBigFood.y_dis = (_coorBigFood.y_arr * g_height / 67) + HEIGHT_SCOREBOARD;//- _size_block/2;
@@ -100,9 +98,8 @@ void Food::surpriseFood() {
     }
     if (_drawBig){
         Game_Obj::viev->drawBigFood(&_rectBig);
-
         Game_Obj::viev->drawTimeBigFood(static_cast<int>((8000 - t.count())/100));//8000
-    }
+   }
 }
 
 

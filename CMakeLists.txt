@@ -2,16 +2,18 @@ cmake_minimum_required(VERSION 3.12)
 project(Nibbler_v1.1)
 
 add_custom_target(SDL_lib
-                  COMMAND make -C ${CMAKE_CURRENT_SOURCE_DIR}/SDL)
+        COMMAND make -C ${CMAKE_CURRENT_SOURCE_DIR}/SDL)
 add_custom_target(SFML_lib
-                  COMMAND make -C ${CMAKE_CURRENT_SOURCE_DIR}/SFML)
+        COMMAND make -C ${CMAKE_CURRENT_SOURCE_DIR}/SFML)
 
-add_custom_target(Allegro_lib
-        COMMAND make -C ${CMAKE_CURRENT_SOURCE_DIR}/Allegro)
+add_custom_target(GL
+        COMMAND make -C ${CMAKE_CURRENT_SOURCE_DIR}/GL)
+add_custom_target(Music
+        COMMAND make -C ${CMAKE_CURRENT_SOURCE_DIR}/Music)
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 
-set(SOURCE_FILES main.cpp Menu.cpp Game_Obj.cpp Logic.cpp Mmap.cpp AView.cpp Food.cpp Interface.cpp Interface.hpp Music.cpp Music.hpp)
+set(SOURCE_FILES main.cpp Menu.cpp Game_Obj.cpp Logic.cpp Mmap.cpp AView.cpp Food.cpp Interface.cpp Interface.hpp Music.hpp)
 set(INCLUDE_DIR ~/.brew/include/)
 set(LIBRARY ~/.brew/lib/)
 

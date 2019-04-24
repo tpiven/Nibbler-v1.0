@@ -6,7 +6,6 @@
 #include <vector>
 #include <iostream>
 
-
 class Music {
 public:
     Music() {}
@@ -18,7 +17,4 @@ public:
     virtual void playCrash() = 0;
     virtual void playButton() = 0;
     virtual void stopMusic() = 0;
-
 };
-
-
